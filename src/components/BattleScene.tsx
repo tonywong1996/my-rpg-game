@@ -164,6 +164,13 @@ function AttackFlash({ show, isPlayer }: { show: boolean; isPlayer: boolean }) {
 // ============================
 
 /**
+ * 获取角色显示名称（AI故事角色用nameOverride，野外怪物用name）
+ */
+function getDisplayName(unit: BattleUnit): string {
+  return unit.nameOverride || unit.name
+}
+
+/**
  * 单个战斗单位的角色绘制
  */
 function BattleCharacter({ unit, isPlayer, isHit }: { unit: BattleUnit; isPlayer: boolean; isHit: boolean }) {
@@ -187,7 +194,7 @@ function BattleCharacter({ unit, isPlayer, isHit }: { unit: BattleUnit; isPlayer
       {/* 角色名称标签 */}
       <div className="whitespace-nowrap mb-1">
         <span className="text-xs font-bold tracking-wider text-[#f5f0c4] drop-shadow-lg">
-          {unit.name}
+          {getDisplayName(unit)}
         </span>
         <span className="text-[10px] text-[#a0a0b0] ml-1">Lv.{unit.level}</span>
       </div>

@@ -112,6 +112,7 @@ export interface BattleState {
 export interface BattleUnit {
   id: string
   name: string
+  nameOverride?: string   // AI故事角色专用名字（如"黑衣刺客"），野外怪物用name字段
   characterId: CharacterId
   hp: number
   maxHp: number
@@ -987,7 +988,7 @@ export const useGameStore = create<GameState>()(
           const state = get()
           const damage = Math.max(1, state.playerUnit.attack - state.enemyUnit.defense + Math.floor(Math.random() * 5))
           const newEnemyHp = Math.max(0, state.enemyUnit.hp - damage)
-          const enemyName = state.enemyUnit.name
+          const enemyName = state.enemyUnit.nameOverride || state.enemyUnit.name
 
           const logs: LogEntry[] = [
             ...state.battleLog,
@@ -995,58 +996,10 @@ export const useGameStore = create<GameState>()(
           ]
 
           if (newEnemyHp <= 0) {
-            // 敌人被击败 - 生成掉落
-            const loot = generateLoot(enemyName)
-            const lootMessages: string[] = []
-
-            // 修为奖励
-            get().addCultivation(loot.exp)
-            lootMessages.push(`获得 ${loot.exp} 修为`)
-
-            // 金币奖励
-            get().addGold(loot.gold)
-            lootMessages.push(`${loot.gold} 金币`)
-
-            // 物品掉落
-            for (const itemId of loot.items) {
-              const equipment = ALL_EQUIPMENT.find(e => e.id === itemId)
-              if (equipment) {
-                get().addItemToInventory({ ...equipment, equipped: false })
-                lootMessages.push(`${equipment.icon} ${equipment.name}`)
-              }
-            }
-
-            // 更新任务进度
-            get().updateQuestProgress('quest_kill_wolves', enemyName === '野狼' ? 1 : 0)
-            get().updateQuestProgress('quest_kill_monsters', 1)
-
-            logs.push({
-              id: ++logIdCounter,
-              text: `🏆 击败【${enemyName}】！${lootMessages.length > 0 ? ' 获得: ' + lootMessages.join('、') : ''}`,
-              type: 'loot',
-              timestamp: Date.now(),
-            })
-
-            // 更新玩家经验/等级
-            const newPlayerUnit = { ...state.playerUnit }
-            // 简单等级系统：每100修为升1级
-            const newLevel = Math.floor(get().cultivation.toNumber() / 100) + 1
-            if (newLevel > newPlayerUnit.level) {
-              newPlayerUnit.level = newLevel
-              logs.push({
-                id: ++logIdCounter,
-                text: `✨ 恭喜升级！当前等级 ${newLevel}`,
-                type: 'system',
-                timestamp: Date.now(),
-              })
-            }
-
-            // 保存掉落记录
+            // 敌人被击败 - 结束战斗
             set({
               enemyUnit: { ...state.enemyUnit, hp: 0 },
               battleLog: logs,
-              lastLoot: { exp: loot.exp, gold: loot.gold, items: loot.items },
-              playerUnit: newPlayerUnit,
             })
             return
           }
@@ -1084,6 +1037,7 @@ export const useGameStore = create<GameState>()(
           const newMp = state.playerUnit.mp - skill.mpCost
           let newPlayerHp = state.playerUnit.hp
           let newEnemyHp = state.enemyUnit.hp
+          const enemyName = state.enemyUnit.nameOverride || state.enemyUnit.name
 
           // --- 触发技能特效事件（在日志添加之前触发） ---
           const skillEffectEvent = new CustomEvent('rpg-skill-effect', {
@@ -1107,57 +1061,18 @@ export const useGameStore = create<GameState>()(
             newEnemyHp = Math.max(0, state.enemyUnit.hp - damage)
             logs.push({
               id: ++logIdCounter,
-              text: `⚡ 使用【${skill.name}】(Lv.${skill.level})，对【${state.enemyUnit.name}】造成 ${damage} 点伤害！`,
+              text: `⚡ 使用【${skill.name}】(Lv.${skill.level})，对【${enemyName}】造成 ${damage} 点伤害！`,
               type: 'battle',
               timestamp: Date.now(),
             })
           }
 
           if (newEnemyHp <= 0 && skill.target === 'enemy') {
-            // 技能击杀 - 生成掉落
-            const enemyName = state.enemyUnit.name
-            const loot = generateLoot(enemyName)
-            const lootMessages: string[] = []
-
-            get().addCultivation(loot.exp)
-            lootMessages.push(`获得 ${loot.exp} 修为`)
-            get().addGold(loot.gold)
-            lootMessages.push(`${loot.gold} 金币`)
-
-            for (const itemId of loot.items) {
-              const equipment = ALL_EQUIPMENT.find(e => e.id === itemId)
-              if (equipment) {
-                get().addItemToInventory({ ...equipment, equipped: false })
-                lootMessages.push(`${equipment.icon} ${equipment.name}`)
-              }
-            }
-
-            get().updateQuestProgress('quest_kill_wolves', enemyName === '野狼' ? 1 : 0)
-            get().updateQuestProgress('quest_kill_monsters', 1)
-
-            logs.push({
-              id: ++logIdCounter,
-              text: `🏆 击败【${enemyName}】！${lootMessages.length > 0 ? ' 获得: ' + lootMessages.join('、') : ''}`,
-              type: 'loot',
-              timestamp: Date.now(),
-            })
-
-            // 等级提升
-            const newLevel = Math.floor(get().cultivation.toNumber() / 100) + 1
-            if (newLevel > state.playerUnit.level) {
-              logs.push({
-                id: ++logIdCounter,
-                text: `✨ 恭喜升级！当前等级 ${newLevel}`,
-                type: 'system',
-                timestamp: Date.now(),
-              })
-            }
-
+            // 敌人被击败 - 结束战斗
             set({
               enemyUnit: { ...state.enemyUnit, hp: 0 },
-              playerUnit: { ...state.playerUnit, mp: newMp, level: Math.max(state.playerUnit.level, Math.floor(get().cultivation.toNumber() / 100) + 1) },
+              playerUnit: { ...state.playerUnit, mp: newMp },
               battleLog: logs,
-              lastLoot: { exp: loot.exp, gold: loot.gold, items: loot.items },
             })
             return
           }
@@ -1168,7 +1083,7 @@ export const useGameStore = create<GameState>()(
 
           logs.push({
             id: ++logIdCounter,
-            text: `【${state.enemyUnit.name}】对你造成 ${enemyDamage} 点伤害！`,
+            text: `【${enemyName}】对你造成 ${enemyDamage} 点伤害！`,
             type: 'battle',
             timestamp: Date.now(),
           })
