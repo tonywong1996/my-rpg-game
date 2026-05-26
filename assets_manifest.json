@@ -1,0 +1,513 @@
+{
+  "version": 1,
+  "description": "游戏资源清单 - MiniMax图片与DeepSeek代码的协同契约",
+  "manifestCreated": "2026-05-21T22:17:55+08:00",
+  "lastUpdated": "2026-05-23T00:43:00+08:00",
+  "assets": [
+    {
+      "id": "cover_001",
+      "filename": "char_modern_qipao_001.png",
+      "path": "assets/images/char_modern_qipao_001.png",
+      "type": "image",
+      "status": "GENERATED",
+      "auraDescription": "现代仙侠风格女性角色封面立绘，高开叉旗袍，暴露长腿，细高跟。傲慢藐视姿势（像波雅汉库克），居高临下藐视表情，下巴抬起微微后仰，双手叉腰或胸前交叉。背后悬浮神器法宝，发光飞剑，复杂玉石配饰，神秘能量粒子。长飘发在雄伟风中飘动，可爱灵兔（蓬松兔子坐在浮云上或肩上，发光小角）。黑色图案丝袜。优雅傲慢表情，柔和电影边缘光效，精致刺绣细节。史诗封面插图背景，广阔天空金色云朵和光辉黎明，浮空山剪影。2D插画，空灵宏伟氛围。",
+      "generationPrompt": "(Masterpiece, best quality:1.3), 1girl, solo, (anime style:1.4), (flat color shading:1.2), (cel-shaded:1.2), (vibrant anime colors:1.3), (modern xianxia anime style:1.4), (high-V qipao:1.5), (exposing long legs:1.4), (stiletto high heels:1.2), (boastful contempt pose like Boa Hancock:1.4), (looking down with disdain, chin up, leaning back slightly, hands on hips or crossed under chest), (floating divine treasures behind:1.3), glowing floating swords, intricate jade accessories, mystical energy particles, long flowing hair blowing in majestic wind, (cute spirit rabbit:1.3) (fluffy bunny beside her, sitting on a floating cloud or on her shoulder, glowing tiny horns), (sheer black patterned stockings:1.3), (elegant yet arrogant expression:1.2), sharp focus on face, (soft cinematic rim lighting:1.2), (ornate embroidery details:1.1), (epic cover illustration background:1.3), (vast sky with golden clouds and radiant dawn light), floating mountain silhouettes, clean lines, professional digital illustration, complex textures, ethereal and majestic atmosphere, (2D illustration:1.2)",
+      "codeBinding": {
+        "component": "GameCover",
+        "file": "src/components/GameCover.tsx",
+        "usage": "游戏封面立绘/主界面背景"
+      },
+      "colorPalette": [
+        "#ffffff",
+        "#1a1a2e",
+        "#4a3a6e",
+        "#ffd700",
+        "#c8b8d8",
+        "#2a1a4e"
+      ],
+      "mood": "傲慢、性感、霸气、仙侠、时尚、威严",
+      "specifications": {
+        "resolution": "512x768",
+        "aspectRatio": "3:4",
+        "style": "现代仙侠旗袍风格",
+        "format": "png"
+      },
+      "createdAt": "2026-05-22",
+      "tags": ["封面", "主界面", "角色", "女性", "现代", "仙侠", "旗袍", "傲慢", "霸气"]
+    },
+    {
+      "id": "char_thunder_muscle_001",
+      "filename": "thunder_muscle_cultivator.png",
+      "path": "https://hailuo-image-algeng-data.oss-cn-wulanchabu.aliyuncs.com/image_inference_output%2Ftalkie%2Fprod%2Fimg%2F2026-05-22%2F18d631ff-c0af-40da-833c-ff85fd73a2c8_aigc.jpeg",
+      "type": "image",
+      "status": "GENERATED",
+      "auraDescription": "魁梧霸气的男性修仙者，雷灵根体修。深蓝色刺猬头短发夹杂白色雷痕，金色瞳孔呈闪电状，肌肉发达，古铜色皮肤。身穿无袖深紫色战袍，金色雷霆纹路，皮质护腕，残破披风。双手挥舞一把巨大的黑铁战斧，斧刃上跃动着紫罗兰色电弧。战斗姿态：前冲下劈，头顶凝聚雷云，一道粗壮雷电通过斧头劈下，紫白光闪烁。击中效果：爆发圆形电击冲击波，地面留下闪电灼痕。透明背景，游戏立绘风格，高清，方形构图。",
+      "generationPrompt": "A powerful male cultivator, muscular body cultivator with thunder spiritual root. Deep blue spiky short hair with white lightning streaks, golden eyes shaped like lightning bolts, muscular physique, bronze skin tone. Wearing sleeveless deep purple battle robe with golden thunder patterns, leather wrist guards, tattered cape. Wielding a massive black iron battle axe with violet lightning arcs dancing on the blade. Combat pose: lunging forward with downward slash, dark thunder clouds gathering above head, a thick lightning bolt striking through the axe, purple and white light flashing. Impact effect: circular electric shock wave, lightning scorched marks on ground. Transparent background, game character artwork style, high definition, square composition, epic dramatic lighting, highly detailed",
+      "codeBinding": {
+        "component": "ThunderMuscleCultivator",
+        "file": "src/components/ThunderMuscleCultivator.tsx",
+        "usage": "雷灵根体修男性角色立绘/战斗特效"
+      },
+      "colorPalette": [
+        "#1a1a3e",
+        "#4a2a8a",
+        "#ffd700",
+        "#8a4ac8",
+        "#d4a0ff",
+        "#2a1a5e",
+        "#ffd700"
+      ],
+      "mood": "霸气、雷霆、战斗、力量、仙侠、雷系",
+      "specifications": {
+        "resolution": "512x512 或更高",
+        "aspectRatio": "1:1",
+        "style": "游戏原画/高清立绘",
+        "format": "png",
+        "background": "透明"
+      },
+      "createdAt": "2026-05-22",
+      "tags": ["角色", "男性", "雷灵根", "体修", "战士", "战斧", "战斗", "仙侠", "高清立绘"]
+    },
+    {
+      "id": "char_xianxia_female_001",
+      "filename": "xianxia_female_sword.png",
+      "path": "https://hailuo-image-algeng-data.oss-cn-wulanchabu.aliyuncs.com/image_inference_output%2Ftalkie%2Fprod%2Fimg%2F2026-05-22%2Fab30cb7f-d76e-4d31-b91d-f4bc4d86bdff_aigc.jpeg",
+      "type": "image",
+      "status": "GENERATED",
+      "auraDescription": "绝美的中国古风修仙女子，白色丝绸长裙云纹刺绣，青丝如瀑用玉簪束起，丹凤眼含霜，肤若凝脂。手持一柄发光的白玉剑，剑身缠绕青色灵雾。背景是云雾缭绕的仙山，漫天飞舞的花瓣。战斗姿态轻盈飘逸，白色披风随风飘动，周身环绕剑气和灵光。高清，游戏立绘风格，方形构图。",
+      "generationPrompt": "绝美的中国古风修仙女子，白色丝绸长裙，云纹刺绣，青丝如瀑用玉簪束起，丹凤眼含霜，肤若凝脂。手持一柄发光的白玉剑，剑身缠绕青色灵雾。背景是云雾缭绕的仙山，漫天飞舞的花瓣。战斗姿态轻盈飘逸，白色披风随风飘动，周身环绕剑气和灵光。高清，游戏立绘风格，方形构图，Chinese xianxia style, epic fantasy, highly detailed, dramatic lighting, ethereal atmosphere",
+      "codeBinding": {
+        "component": "XianxiaFemaleSword",
+        "file": "src/components/XianxiaFemaleSword.tsx",
+        "usage": "中式修仙女性剑修角色立绘"
+      },
+      "colorPalette": [
+        "#ffffff",
+        "#f5f0c4",
+        "#a8e0f0",
+        "#e8f4f8",
+        "#ffd700",
+        "#a0c0d0",
+        "#f0f8ff"
+      ],
+      "mood": "仙姿、飘逸、高雅、战斗、仙侠、中式",
+      "specifications": {
+        "resolution": "512x512 或更高",
+        "aspectRatio": "1:1",
+        "style": "游戏原画/高清立绘",
+        "format": "png",
+        "background": "透明"
+      },
+      "createdAt": "2026-05-22",
+      "tags": ["角色", "女性", "剑修", "仙侠", "中式", "古风", "战斗", "高清立绘"]
+    },
+    {
+      "id": "char_azurlane_sword_001",
+      "filename": "char_azurlane_sword_001.png",
+      "path": "assets/images/char_azurlane_sword_001.png",
+      "type": "image",
+      "status": "GENERATED",
+      "auraDescription": "Azur Lane风格少女剑修，银色短发扎发髻带指南针发簪，翡翠绿眼睛，表情得意。上半身白色改良道袍（水手服融合），立领金色符文刺绣，宽大半透明袖口被灵气臂环收紧。下半身黑色高腰百褶裙带流动浅蓝色阵法图案，白色过膝靴带飞剑鞋跟。背后6-8把小飞剑呈扇形排列，脚踩透明冰晶巨剑。动作：左手捏剑诀，右手持一束符咒（像发射鱼雷）。蓝白色调，明亮动漫美学，赛璐璐柔和渐变，发光发丝，半透明面料，动态飞行姿势，灵风效果，青色剑气流轨迹，落花。",
+      "generationPrompt": "Azur Lane official art style, bright anime aesthetic, soft cel shading, glowing elemental effects (sword aura / lightning / talisman light), translucent fabric and hair highlights, intricate weapon/gear as spiritual artifacts, minimalistic background with elemental particles, masterfully detailed, vibrant contrast, 1girl, solo, youthful face, silver short hair, side bun with compass hairpin, emerald green eyes, smug expression, upper body: white modified Daoist robe (sailor uniform fusion), stand-up collar with gold rune embroidery, wide translucent sleeves tightened by spiritual energy arm cuffs, lower body: black high-waist pleated skirt with flowing light blue formation pattern, white over-knee boots with small flying sword heels, floating sword array: 6-8 miniature floating swords behind her in fan shape, transparent ice crystal greatsword under her feet, action: left hand forming sword mudra, right hand holding a bundle of talismans (like throwing torpedoes), style: Azur Lane official art style, cel-shading with soft gradients, luminous hair strands, translucent fabric over skin, dynamic flying pose, spiritual wind effect, cyan sword aura trails, falling flower petals, high detail, intricate weapon design, shiny metal textures, (masterpiece:1.2), best quality, 8k, vibrant lighting, (blue-white color scheme:1.1)",
+      "codeBinding": {
+        "component": "CharacterPortrait",
+        "file": "src/components/CharacterPortrait.tsx",
+        "usage": "角色选择界面的男女角色立绘（男女均使用此资源）"
+      },
+      "colorPalette": [
+        "#ffffff",
+        "#1a4a6e",
+        "#4a8ab8",
+        "#c8e8f8",
+        "#ffd700",
+        "#2a5a8e"
+      ],
+      "mood": "战斗、青春、得意、仙侠、剑修、飞行",
+      "specifications": {
+        "resolution": "512x768",
+        "aspectRatio": "3:4",
+        "style": "Azur Lane动漫风格",
+        "format": "png"
+      },
+      "createdAt": "2026-05-22",
+      "tags": ["角色", "女性", "Azur Lane", "剑修", "道袍", "水手服", "战斗", "飞行", "角色选择"]
+    },
+    {
+      "id": "char_azurlane_thunder_001",
+      "filename": "char_azurlane_thunder_001.png",
+      "path": "assets/images/char_azurlane_thunder_001.png",
+      "type": "image",
+      "status": "GENERATED",
+      "auraDescription": "Azur Lane风格男性雷修，深紫色长发高马尾，发光紫罗兰色眼睛带闪电符文，表情严肃无畏。上半身黑色紧身灵衣底色，深紫色军装风格道袍带金色雷霆纹路，不对称衣摆，胸部雷宗门派徽章。下半身黑色作战裤，暗色皮带挂符咒袋，黑色靴子带紫色闪电环。背后巨大缓慢旋转的八卦机械盘（金属+符文），双手各持两张巨大紫金符咒。动作：双臂交叉，符咒间电弧噼啪作响，雷气环绕。紫黑色调，戏剧性光影，闪电粒子效果，浮空碎片，风暴云背景，焦黑阵法痕迹地面。",
+      "generationPrompt": "Azur Lane official art style, cel-shading with dramatic lighting, sharp shadows, lightning particle effects, floating debris, storm cloud background, ground with scorched formation marks, high detail, metallic sheen on disk, glowing runes, 1boy, solo, mature young adult, sharp jawline, deep purple long hair, high ponytail, glowing violet eyes with lightning runes, fearless serious expression, upper body: black form-fitting spiritual suit base, dark purple military-style Daoist trench coat with golden thunder patterns, asymmetric coat tails, thunder sect badge on chest, lower body: black combat pants, dark leather belts with talisman pouches, black boots with purple lightning rings, floating formation: giant slowly rotating Bagua mechanical disk (metal + runes) behind him, two huge purple-gold talismans in each hand, action: arms crossed, talismans crackling with electric arcs between palms, thunder aura erupting around, (masterpiece:1.2), best quality, 8k, (purple-black color scheme:1.1), imposing presence",
+      "codeBinding": {
+        "component": "CharacterPortrait",
+        "file": "src/components/CharacterPortrait.tsx",
+        "usage": "男性角色头像/立绘"
+      },
+      "colorPalette": [
+        "#2a1a4e",
+        "#4a2a8e",
+        "#ffd700",
+        "#8a4ac8",
+        "#1a0a2e",
+        "#d4a0ff"
+      ],
+      "mood": "霸气、雷霆、严肃、威压、仙侠、雷系",
+      "specifications": {
+        "resolution": "512x768",
+        "aspectRatio": "3:4",
+        "style": "Azur Lane动漫风格",
+        "format": "png"
+      },
+      "createdAt": "2026-05-22",
+      "tags": ["角色", "男性", "Azur Lane", "雷修", "道袍", "战斗", "威压"]
+    },
+    {
+      "id": "char_askzyu_sword_001",
+      "filename": "char_askzyu_sword_001.png",
+      "path": "assets/images/char_askzyu_sword_001.png",
+      "type": "image",
+      "status": "GENERATED",
+      "auraDescription": "年轻女性剑修，银色短发扎发髻带指南针发簪，翡翠绿眼睛，表情得意。白色改良道袍，立领金色符文刺绣，黑色高腰百褶裙带浅蓝色阵法图案，白色过膝靴带飞剑鞋跟。脚下悬浮透明冰晶巨剑，背后6-8把小飞剑呈扇形排列。左手捏剑诀，右手持发光符咒。动态姿势，衣袖被灵风吹动，青色剑气流轨迹环绕，落花飞舞。背景是日出时分雾气缭绕的山峰。Askzyu风格，赛璐璐动漫艺术，清晰线条，发光发丝和面料，鲜艳色彩。",
+      "generationPrompt": "A young female sword cultivator, silver short hair with a side bun and compass hairpin, emerald green eyes, smug expression, wearing a white modified Daoist robe with a stand-up collar and gold rune embroidery, a black high-waist pleated skirt with flowing light blue formation patterns, white over-knee boots with small flying sword heels, a transparent ice crystal greatsword floating under her feet, 6-8 miniature flying swords forming a fan shape behind her, left hand forming a sword mudra, right hand holding glowing talismans, dynamic pose with her skirt and sleeves blown by spiritual wind, surrounded by cyan sword energy trails and falling flower petals. Background is a misty mountain peak at sunrise. Style: Askzyu's style, cel-shaded anime art, clean lineart, luminous hair and fabric highlights, vibrant colors. 8K, ultra-detailed",
+      "codeBinding": {
+        "component": "CharacterPortrait",
+        "file": "src/components/CharacterPortrait.tsx",
+        "usage": "女性角色头像/立绘"
+      },
+      "colorPalette": [
+        "#ffffff",
+        "#1a4a6e",
+        "#4a8ab8",
+        "#c8e8f8",
+        "#ffd700",
+        "#2a5a8e"
+      ],
+      "mood": "战斗、青春、得意、仙侠、剑修、飘逸",
+      "specifications": {
+        "resolution": "512x768",
+        "aspectRatio": "3:4",
+        "style": "Askzyu动漫风格",
+        "format": "png"
+      },
+      "createdAt": "2026-05-22",
+      "tags": ["角色", "女性", "Askzyu", "剑修", "道袍", "战斗", "飘逸"]
+    },
+    {
+      "id": "char_modern_xianxia_001",
+      "filename": "char_modern_xianxia_001.png",
+      "path": "assets/images/char_modern_xianxia_001.png",
+      "type": "image",
+      "status": "GENERATED",
+      "auraDescription": "现代仙侠风格女性角色，极高开叉改良汉服，吊带袜，细高跟。背后悬浮神器法宝，发光飞剑，复杂玉石配饰，神秘能量粒子。长飘发，优雅自信表情，面部锐利焦点，柔和电影边缘光效，精致刺绣细节。白色背景，干净线条，高分辨率，专业数字绘画，复杂纹理，空灵氛围。",
+      "generationPrompt": "(Masterpiece, best quality:1.3), 1girl, solo, (modern xianxia anime style:1.4), (extremely high slit modified hanfu:1.4), (tube top:1.3), (sheer black patterned stockings:1.3), (stiletto high heels:1.2), (floating divine treasures behind:1.3), glowing floating swords, intricate jade accessories, mystical energy particles, long flowing hair, elegant and confident expression, sharp focus on face, (soft cinematic rim lighting:1.2), (ornate embroidery details:1.1), white background, clean lines, high-resolution, professional digital illustration, complex textures, ethereal atmosphere",
+      "codeBinding": {
+        "component": "CharacterPortrait",
+        "file": "src/components/CharacterPortrait.tsx",
+        "usage": "女性角色头像/立绘"
+      },
+      "colorPalette": [
+        "#ffffff",
+        "#1a1a2e",
+        "#4a3a6e",
+        "#c8b8d8",
+        "#ffd700",
+        "#2a1a4e"
+      ],
+      "mood": "优雅、性感、仙侠、时尚、精致、空灵",
+      "specifications": {
+        "resolution": "512x768",
+        "aspectRatio": "3:4",
+        "style": "现代仙侠动漫风格",
+        "format": "png"
+      },
+      "createdAt": "2026-05-22",
+      "tags": ["角色", "女性", "现代", "仙侠", "汉服", "时尚", "精致"]
+    },
+    {
+      "id": "char_modern_xianxia_v2_001",
+      "filename": "char_modern_xianxia_v2_001.png",
+      "path": "assets/images/char_modern_xianxia_v2_001.png",
+      "type": "image",
+      "status": "GENERATED",
+      "auraDescription": "现代仙侠风格女性角色，平涂色彩，赛璐璐风格，鲜艳动漫色彩。极高开叉改良汉服，吊带袜，细高跟。背后悬浮神器法宝，发光飞剑，复杂玉石配饰，神秘能量粒子。长飘发，优雅自信表情，柔和电影边缘光效，精致刺绣细节。白色背景，干净线条，矢量艺术风格，2D插画，空灵氛围。",
+      "generationPrompt": "(Masterpiece, best quality:1.3), 1girl, solo, (anime style:1.4), (flat color shading:1.2), (cel-shaded:1.2), (vibrant anime colors:1.3), (modern xianxia anime style:1.4), (extremely high slit modified hanfu:1.4), (tube top:1.3), (sheer black patterned stockings:1.3), (stiletto high heels:1.2), (floating divine treasures behind:1.3), glowing floating swords, intricate jade accessories, mystical energy particles, long flowing hair, elegant and confident expression, sharp focus on face, (soft cinematic rim lighting:1.2), (ornate embroidery details:1.1), white background, clean lines, professional digital illustration, complex textures, ethereal atmosphere, (vector art style:1.1), (2D illustration:1.2)",
+      "codeBinding": {
+        "component": "CharacterPortrait",
+        "file": "src/components/CharacterPortrait.tsx",
+        "usage": "女性角色头像/立绘"
+      },
+      "colorPalette": [
+        "#ffffff",
+        "#1a1a2e",
+        "#4a3a6e",
+        "#c8b8d8",
+        "#ffd700",
+        "#2a1a4e"
+      ],
+      "mood": "优雅、性感、仙侠、时尚、精致、矢量",
+      "specifications": {
+        "resolution": "512x768",
+        "aspectRatio": "3:4",
+        "style": "矢量2D仙侠风格",
+        "format": "png"
+      },
+      "createdAt": "2026-05-22",
+      "tags": ["角色", "女性", "现代", "仙侠", "汉服", "矢量", "2D"]
+    },
+    {
+      "id": "skill_basic_attack",
+      "filename": "skill_basic_attack.png",
+      "path": "assets/images/skills/skill_basic_attack.png",
+      "type": "image",
+      "status": "GENERATED",
+      "auraDescription": "基础剑气攻击特效 - 一道弧形金色剑气飞斩，带有白色光芒拖尾和细微粒子效果。透明背景，适合叠加在战斗场景上。",
+      "codeBinding": {
+        "component": "SkillEffectOverlay",
+        "file": "src/components/SkillEffectOverlay.tsx",
+        "usage": "战斗场景中基础攻击技能的特效图片"
+      },
+      "createdAt": "2026-05-23",
+      "tags": ["技能特效", "剑气", "基础攻击", "金色"]
+    },
+    {
+      "id": "skill_sweeping_sword",
+      "filename": "skill_sweeping_sword.png",
+      "path": "assets/images/skills/skill_sweeping_sword.png",
+      "type": "image",
+      "status": "GENERATED",
+      "auraDescription": "横扫千军技能特效 - 巨大的扇形风刃斩击效果，青绿色剑光如月弧横扫，带有螺旋气流粒子。透明背景。",
+      "codeBinding": {
+        "component": "SkillEffectOverlay",
+        "file": "src/components/SkillEffectOverlay.tsx",
+        "usage": "战斗场景中横扫千军技能的特效图片"
+      },
+      "createdAt": "2026-05-23",
+      "tags": ["技能特效", "扇形", "风刃", "横扫", "青绿色"]
+    },
+    {
+      "id": "skill_sword_rain",
+      "filename": "skill_sword_rain.png",
+      "path": "assets/images/skills/skill_sword_rain.png",
+      "type": "image",
+      "status": "GENERATED",
+      "auraDescription": "剑雨技能特效 - 无数道细小剑气如雨般从天而降，蓝色白色光芒交织，覆盖大范围区域。透明背景。",
+      "codeBinding": {
+        "component": "SkillEffectOverlay",
+        "file": "src/components/SkillEffectOverlay.tsx",
+        "usage": "战斗场景中剑雨技能的特效图片"
+      },
+      "createdAt": "2026-05-23",
+      "tags": ["技能特效", "剑雨", "范围攻击", "蓝白", "从天而降"]
+    },
+    {
+      "id": "skill_heal_spell",
+      "filename": "skill_heal_spell.png",
+      "path": "assets/images/skills/skill_heal_spell.png",
+      "type": "image",
+      "status": "GENERATED",
+      "auraDescription": "治愈术技能特效 - 翠绿色的生命能量光球，向外散发柔和光芒和飘落的绿叶粒子。透明背景。",
+      "codeBinding": {
+        "component": "SkillEffectOverlay",
+        "file": "src/components/SkillEffectOverlay.tsx",
+        "usage": "战斗场景中治愈术技能的特效图片"
+      },
+      "createdAt": "2026-05-23",
+      "tags": ["技能特效", "治疗", "治愈", "绿色", "生命"]
+    },
+    {
+      "id": "skill_ice_spell",
+      "filename": "skill_ice_spell.png",
+      "path": "assets/images/skills/skill_ice_spell.png",
+      "type": "image",
+      "status": "GENERATED",
+      "auraDescription": "寒冰术技能特效 - 尖锐的冰蓝色冰锥向前飞刺，带有冰晶碎片和寒冷雾气拖尾。透明背景。",
+      "codeBinding": {
+        "component": "SkillEffectOverlay",
+        "file": "src/components/SkillEffectOverlay.tsx",
+        "usage": "战斗场景中寒冰术技能的特效图片"
+      },
+      "createdAt": "2026-05-23",
+      "tags": ["技能特效", "冰系", "寒冰", "冰蓝色", "冰锥"]
+    },
+    {
+      "id": "skill_fire_spell",
+      "filename": "skill_fire_spell.png",
+      "path": "assets/images/skills/skill_fire_spell.png",
+      "type": "image",
+      "status": "GENERATED",
+      "auraDescription": "火焰术技能特效 - 炽热的橙色红色火焰球爆裂，火焰旋涡向外扩散，带有火星和烟尘粒子。透明背景。",
+      "codeBinding": {
+        "component": "SkillEffectOverlay",
+        "file": "src/components/SkillEffectOverlay.tsx",
+        "usage": "战斗场景中火焰术技能的特效图片"
+      },
+      "createdAt": "2026-05-23",
+      "tags": ["技能特效", "火系", "火焰", "橙红色", "爆裂"]
+    },
+    {
+      "id": "skill_body_refine",
+      "filename": "skill_body_refine.png",
+      "path": "assets/images/skills/skill_body_refine.png",
+      "type": "image",
+      "status": "GENERATED",
+      "auraDescription": "炼体术技能特效 - 古铜色光芒从身体向外爆发，肌肉线条光纹浮现，金色粒子环绕如肉身成圣。透明背景。",
+      "codeBinding": {
+        "component": "SkillEffectOverlay",
+        "file": "src/components/SkillEffectOverlay.tsx",
+        "usage": "战斗场景中炼体术技能的特效图片"
+      },
+      "createdAt": "2026-05-23",
+      "tags": ["技能特效", "炼体", "防御", "古铜", "金光"]
+    },
+    {
+      "id": "skill_mind_cultivate",
+      "filename": "skill_mind_cultivate.png",
+      "path": "assets/images/skills/skill_mind_cultivate.png",
+      "type": "image",
+      "status": "GENERATED",
+      "auraDescription": "养神术技能特效 - 淡紫色精神能量波纹向外扩散，中心有发光的符文阵旋转，灵性光点升腾。透明背景。",
+      "codeBinding": {
+        "component": "SkillEffectOverlay",
+        "file": "src/components/SkillEffectOverlay.tsx",
+        "usage": "战斗场景中养神术技能的特效图片"
+      },
+      "createdAt": "2026-05-23",
+      "tags": ["技能特效", "养神", "精神", "紫色", "波纹"]
+    },
+    {
+      "id": "skill_sword_mind",
+      "filename": "skill_sword_mind.png",
+      "path": "assets/images/skills/skill_sword_mind.png",
+      "type": "image",
+      "status": "GENERATED",
+      "auraDescription": "剑心通明技能特效 - 金色剑魂虚影升空，形成巨大剑气领域，无数剑意符文环绕，耀眼金光。透明背景。",
+      "codeBinding": {
+        "component": "SkillEffectOverlay",
+        "file": "src/components/SkillEffectOverlay.tsx",
+        "usage": "战斗场景中剑心通明技能的特效图片"
+      },
+      "createdAt": "2026-05-23",
+      "tags": ["技能特效", "剑心", "金色", "剑魂", "领域"]
+    },
+    {
+      "id": "skill_thunder_sword",
+      "filename": "skill_thunder_sword.png",
+      "path": "assets/images/skills/skill_thunder_sword.png",
+      "type": "image",
+      "status": "GENERATED",
+      "auraDescription": "雷霆剑技能特效 - 紫白色闪电环绕剑身劈下，狂暴雷蛇四散，伴有强烈闪光和电弧爆裂。透明背景。",
+      "codeBinding": {
+        "component": "SkillEffectOverlay",
+        "file": "src/components/SkillEffectOverlay.tsx",
+        "usage": "战斗场景中雷霆剑技能的特效图片"
+      },
+      "createdAt": "2026-05-23",
+      "tags": ["技能特效", "雷系", "闪电", "紫白色", "爆裂"]
+    },
+    {
+      "id": "skill_phoenix_fire",
+      "filename": "skill_phoenix_fire.png",
+      "path": "assets/images/skills/skill_phoenix_fire.png",
+      "type": "image",
+      "status": "GENERATED",
+      "auraDescription": "凤凰火技能特效 - 火焰凤凰形状的毁灭性能量向前冲击，红金色火焰翅膀展开，尾羽拖出烈焰轨迹。透明背景。",
+      "codeBinding": {
+        "component": "SkillEffectOverlay",
+        "file": "src/components/SkillEffectOverlay.tsx",
+        "usage": "战斗场景中凤凰火技能的特效图片"
+      },
+      "createdAt": "2026-05-23",
+      "tags": ["技能特效", "凤凰", "火焰", "红金", "冲击"]
+    },
+    {
+      "id": "skill_moon_heal",
+      "filename": "skill_moon_heal.png",
+      "path": "assets/images/skills/skill_moon_heal.png",
+      "type": "image",
+      "status": "GENERATED",
+      "auraDescription": "月光疗术技能特效 - 柔和的银白色月光从天而降，形成治愈光柱，月华如水波般扩散，银色光点飘落。透明背景。",
+      "codeBinding": {
+        "component": "SkillEffectOverlay",
+        "file": "src/components/SkillEffectOverlay.tsx",
+        "usage": "战斗场景中月光疗术技能的特效图片"
+      },
+      "createdAt": "2026-05-23",
+      "tags": ["技能特效", "治疗", "月光", "银白", "光柱"]
+    },
+    {
+      "id": "skill_shadow_step",
+      "filename": "skill_shadow_step.png",
+      "path": "assets/images/skills/skill_shadow_step.png",
+      "type": "image",
+      "status": "GENERATED",
+      "auraDescription": "暗影步技能特效 - 暗紫色烟雾状的传送门开启，扭曲的阴影能量从裂缝中涌出，鬼魅般的暗影触手延伸。透明背景。",
+      "codeBinding": {
+        "component": "SkillEffectOverlay",
+        "file": "src/components/SkillEffectOverlay.tsx",
+        "usage": "战斗场景中暗影步技能的特效图片"
+      },
+      "createdAt": "2026-05-23",
+      "tags": ["技能特效", "暗影", "紫色", "传送", "烟雾"]
+    },
+    {
+      "id": "skill_ice_barrier",
+      "filename": "skill_ice_barrier.png",
+      "path": "assets/images/skills/skill_ice_barrier.png",
+      "type": "image",
+      "status": "GENERATED",
+      "auraDescription": "寒冰屏障技能特效 - 巨大的冰蓝色六边形晶壁竖立，冰霜纹路延伸，表面反射寒光，寒气白雾弥漫。透明背景。",
+      "codeBinding": {
+        "component": "SkillEffectOverlay",
+        "file": "src/components/SkillEffectOverlay.tsx",
+        "usage": "战斗场景中寒冰屏障技能的特效图片"
+      },
+      "createdAt": "2026-05-23",
+      "tags": ["技能特效", "冰系", "屏障", "防御", "冰蓝色"]
+    },
+    {
+      "id": "skill_void_sword",
+      "filename": "skill_void_sword.png",
+      "path": "assets/images/skills/skill_void_sword.png",
+      "type": "image",
+      "status": "GENERATED",
+      "auraDescription": "虚空剑技能特效 - 紫黑色虚空裂缝被剑刃撕开，混沌能量从裂隙中爆发，暗红色和紫色能量交织缠绕。透明背景。",
+      "codeBinding": {
+        "component": "SkillEffectOverlay",
+        "file": "src/components/SkillEffectOverlay.tsx",
+        "usage": "战斗场景中虚空剑技能的特效图片"
+      },
+      "createdAt": "2026-05-23",
+      "tags": ["技能特效", "虚空", "裂隙", "紫黑", "混沌"]
+    }
+  ],
+  "assetSchema": {
+    "id": "资源唯一标识符",
+    "filename": "文件名（含扩展名）",
+    "path": "相对于项目根目录的资源路径",
+    "type": "资源类型：image|audio|font|video|3dmodel",
+    "auraDescription": "【核心字段】气韵描述 - MiniMax图片的灵魂描述，用于保持视觉一致性和与代码的契合",
+    "generationPrompt": "MiniMax生成时的原始提示词备份",
+    "codeBinding": {
+      "component": "对应的React组件名",
+      "file": "组件文件路径",
+      "usage": "在游戏中的具体用途描述"
+    },
+    "colorPalette": "从图片中提取的关键色彩，用于UI一致性",
+    "mood": "图片传达的情绪/氛围关键词",
+    "createdAt": "资源创建日期",
+    "tags": "分类标签数组"
+  },
+  "coordinationRules": {
+    "imageToCode": "MiniMax生成的图片必须记录气韵描述，DeepSeek写代码时必须读取并遵循气韵描述以保持风格一致",
+    "codeToImage": "DeepSeek在编写组件时应在codeBinding字段中声明所需资源的气韵特征，MiniMax按需生成"
+  },
+  "manifestRules": [
+    "1. 每次MiniMax生成图片后，必须更新此文件，填写所有字段",
+    "2. DeepSeek在编写代码引用资源前，必须先查阅此文件获取气韵描述",
+    "3. 气韵描述是强制遵守的契约，不可随意偏离",
+    "4. 图片更新时，必须同步更新气韵描述以保持一致性",
+    "5. 代码重构涉及资源变更时，必须同步更新manifest中的codeBinding"
+  ]
+}

@@ -1,0 +1,64 @@
+import React from 'react'
+import { CharacterId } from '../store/useGameStore'
+import azurlaneSwordImage from '../../assets/images/char_azurlane_sword_001.png'
+import askzyuSwordImage from '../../assets/images/char_askzyu_sword_001.png'
+
+interface CharacterPortraitProps {
+  characterId: CharacterId
+  selected?: boolean
+  onClick?: () => void
+}
+
+/**
+ * 角色头像组件
+ * 根据 characterId 显示对应的角色立绘
+ *
+ * - azurlane_sword: Azur Lane风格少女剑修立绘
+ * - askzyu_sword: Askzyu风格少女剑修立绘
+ */
+export default function CharacterPortrait({ characterId, selected, onClick }: CharacterPortraitProps) {
+  const imageSrc = characterId === 'azurlane_sword' ? azurlaneSwordImage : askzyuSwordImage
+
+  return (
+    <div
+      onClick={onClick}
+      className={`
+        relative w-32 h-32 md:w-40 md:h-40 rounded-xl overflow-hidden cursor-pointer
+        transition-all duration-300 group
+        ${selected 
+          ? 'ring-2 ring-[#3a8ac4] shadow-lg shadow-[#3a8ac4]/30 scale-105' 
+          : 'ring-1 ring-[#16213e] hover:ring-[#3a8ac4]/50 hover:scale-[1.02]'
+        }
+      `}
+    >
+      {/* 角色立绘 */}
+      <img
+        src={imageSrc}
+        alt={characterId === 'azurlane_sword' ? '剑修·无名' : '灵剑士·无名'}
+        className="w-full h-full object-cover"
+        style={{ imageRendering: 'auto' }}
+      />
+
+      {/* 角色名叠加 */}
+      <div className={`
+        absolute bottom-0 left-0 right-0 py-1 px-2 text-center text-[8px] tracking-wider
+        transition-all duration-300
+        ${selected 
+          ? 'bg-[#0d2818]/80 text-[#f5f0c4]' 
+          : 'bg-black/60 text-[#a0a0b0]/70'
+        }
+      `}>
+        {characterId === 'azurlane_sword' ? '剑 修' : '灵 剑 士'}
+      </div>
+
+      {/* 悬停遮罩 */}
+      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300" />
+
+      {/* 选中指示器 */}
+      {selected && (
+        <div className="absolute top-2 right-2 w-3 h-3 bg-[#3a8ac4] rounded-full 
+                        shadow-lg shadow-[#3a8ac4]/50" />
+      )}
+    </div>
+  )
+}

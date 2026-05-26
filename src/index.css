@@ -1,0 +1,552 @@
+@import "tailwindcss";
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.5);
+  }
+}
+
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes flash {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in-out {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+  15% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+  85% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -40%);
+  }
+}
+
+@keyframes battle-idle-player {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes battle-idle-enemy {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(3px);
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ============================
+   技能特效动画
+   ============================ */
+
+/* 技能主闪光 */
+@keyframes skill-flash {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.2);
+  }
+  30% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+  60% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(1.5);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(2);
+  }
+}
+
+/* 技能粒子飞散 */
+@keyframes skill-particle {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) translate(0, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%)
+      translate(
+        calc(cos(var(--angle)) * var(--distance)),
+        calc(sin(var(--angle)) * var(--distance))
+      );
+  }
+}
+
+/* 技能特效图片淡入淡出（带缩放） */
+@keyframes skill-effect-fade {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) rotate(-10deg);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(1.1) rotate(0deg);
+  }
+  40% {
+    transform: scale(0.95) rotate(0deg);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.05) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.3) rotate(5deg);
+  }
+}
+
+/* 技能全屏闪光遮罩 */
+@keyframes skill-flash-overlay {
+  0% {
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* 技能屏幕边缘发光 */
+@keyframes skill-border {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.6;
+  }
+  60% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* 伤害数字上浮 */
+@keyframes float-up {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -60px);
+  }
+}
+
+/* 玩家受击闪白 */
+@keyframes flash-player {
+  0% {
+    background-color: rgba(255, 255, 255, 0);
+  }
+  30% {
+    background-color: rgba(255, 255, 255, 0.4);
+  }
+  100% {
+    background-color: rgba(255, 255, 255, 0);
+  }
+}
+
+/* 敌人受击闪红 */
+@keyframes flash-enemy {
+  0% {
+    background-color: rgba(255, 0, 0, 0);
+  }
+  30% {
+    background-color: rgba(255, 0, 0, 0.4);
+  }
+  100% {
+    background-color: rgba(255, 0, 0, 0);
+  }
+}
+
+/* 敌人被击中快速抖动 */
+@keyframes hit-shake {
+  0% { transform: translateX(0) translateY(3px); }
+  10% { transform: translateX(-8px) translateY(3px); }
+  20% { transform: translateX(8px) translateY(1px); }
+  30% { transform: translateX(-6px) translateY(2px); }
+  40% { transform: translateX(6px) translateY(3px); }
+  50% { transform: translateX(-4px) translateY(2px); }
+  60% { transform: translateX(4px) translateY(2px); }
+  70% { transform: translateX(-2px) translateY(2px); }
+  80% { transform: translateX(2px) translateY(2px); }
+  100% { transform: translateX(0) translateY(3px); }
+}
+
+/* 敌人被击中闪白 */
+@keyframes hit-white-flash {
+  0% {
+    box-shadow: inset 0 0 0px rgba(255,255,255,0);
+    filter: brightness(1);
+  }
+  15% {
+    box-shadow: inset 0 0 80px rgba(255,255,255,0.6);
+    filter: brightness(2);
+  }
+  30% {
+    box-shadow: inset 0 0 40px rgba(255,255,255,0.3);
+    filter: brightness(1.5);
+  }
+  50% {
+    box-shadow: inset 0 0 20px rgba(255,255,255,0.1);
+    filter: brightness(1.2);
+  }
+  100% {
+    box-shadow: inset 0 0 0px rgba(255,255,255,0);
+    filter: brightness(1);
+  }
+}
+
+/* 较小爆炸脉冲（紧贴敌人位置） */
+@keyframes enemy-hit-burst {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.1);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.5);
+  }
+  40% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(2);
+  }
+  70% {
+    opacity: 0.3;
+    transform: translate(-50%, -50%) scale(3);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(4);
+  }
+}
+
+:root {
+  --color-bg-primary: #0f0f1a;
+  --color-bg-secondary: #1a1a2e;
+  --color-bg-tertiary: #16213e;
+  --color-accent: #e94560;
+  --color-accent-secondary: #0f3460;
+  --color-text-primary: #eaeaea;
+  --color-text-secondary: #a0a0b0;
+  --color-gold: #ffd700;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 自定义滚动条 */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 3px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #1a1a3a;
+  border-radius: 3px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #2a2a4a;
+}
+
+/* 动画类 */
+.animate-pulse-slow {
+  animation: pulse-slow 3s ease-in-out infinite;
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.animate-flash {
+  animation: flash 0.3s ease-out;
+}
+
+.animate-fade-in-out {
+  animation: fade-in-out 3s ease-in-out forwards;
+}
+
+.animate-battle-idle-player {
+  animation: battle-idle-player 2s ease-in-out infinite;
+}
+
+.animate-battle-idle-enemy {
+  animation: battle-idle-enemy 2s ease-in-out infinite;
+}
+
+.animate-shake {
+  animation: shake 0.3s ease-in-out;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.25s ease-out;
+}
+
+.animate-float-up {
+  animation: float-up 0.8s ease-out forwards;
+}
+
+.animate-skill-effect-fade {
+  animation: skill-effect-fade 0.8s ease-out forwards;
+}
+
+.animate-skill-flash-overlay {
+  animation: skill-flash-overlay 0.6s ease-out forwards;
+}
+
+/* ============================
+   技能特效 - 攻击飞行动画
+   ============================ */
+
+/* 技能图片从左飞到右 */
+@keyframes skill-fly-attack {
+  0% {
+    left: -20%;
+    top: 30%;
+    transform: translateX(0) scale(0.6) rotate(-15deg);
+    opacity: 0.2;
+  }
+  10% {
+    opacity: 1;
+    transform: translateX(5%) scale(0.8) rotate(-5deg);
+  }
+  40% {
+    top: 28%;
+    transform: translateX(35%) scale(1.0) rotate(0deg);
+    opacity: 1;
+  }
+  70% {
+    top: 32%;
+    transform: translateX(60%) scale(1.1) rotate(5deg);
+    opacity: 0.9;
+  }
+  85% {
+    top: 30%;
+    transform: translateX(75%) scale(1.2) rotate(3deg);
+    opacity: 1;
+  }
+  100% {
+    left: 85%;
+    top: 30%;
+    transform: translateX(0) scale(1.4) rotate(0deg);
+    opacity: 0;
+  }
+}
+
+/* 飞行过程中图像缩放脉冲 */
+@keyframes skill-fly-scale-pulse {
+  0% {
+    transform: scale(0.8);
+    filter: brightness(1.5);
+  }
+  30% {
+    transform: scale(1.1);
+    filter: brightness(1.8);
+  }
+  60% {
+    transform: scale(1.0);
+    filter: brightness(1.2);
+  }
+  100% {
+    transform: scale(0.6);
+    filter: brightness(0.5);
+  }
+}
+
+/* 尾迹发光球的渐隐 */
+@keyframes trail-fade {
+  0% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2.5);
+  }
+}
+
+/* 击中爆炸闪光 */
+@keyframes skill-hit-burst {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  30% {
+    opacity: 0.9;
+    transform: scale(1.2);
+  }
+  60% {
+    opacity: 0.5;
+    transform: scale(1.5);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2);
+  }
+}
+
+/* 攻击技能全屏闪光（比治疗更剧烈） */
+@keyframes skill-flash-overlay-attack {
+  0% {
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  20% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* 治疗技能原地绽放 */
+@keyframes support-bloom {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  35% {
+    transform: scale(0.95);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.3);
+  }
+}
+
+/* 精致自定义滚动条 */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 8px 0;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #3a3a5a, #2a2a4a);
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #4a4a6a, #3a3a5a);
+}
+
+/* 分割线样式 */
+.divider-gradient {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #1a1a3a, transparent);
+}

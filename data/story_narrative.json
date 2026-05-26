@@ -1,0 +1,257 @@
+{
+  "story_config": {
+    "title": "青石村",
+    "setting": "修仙世界",
+    "genre": "仙侠",
+    "total_chapters": 1,
+    "intro_scene": "new_player_arrives"
+  },
+  
+  "characters": [
+    {
+      "id": "npc_elder",
+      "name": "青云子",
+      "title": "青石村长老",
+      "role": "mentor",
+      "age": "数百岁",
+      "appearance": "白发苍苍的老者，面容慈祥，身穿灰色道袍，手持拂尘",
+      "personality": {
+        "traits": ["慈祥", "睿智", "神秘"],
+        "motivations": ["守护村庄", "引导新人", "追求大道"],
+        "flaws": ["有时过于保守", "不愿透露过去"]
+      },
+      "background": "曾是青云宗外门弟子，因资质平庸被逐出宗门，后隐居青石村数百年",
+      "abilities": ["传授功法", "占卜吉凶", "治疗伤病"],
+      "relationship": {
+        "player": "initial_trust",
+        "initial_dialogue": "少年，我观你根骨清奇，乃是可造之材..."
+      }
+    },
+    {
+      "id": "npc_sword_master",
+      "name": "剑无痕",
+      "title": "剑道高手",
+      "role": "combat_mentor",
+      "age": "四十余岁",
+      "appearance": "身材挺拔，面容冷峻，背负长剑，眼神犀利如剑",
+      "personality": {
+        "traits": ["沉默寡言", "追求剑道", "外冷内热"],
+        "motivations": ["寻找传人", "超越自我", "击败最强剑客"],
+        "flaws": ["不善于表达情感", "过于严格"]
+      },
+      "background": "曾是天下第一剑客'天剑'的弟子，后因故隐居村庄",
+      "abilities": ["剑术指导", "实战训练", "剑意感悟"],
+      "relationship": {
+        "player": "neutral",
+        "initial_dialogue": "想学剑？先扎马步三年再说。"
+      }
+    },
+    {
+      "id": "npc_merchant",
+      "name": "金算盘",
+      "title": "万宝阁商人",
+      "role": "merchant",
+      "age": "五十余岁",
+      "appearance": "身材肥胖，圆脸笑咪咪，手持算盘，衣着华丽",
+      "personality": {
+        "traits": ["精明", "贪财", "热情"],
+        "motivations": ["赚取财富", "收集珍宝", "打通人脉"],
+        "flaws": ["见钱眼开", "有时坑人"]
+      },
+      "background": "曾是凡人界最大商行'万宝阁'的外门执事，后因得罪人被陷害，流落修仙界",
+      "abilities": ["买卖物品", "提供情报", "鉴别宝物"],
+      "relationship": {
+        "player": "friendly",
+        "initial_dialogue": "这位小友，看看咱家的货色？保证物美价廉！"
+      }
+    },
+    {
+      "id": "npc_healer",
+      "name": "灵素",
+      "title": "医仙弟子",
+      "role": "healer",
+      "age": "二十余岁",
+      "appearance": "年轻貌美，气质温婉，一袭青衣，身背药篓",
+      "personality": {
+        "traits": ["善良", "温柔", "坚韧"],
+        "motivations": ["救死扶伤", "寻找灵药", "光大医道"],
+        "flaws": ["有时过于软弱", "容易相信他人"]
+      },
+      "background": "医仙谷外门弟子，下山历练时路过青石村，被村民挽留暂住",
+      "abilities": ["治疗伤病", "辨认草药", "炼制丹药"],
+      "relationship": {
+        "player": "friendly",
+        "initial_dialogue": "这位公子/姑娘可是受伤了？让我为你诊治一番。"
+      }
+    },
+    {
+      "id": "npc_mysterious",
+      "name": "黑纱",
+      "title": "神秘女子",
+      "role": "mystery",
+      "age": "不明",
+      "appearance": "全身笼罩在黑色纱衣中看不清面容，声音空灵悦耳",
+      "personality": {
+        "traits": ["神秘", "捉摸不透", "亦正亦邪"],
+        "motivations": ["未知", "似乎在寻找什么"],
+        "flaws": ["身份成谜", "目的不明"]
+      },
+      "background": "来历不明，突然出现在青石村，无人知道她的真实身份",
+      "abilities": ["预知未来", "操控人心", "神秘术法"],
+      "relationship": {
+        "player": "suspicious",
+        "initial_dialogue": "咯咯咯...有趣的年轻人，我们还会再见面的。"
+      }
+    }
+  ],
+
+  "story_scenes": {
+    "new_player_arrives": {
+      "id": "new_player_arrives",
+      "title": "初入青石村",
+      "description": "你是一名初入修仙之门的年轻修士，历经千辛万苦，终于找到了传说中的修仙村落——青石村",
+      "narrative": "你沿着崎岖的山路前行，终于在夕阳西下时看到了炊烟袅袅的青石村。村口站着一位白发苍苍的老者，正笑眯眯地看着你...",
+      "choices": [
+        {
+          "id": "choice_1",
+          "text": "上前恭敬行礼",
+          "effects": {
+            "青云子_好感度": 10,
+            "修仙知识": 5
+          },
+          "next_scene": "meet_elder_respectful"
+        },
+        {
+          "id": "choice_2", 
+          "text": "直接询问村长在哪",
+          "effects": {
+            "青云子_好感度": -5,
+            "独立度": 5
+          },
+          "next_scene": "meet_elder_impatient"
+        },
+        {
+          "id": "choice_3",
+          "text": "观察村子四周",
+          "effects": {
+            "洞察力": 10,
+            "青云子_好感度": 5
+          },
+          "next_scene": "meet_elder_observant"
+        }
+      ]
+    },
+    "meet_elder_respectful": {
+      "id": "meet_elder_respectful",
+      "title": "恭敬求教",
+      "description": "你对老者恭敬行礼，展现出良好的修仙者素养",
+      "narrative": "青云子微微点头，眼中闪过一丝赞许：\"不错，现在懂礼数的年轻人不多了。我是青石村的长老青云子，看你风尘仆仆，定是长途跋涉而来吧？\"",
+      "choices": [
+        {
+          "id": "choice_1",
+          "text": "是的，我是来求仙问道的",
+          "effects": { "青云子_好感度": 5, "修仙目标": "明确" },
+          "next_scene": "elder_explain_path"
+        },
+        {
+          "id": "choice_2",
+          "text": "请问这是什么地方？",
+          "effects": { "青云子_好感度": 5, "修仙知识": 5 },
+          "next_scene": "elder_explain_village"
+        }
+      ]
+    },
+    "meet_elder_impatient": {
+      "id": "meet_elder_impatient",
+      "title": "直接询问",
+      "description": "你急于找到落脚之处，语气有些急切",
+      "narrative": "青云子眉头微皱，但很快恢复平静：\"年轻人不要如此急躁。这青石村可是修仙界难得的净土，不是谁都能进来的。\"",
+      "choices": [
+        {
+          "id": "choice_1",
+          "text": "抱歉，我太心急了",
+          "effects": { "青云子_好感度": 5, "心性": -5 },
+          "next_scene": "elder_accept_apology"
+        },
+        {
+          "id": "choice_2",
+          "text": "我只是找个地方休息",
+          "effects": { "青云子_好感度": -10 },
+          "next_scene": "elder_cold_shoulder"
+        }
+      ]
+    },
+    "meet_elder_observant": {
+      "id": "meet_elder_observant",
+      "title": "细心观察",
+      "description": "你注意到村口的老者气度不凡，决定先观察一番",
+      "narrative": "你仔细打量着村子，发现这里看似普通，却隐隐有灵气流转。再看那老者，竟看不透其修为深浅。",
+      "choices": [
+        {
+          "id": "choice_1",
+          "text": "上前请教修仙之道",
+          "effects": { "青云子_好感度": 15, "领悟力": 5 },
+          "next_scene": "elder_impressed"
+        }
+      ]
+    }
+  },
+
+  "player_stats": {
+    "cultivation_base": 100,
+    "attributes": [
+      { "id": "strength", "name": "力量", "description": "影响物理攻击威力" },
+      { "id": "intelligence", "name": "智力", "description": "影响法术威力" },
+      { "id": "perception", "name": "洞察", "description": "影响发现隐藏线索" },
+      { "id": "charisma", "name": "魅力", "description": "影响NPC对话" },
+      { "id": "composure", "name": "定力", "description": "影响面对诱惑/威胁" }
+    ]
+  },
+
+  "relationship_system": {
+    "levels": [
+      { "name": "敌对", "min": -100, "max": -50 },
+      { "name": "冷淡", "min": -50, "max": 0 },
+      { "name": "陌生", "min": 0, "max": 20 },
+      { "name": "友善", "min": 20, "max": 50 },
+      { "name": "信任", "min": 50, "max": 80 },
+      { "name": "亲密", "min": 80, "max": 100 }
+    ],
+    "effects": {
+      "青云子": {
+        "trust_50": "会传授更高级的功法",
+        "trust_80": "会告诉你他的过去和秘密"
+      },
+      "剑无痕": {
+        "trust_50": "愿意与你比剑指点",
+        "trust_80": "会传授天剑流的剑意"
+      },
+      "金算盘": {
+        "trust_50": "会给你VIP折扣",
+        "trust_80": "会告诉你珍宝库的位置"
+      }
+    }
+  },
+
+  "ai_prompt_template": "你是一个仙侠RPG游戏的叙事AI。\n\n当前场景：{scene_id}\n场景标题：{scene_title}\n场景描述：{scene_description}\n\n玩家状态：\n- 修为：{cultivation}\n- 好感度：{relationships}\n- 属性：{attributes}\n\n对话角色：{npc_name}\n角色性格：{npc_personality}\n角色背景：{npc_background}\n\n请根据以上信息生成故事叙述（100-200字）和3个选项。\n\n要求：\n1. 故事要有仙侠氛围，文笔优美\n2. 选项要体现角色性格和玩家选择的后果\n3. 选项要有明确的RPG属性影响\n4. 保持故事的连贯性和深度",
+  
+  "gameplay_mechanics": {
+    "dialogue_system": {
+      "enable": true,
+      "ai_generated_options": true,
+      "default_options_count": 3,
+      "context_window": 5
+    },
+    "choice_effects": {
+      "attribute_boosts": true,
+      "relationship_changes": true,
+      "story_branching": true,
+      "skill_unlocks": true
+    },
+    "npc_interaction": {
+      "daily_conversations": true,
+      "gift_system": true,
+      "quest_availability": "relationship_based"
+    }
+  }
+}
