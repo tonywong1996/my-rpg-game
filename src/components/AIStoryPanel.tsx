@@ -37,6 +37,41 @@ const detectAggressiveInput = (input: string): { isAggressive: boolean, enemyNam
   return { isAggressive: false }
 }
 
+// 从玩家选择的文本中分析敌人数量
+const analyzeEnemyCount = (choiceText: string, narrative: string): number => {
+  const text = choiceText + ' ' + narrative
+  
+  // 检测多人战斗关键词
+  const multiKeywords = [
+    '一起上', '一起', '你们', '所有人', '群殴', '多打一', 
+    '一齐', '并肩', '联手', '围攻', '车轮战'
+  ]
+  
+  // 检测具体数字
+  const numberMatch = text.match(/(\d+)\s*(?:个人|位|名|人)/)
+  if (numberMatch) {
+    const num = parseInt(numberMatch[1])
+    if (num >= 1 && num <= 6) return num
+  }
+  
+  // 检测"你们"类词句 - 至少2人
+  for (const keyword of multiKeywords) {
+    if (text.includes(keyword)) {
+      // 尝试找到具体数字
+      const specificMatch = text.match(/(\d+)/)
+      if (specificMatch) {
+        const num = parseInt(specificMatch[1])
+        return Math.min(Math.max(num, 2), 6)
+      }
+      // 默认返回3人
+      return 3
+    }
+  }
+  
+  // 默认单人或两人
+  return 1
+}
+
 export default function AIStoryPanel({ onBack }: AIStoryPanelProps) {
   const store = useGameStore()
   
@@ -57,6 +92,12 @@ export default function AIStoryPanel({ onBack }: AIStoryPanelProps) {
   
   // 解析选项中的战斗标记
   const [parsedChoices, setParsedChoices] = useState<ExtendedChoice[]>([])
+  
+  // 当前故事中的敌人信息
+  const [currentEnemyInfo, setCurrentEnemyInfo] = useState<{
+    name: string
+    count: number
+  } | null>(null)
 
   // 使用store中的历史，或者初始化为空
   const [history, setHistory] = useState<{role: string, content: string}[]>(() => {
@@ -90,11 +131,34 @@ export default function AIStoryPanel({ onBack }: AIStoryPanelProps) {
 
   // 初始化游戏 - 只在首次进入且未初始化时调用
   useEffect(() => {
+    const fromBattle = sessionStorage.getItem('fromBattle') === 'true'
+    
     if (!store.aiStoryInitialized) {
       // 首次进入，调用AI生成初始故事
       initialize().then(() => {
         // 标记为已初始化并保存到store
         useGameStore.setState({ aiStoryInitialized: true })
+      })
+    } else if (fromBattle) {
+      // 从战斗返回，继续故事 - 告诉AI战斗结束了
+      sessionStorage.removeItem('fromBattle')
+      // 清空旧的历史（保留之前的对话，只添加战斗结果）
+      setHistory(prev => {
+        const newHistory = [
+          ...prev,
+          { role: 'system', content: '（战斗已结束）' }
+        ]
+        // 保存到store
+        const newStoryHistory = newHistory.map(msg => ({
+          speaker: msg.role === 'user' ? '玩家' : (msg.role === 'system' ? '系统' : 'AI'),
+          content: msg.content
+        }))
+        useGameStore.setState({ aiStoryHistory: newStoryHistory })
+        return newHistory
+      })
+      // 调用AI继续故事
+      submitInput('战斗结束了，继续故事').then(() => {
+        // AI响应后会自动更新history
       })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -131,7 +195,7 @@ export default function AIStoryPanel({ onBack }: AIStoryPanelProps) {
     }
   }, [history])
 
-  // 处理战斗触发
+  // 处理战斗触发 - 切换到普通战斗模式
   const handleCombatTrigger = (choice: ExtendedChoice) => {
     // 移除"（战斗）"标记来获取敌人名称
     const enemyName = choice.text.replace('（战斗）', '').replace('(战斗)', '').trim()
@@ -145,13 +209,36 @@ export default function AIStoryPanel({ onBack }: AIStoryPanelProps) {
       icon: '👹'
     }
     
-    // 开启AI战斗
-    store.startAIBattle(enemy, `遭遇了${enemy.name}！`)
+    // 切换到正常战斗模式
+    store.setGameMode('battle')
+    useGameStore.setState({
+      enemyUnit: {
+        id: 'enemy_' + Date.now(),
+        name: enemy.name,
+        characterId: 'azurlane_sword' as const,
+        hp: enemy.hp,
+        maxHp: enemy.hp,
+        mp: 20,
+        maxMp: 20,
+        level: enemy.level || 1,
+        attack: enemy.attack,
+        defense: 5,
+        isEnemy: true,
+        icon: enemy.icon || '👹',
+      },
+      battleLog: [
+        {
+          id: Date.now(),
+          text: `【${enemy.name}】出现了！`,
+          type: 'battle' as const,
+          timestamp: Date.now(),
+        },
+      ],
+    })
     
-    // 返回游戏主界面（会自动切换到战斗模式）
-    if (onBack) {
-      onBack()
-    }
+    // 通知 App 切换到游戏界面 (game screen)
+    const navigateToGame = new CustomEvent('navigate-to-game')
+    window.dispatchEvent(navigateToGame)
   }
 
   // 处理选择
@@ -208,13 +295,36 @@ export default function AIStoryPanel({ onBack }: AIStoryPanelProps) {
       })
       
       // 触发战斗
-      store.startAIBattle(enemy, `遭遇了${enemy.name}！`)
+      store.setGameMode('battle')
+      useGameStore.setState({
+        enemyUnit: {
+          id: 'enemy_' + Date.now(),
+          name: enemy.name,
+          characterId: 'azurlane_sword' as const,
+          hp: enemy.hp,
+          maxHp: enemy.hp,
+          mp: 20,
+          maxMp: 20,
+          level: enemy.level || 1,
+          attack: enemy.attack,
+          defense: 5,
+          isEnemy: true,
+          icon: enemy.icon || '👹',
+        },
+        battleLog: [
+          {
+            id: Date.now(),
+            text: `【${enemy.name}】出现了！`,
+            type: 'battle' as const,
+            timestamp: Date.now(),
+          },
+        ],
+      })
       setInputText('')
       
-      // 返回游戏主界面（会自动切换到战斗模式）
-      if (onBack) {
-        onBack()
-      }
+      // 通知 App 切换到游戏界面
+      const navigateToGame = new CustomEvent('navigate-to-game')
+      window.dispatchEvent(navigateToGame)
       return
     }
 

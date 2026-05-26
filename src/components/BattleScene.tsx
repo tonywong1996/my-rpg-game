@@ -3,6 +3,7 @@ import { useGameStore, BattleUnit } from '../store/useGameStore'
 import azurlaneSwordImage from '../../assets/images/char_azurlane_sword_001.png'
 import askzyuSwordImage from '../../assets/images/char_askzyu_sword_001.png'
 import { SkillEffectImage, SkillEffectScreenFlash } from './SkillEffectOverlay'
+import { useBattleSFX } from '../hooks/useBattleSFX'
 
 /**
  * 获取角色立绘路径
@@ -385,11 +386,12 @@ function BattleCharacter({ unit, isPlayer, isHit }: { unit: BattleUnit; isPlayer
 }
 
 /**
- * 技能图标组件 - 在角色下方显示已解锁的技能图标
- * 第一行：攻击技能，第二行：buff/技能
+ * 技能图标组件 - 在角色下方显示所有技能图标，含普通攻击
+ * 第一行：攻击技能（含普通攻击），第二行：buff/辅助技能
  */
 function SkillIcons() {
   const skills = useGameStore((state) => state.skills)
+  const attack = useGameStore((state) => state.attack)
   const useSkill = useGameStore((state) => state.useSkill)
   const playerUnit = useGameStore((state) => state.playerUnit)
 
@@ -398,8 +400,6 @@ function SkillIcons() {
   // 分离攻击技能和 buff 技能
   const attackSkills = unlockedSkills.filter(s => !isSupportSkill(s.id))
   const buffSkills = unlockedSkills.filter(s => isSupportSkill(s.id))
-
-  if (unlockedSkills.length === 0) return null
 
   const canUseSkill = (skill: typeof unlockedSkills[0]) => {
     return playerUnit.mp >= skill.mpCost && playerUnit.hp > 0
@@ -422,13 +422,22 @@ function SkillIcons() {
   )
 
   return (
-    <div className="mt-2 flex flex-col items-center gap-1">
-      {/* 第一行：攻击技能 */}
-      {attackSkills.length > 0 && (
-        <div className="flex items-center gap-1.5">
-          {attackSkills.map(renderButton)}
-        </div>
-      )}
+    <div className="mt-3 flex flex-col items-center gap-1.5">
+      {/* 第一行：普通攻击 + 攻击技能 */}
+      <div className="flex items-center gap-1.5">
+        {/* 普通攻击 */}
+        <button
+          onClick={attack}
+          className="w-9 h-9 flex items-center justify-center rounded-lg text-xs border transition-all
+                     bg-gradient-to-b from-[#e94560] to-[#d63851]
+                     text-white border-[#e94560]/60 shadow-lg shadow-[#e94560]/20
+                     hover:from-[#ff5566] hover:to-[#e94560] active:scale-90"
+          title="普通攻击"
+        >
+          ⚔
+        </button>
+        {attackSkills.map(renderButton)}
+      </div>
       {/* 第二行：buff 技能 */}
       {buffSkills.length > 0 && (
         <div className="flex items-center gap-1.5">
@@ -480,6 +489,66 @@ export default function BattleScene() {
   const [showDamage, setShowDamage] = useState<{ damage: number; isHeal: boolean; targetSide: 'player' | 'enemy' } | null>(null)
   const [hitTarget, setHitTarget] = useState<'enemy' | 'player' | null>(null)
 
+  // 战斗音效
+  const sfx = useBattleSFX({ enabled: true, volume: 0.4 })
+
+  /**
+   * 根据技能ID播放对应的音效
+   */
+  const playSkillSFX = (skillId: string) => {
+    switch (skillId) {
+      case 'basic_attack':
+        sfx.play('sword_swing')
+        setTimeout(() => sfx.play('sword_hit'), 200)
+        break
+      case 'sweeping_sword':
+        sfx.play('sword_swing')
+        setTimeout(() => sfx.play('sword_hit'), 250)
+        break
+      case 'sword_rain':
+        sfx.play('sword_swing')
+        setTimeout(() => sfx.play('critical_hit'), 200)
+        break
+      case 'heal_spell':
+      case 'moon_heal':
+        sfx.play('heal_spell')
+        break
+      case 'ice_spell':
+        sfx.play('ice_spell')
+        break
+      case 'ice_barrier':
+        sfx.play('block')
+        setTimeout(() => sfx.play('ice_spell'), 100)
+        break
+      case 'fire_spell':
+      case 'phoenix_fire':
+        sfx.play('fire_spell')
+        setTimeout(() => sfx.play('explosion'), 300)
+        break
+      case 'thunder_sword':
+        sfx.play('sword_swing')
+        setTimeout(() => { sfx.play('critical_hit'); sfx.play('explosion') }, 250)
+        break
+      case 'void_sword':
+        sfx.play('critical_hit')
+        setTimeout(() => sfx.play('explosion'), 150)
+        break
+      case 'shadow_step':
+        sfx.play('miss')
+        setTimeout(() => sfx.play('sword_hit'), 200)
+        break
+      case 'body_refine':
+      case 'sword_mind':
+        sfx.play('block')
+        break
+      case 'mind_cultivate':
+        sfx.play('heal_spell')
+        break
+      default:
+        sfx.play('sword_hit')
+    }
+  }
+
   // 监听 useSkill 触发的自定义事件（直接从 store 中的 useSkill 函数 dispatch）
   useEffect(() => {
     const handler = (e: Event) => {
@@ -490,6 +559,9 @@ export default function BattleScene() {
       // 从 SKILL_NAME_TO_ID 反向查找或者直接使用 skillId
       const normalizedSkillId = skillId
       const isSupport = isSupportSkill(normalizedSkillId)
+
+      // 播放技能音效
+      playSkillSFX(normalizedSkillId)
 
       // 玩家攻击动画 - 攻击技能晃动玩家侧，治疗技能则不动
       if (!isSupport) {
@@ -540,7 +612,10 @@ export default function BattleScene() {
     }
 
     window.addEventListener('rpg-skill-effect', handler)
-    return () => window.removeEventListener('rpg-skill-effect', handler)
+    return () => {
+      window.removeEventListener('rpg-skill-effect', handler)
+      sfx.cleanup()
+    }
   }, [])
 
   return (

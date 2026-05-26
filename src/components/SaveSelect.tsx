@@ -14,6 +14,7 @@ interface SaveSelectProps {
 export default function SaveSelect({ onClose, onLoadSave }: SaveSelectProps) {
   const cultivation = useGameStore((state) => state.cultivation)
   const reset = useGameStore((state) => state.reset)
+  const deleteSave = useGameStore((state) => state.deleteSave)
 
   const hasSave = cultivation.greaterThan(0)
 
@@ -24,6 +25,12 @@ export default function SaveSelect({ onClose, onLoadSave }: SaveSelectProps) {
 
   const handleLoadSave = () => {
     onLoadSave()
+  }
+
+  const handleDeleteSave = () => {
+    if (confirm('确定要删除存档吗？此操作不可恢复！')) {
+      deleteSave()
+    }
   }
 
   return (
@@ -81,24 +88,36 @@ export default function SaveSelect({ onClose, onLoadSave }: SaveSelectProps) {
             )}
 
             {/* 操作按钮 */}
-            <div className="mt-3 flex gap-2">
+            <div className="mt-3 space-y-2">
+              <div className="flex gap-2">
+                {hasSave && (
+                  <button
+                    onClick={handleLoadSave}
+                    className="flex-1 px-3 py-2 text-sm bg-[#3a8ac4] text-white rounded-lg 
+                               hover:bg-[#4a9ad4] active:scale-95 transition-all font-medium tracking-wider"
+                  >
+                    加载存档
+                  </button>
+                )}
+                <button
+                  onClick={handleNewGame}
+                  className={`${hasSave ? 'flex-1' : 'w-full'} px-3 py-2 text-sm 
+                             border border-[#e94560] text-[#e94560] rounded-lg 
+                             hover:bg-[#e94560]/10 active:scale-95 transition-all font-medium tracking-wider`}
+                >
+                  新开游戏
+                </button>
+              </div>
+              {/* 删除存档按钮 */}
               {hasSave && (
                 <button
-                  onClick={handleLoadSave}
-                  className="flex-1 px-3 py-2 text-sm bg-[#3a8ac4] text-white rounded-lg 
-                             hover:bg-[#4a9ad4] active:scale-95 transition-all font-medium tracking-wider"
+                  onClick={handleDeleteSave}
+                  className="w-full px-3 py-2 text-sm border border-[#8a3a3a] text-[#c45a5a] rounded-lg 
+                             hover:bg-[#8a3a3a]/20 active:scale-95 transition-all font-medium tracking-wider"
                 >
-                  加载存档
+                  🗑 删除存档
                 </button>
               )}
-              <button
-                onClick={handleNewGame}
-                className={`${hasSave ? 'flex-1' : 'w-full'} px-3 py-2 text-sm 
-                           border border-[#e94560] text-[#e94560] rounded-lg 
-                           hover:bg-[#e94560]/10 active:scale-95 transition-all font-medium tracking-wider`}
-              >
-                新开游戏
-              </button>
             </div>
           </div>
 

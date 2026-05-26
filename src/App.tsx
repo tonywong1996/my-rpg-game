@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useGameStore } from './store/useGameStore'
 import { useGameEngine } from './engine/useGameEngine'
 import GameCover from './components/GameCover'
@@ -14,6 +14,7 @@ import QuestCenterPanel from './components/QuestCenterPanel'
 import NPCPanel from './components/NPCPanel'
 import SmithyPanel from './components/SmithyPanel'
 import AIStoryPanel from './components/AIStoryPanel'
+import PostBattlePanel from './components/PostBattlePanel'
 
 type Screen = 'cover' | 'menu' | 'game' | 'saveSelect' | 'aiStory'
 
@@ -22,6 +23,26 @@ function App() {
   
   // 启动游戏引擎（始终运行）
   useGameEngine()
+
+  // 监听导航到 AI 故事模式的事件
+  useEffect(() => {
+    const handleNavigateToAIStory = () => {
+      setCurrentScreen('aiStory')
+    }
+    
+    // 监听从 AI 故事模式切换到游戏界面的事件（战斗触发时）
+    const handleNavigateToGame = () => {
+      setCurrentScreen('game')
+    }
+    
+    window.addEventListener('navigate-to-ai-story', handleNavigateToAIStory)
+    window.addEventListener('navigate-to-game', handleNavigateToGame)
+    
+    return () => {
+      window.removeEventListener('navigate-to-ai-story', handleNavigateToAIStory)
+      window.removeEventListener('navigate-to-game', handleNavigateToGame)
+    }
+  }, [])
 
   // 从 store 获取状态
   const gameMode = useGameStore((state) => state.gameMode)
@@ -175,11 +196,64 @@ function App() {
   }
 
   // 战斗模式（原有的战斗界面）
-  return (
-    <div className="flex flex-col w-full h-screen bg-[#0f0f1a] overflow-hidden">
-      {/* 上半部分 - 战斗场景 */}
-      <div className="relative h-[50vh] min-h-[280px] flex-shrink-0">
-        <BattleScene />
+  if (gameMode === 'battle') {
+    return (
+      <div className="flex flex-col w-full h-screen bg-[#0f0f1a] overflow-hidden">
+        {/* 上半部分 - 战斗场景 */}
+        <div className="relative h-[50vh] min-h-[280px] flex-shrink-0">
+          <BattleScene />
+          
+          {/* 返回按钮 - 悬浮在左上角 */}
+          <button
+            onClick={handleBackToMenu}
+            className="absolute top-2 left-2 z-20 px-3 py-1.5 bg-[#0a0a1a]/80 text-[#a0a0b0] text-xs rounded-lg
+                       border border-[#1a1a3a] hover:bg-[#1a1a2e] hover:text-[#f5f0c4] transition-all duration-200"
+          >
+            ← 返回菜单
+          </button>
+        </div>
+
+        {/* 下半部分 - 战斗日志 / 面板 */}
+        <div className="flex-1 flex flex-col min-h-0 bg-[#0f0f1a]">
+          {/* 日志区域或面板内容 */}
+          {showTabContent ? <TabPanels /> : <TextLog />}
+
+          {/* 底部操作栏 - 面板切换 + 回村 */}
+          <div className="flex-shrink-0 px-3 py-2 bg-[#0a0a1a] border-t border-[#1a1a3a]">
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => useGameStore.getState().setTab('system')}
+                className={`px-4 py-2 rounded-lg text-xs font-medium transition-all duration-200 border
+                           ${showTabContent
+                             ? 'bg-[#1a1a2e] text-[#3a8ac4] border-[#3a8ac4]/30 hover:bg-[#16213e]'
+                             : 'bg-[#16213e]/50 text-[#a0a0b0]/50 border-[#1a1a3a]'
+                           }`}
+              >
+                面板
+              </button>
+              <div className="flex-1" />
+              <button
+                onClick={returnToVillage}
+                className="px-3 py-2 rounded-lg text-[10px] text-[#4a8a4a] border border-[#2a4a2a]/50 
+                           bg-[#0a1a0a]/50 hover:bg-[#0a2a1a] hover:text-[#6aaa6a] transition-all duration-200"
+              >
+                🏘 回村休整
+              </button>
+            </div>
+          </div>
+
+          {/* 底部导航栏 */}
+          <NavigationBar />
+        </div>
+      </div>
+    )
+  }
+
+  // 战后过渡界面
+  if (gameMode === 'postBattle') {
+    return (
+      <div className="relative w-full h-screen bg-[#0f0f1a] overflow-hidden">
+        <PostBattlePanel />
         
         {/* 返回按钮 - 悬浮在左上角 */}
         <button
@@ -190,83 +264,11 @@ function App() {
           ← 返回菜单
         </button>
       </div>
+    )
+  }
 
-      {/* 下半部分 - 战斗日志 / 面板 */}
-      <div className="flex-1 flex flex-col min-h-0 bg-[#0f0f1a]">
-        {/* 日志区域或面板内容 */}
-        {showTabContent ? <TabPanels /> : <TextLog />}
-
-        {/* 攻击/技能/回城按钮 */}
-        <div className="flex-shrink-0 px-3 py-2 bg-[#0a0a1a] border-t border-[#1a1a3a] space-y-1.5">
-          {/* 技能按钮行 */}
-          <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none">
-            {/* 普通攻击 - 始终显示 */}
-            <button
-              onClick={attack}
-              className="flex-shrink-0 px-3 py-1.5 bg-gradient-to-r from-[#e94560] to-[#d63851] 
-                         text-white text-[10px] font-bold tracking-wider rounded-lg
-                         hover:from-[#ff5566] hover:to-[#e94560] active:scale-[0.98] 
-                         transition-all duration-150 shadow-lg shadow-[#e94560]/20"
-            >
-              ⚔ 攻击
-            </button>
-            
-            {/* 已解锁技能按钮 */}
-            {skills.filter(s => s.unlocked && s.id !== 'basic_attack').map((skill) => {
-              const canUse = playerUnit.mp >= skill.mpCost && playerUnit.hp > 0
-              const isHeal = skill.target === 'self'
-              return (
-                <button
-                  key={skill.id}
-                  onClick={() => useSkill(skill.id)}
-                  disabled={!canUse}
-                  className={`flex-shrink-0 px-2.5 py-1.5 text-[10px] font-bold rounded-lg border transition-all
-                             active:scale-95 whitespace-nowrap ${
-                    canUse
-                      ? isHeal
-                        ? 'bg-[#0a2a1a] text-[#4a8a4a] border-[#2a4a2a]/60 hover:bg-[#1a3a2a] hover:border-[#4a8a4a]/50 shadow-lg shadow-[#2a4a2a]/10'
-                        : 'bg-[#1a0a2e] text-[#c47ac4] border-[#3a1a4a]/60 hover:bg-[#2a1a3e] hover:border-[#c47ac4]/50 shadow-lg shadow-[#3a1a4a]/10'
-                      : 'bg-[#0a0a12]/50 text-[#a0a0b0]/30 border-[#1a1a3a]/30 cursor-not-allowed'
-                  }`}
-                  title={canUse ? `${skill.name} (MP: ${skill.mpCost})` : `${skill.name} (灵力不足)`}
-                >
-                  {skill.icon} {skill.name}
-                  <span className={`ml-1 text-[8px] ${canUse ? 'opacity-70' : 'opacity-40'}`}>
-                    ({skill.mpCost}MP)
-                  </span>
-                </button>
-              )
-            })}
-          </div>
-
-          {/* 底部操作栏 */}
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => useGameStore.getState().setTab('system')}
-              className={`px-4 py-2 rounded-lg text-xs font-medium transition-all duration-200 border
-                         ${showTabContent
-                           ? 'bg-[#1a1a2e] text-[#3a8ac4] border-[#3a8ac4]/30 hover:bg-[#16213e]'
-                           : 'bg-[#16213e]/50 text-[#a0a0b0]/50 border-[#1a1a3a]'
-                         }`}
-            >
-              面板
-            </button>
-            <div className="flex-1" />
-            <button
-              onClick={returnToVillage}
-              className="px-3 py-2 rounded-lg text-[10px] text-[#4a8a4a] border border-[#2a4a2a]/50 
-                         bg-[#0a1a0a]/50 hover:bg-[#0a2a1a] hover:text-[#6aaa6a] transition-all duration-200"
-            >
-              🏘 回村休整
-            </button>
-          </div>
-        </div>
-
-        {/* 底部导航栏 */}
-        <NavigationBar />
-      </div>
-    </div>
-  )
+  // 默认返回村庄
+  return null
 }
 
 export default App

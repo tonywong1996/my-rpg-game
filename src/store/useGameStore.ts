@@ -126,7 +126,7 @@ export interface BattleUnit {
 }
 
 export type NavTab = 'system' | 'equipment' | 'skills' | 'quests'
-export type GameMode = 'village' | 'battle'
+export type GameMode = 'village' | 'battle' | 'postBattle'
 export type VillageLocation = 'center' | 'shop' | 'smithy' | 'quest_center' | 'npc'
 
 export interface ShopItem {
@@ -171,7 +171,7 @@ export interface LogEntry {
 // ============================
 // 修仙装备数据
 // ============================
-const ALL_EQUIPMENT: Equipment[] = [
+export const ALL_EQUIPMENT: Equipment[] = [
   // 武器 - 剑类
   { id: 'wood_sword', name: '桃木剑', slot: 'weapon', type: '剑', rarity: '凡品', icon: '🪵', attack: 5, defense: 0, mp_bonus: 0, hp_bonus: 0, description: '入门级桃木剑，蕴含微弱灵力', equipped: true },
   { id: 'iron_sword', name: '玄铁剑', slot: 'weapon', type: '剑', rarity: '法器', icon: '🗡️', attack: 15, defense: 0, mp_bonus: 5, hp_bonus: 0, description: '玄铁打造，剑气凌厉', equipped: false },
@@ -219,7 +219,7 @@ const ALL_SKILLS: Skill[] = [
 // ============================
 // 怪物数据（修仙风格）
 // ============================
-const ALL_MONSTERS: MonsterTemplate[] = [
+export const ALL_MONSTERS: MonsterTemplate[] = [
   {
     name: '野狼', icon: '🐺', title: '山野凶兽',
     hp: 60, mp: 10, level: 1, attack: 8, defense: 2,
@@ -323,6 +323,10 @@ interface GameState {
 
   // 上次掉落记录
   lastLoot: { exp: number; gold: number; items: string[] }
+
+  // 战后过渡界面
+  postBattleNarrative: string
+  postBattleLoot: { exp: number; gold: number; items: string[] }
 
   // AI故事系统
   aiStoryInitialized: boolean
@@ -644,6 +648,8 @@ export const useGameStore = create<GameState>()(
         currentTab: 'system',
         villageMessage: '',
         lastLoot: { exp: 0, gold: 0, items: [] },
+        postBattleNarrative: '',
+        postBattleLoot: { exp: 0, gold: 0, items: [] },
         aiStoryInitialized: false,
         aiStoryHistory: [],
         aiNPCs: [],
@@ -996,10 +1002,18 @@ export const useGameStore = create<GameState>()(
           ]
 
           if (newEnemyHp <= 0) {
-            // 敌人被击败 - 结束战斗
+            // 敌人被击败 - 进入战后过渡界面
+            const enemyIcon = state.enemyUnit.icon || '💀'
+            const loot = generateLoot(state.enemyUnit.name)
+            const narrative = `战斗结束！\n\n你成功击败了【${enemyName}】${enemyIcon}！\n\n在激烈的交锋后，敌人终于倒下了。你从战斗中获得了宝贵的经验，是时候决定下一步的行动了。\n\n继续深入探索，还是返回青石村休整？`
+
             set({
               enemyUnit: { ...state.enemyUnit, hp: 0 },
               battleLog: logs,
+              gameMode: 'postBattle',
+              postBattleNarrative: narrative,
+              postBattleLoot: loot,
+              lastLoot: loot,
             })
             return
           }
@@ -1068,11 +1082,19 @@ export const useGameStore = create<GameState>()(
           }
 
           if (newEnemyHp <= 0 && skill.target === 'enemy') {
-            // 敌人被击败 - 结束战斗
+            // 敌人被击败 - 进入战后过渡界面
+            const enemyIcon = state.enemyUnit.icon || '💀'
+            const loot = generateLoot(state.enemyUnit.name)
+            const narrative = `战斗结束！\n\n你使用【${skill.name}】(Lv.${skill.level}) 击败了【${enemyName}】${enemyIcon}！\n\n${skill.description}爆发出强大的力量，敌人应声倒下。你感受着体内灵力的流转，战斗的经验化作了成长的养分。\n\n继续深入探索，还是返回青石村休整？`
+
             set({
               enemyUnit: { ...state.enemyUnit, hp: 0 },
               playerUnit: { ...state.playerUnit, mp: newMp },
               battleLog: logs,
+              gameMode: 'postBattle',
+              postBattleNarrative: narrative,
+              postBattleLoot: loot,
+              lastLoot: loot,
             })
             return
           }
@@ -1181,6 +1203,8 @@ export const useGameStore = create<GameState>()(
             currentTab: 'system' as NavTab,
             villageMessage: '',
             lastLoot: { exp: 0, gold: 0, items: [] },
+            postBattleNarrative: '',
+            postBattleLoot: { exp: 0, gold: 0, items: [] },
             aiStoryInitialized: false,
             aiStoryHistory: [],
             aiNPCs: [],
