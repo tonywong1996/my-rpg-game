@@ -206,11 +206,28 @@ export interface APIConfig {
   model: string
 }
 
-// 默认使用DeepSeek API
-export const DEFAULT_API_CONFIG: APIConfig = {
-  baseUrl: 'https://api.deepseek.com/v1',
-  apiKey: 'sk-dd94f3fccf9243f2af5d9aef1e4190b3',
-  model: 'deepseek-chat'
+// 从 GitHub 获取 API 配置
+const GITHUB_CONFIG_URL = 'https://raw.githubusercontent.com/tonywong1996/my-rpg-game/master/api-config.json'
+
+let cachedApiConfig: APIConfig | null = null
+
+export async function fetchApiConfig(): Promise<APIConfig> {
+  if (cachedApiConfig) return cachedApiConfig
+  
+  try {
+    const res = await fetch(GITHUB_CONFIG_URL)
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+    cachedApiConfig = await res.json()
+    console.log('[API Config] 已从 GitHub 加载配置')
+    return cachedApiConfig!
+  } catch (err) {
+    console.warn('[API Config] 从 GitHub 加载失败，使用默认配置:', err)
+    return {
+      baseUrl: 'https://api.deepseek.com/v1',
+      apiKey: '',
+      model: 'deepseek-chat'
+    }
+  }
 }
 
 // ============================
@@ -227,7 +244,12 @@ class AIAdventureEngine {
   private systemPrompt: string = SYSTEM_PROMPT_TEMPLATE
 
   constructor(config?: Partial<APIConfig>) {
-    this.apiConfig = { ...DEFAULT_API_CONFIG, ...config }
+    this.apiConfig = {
+      baseUrl: 'https://api.deepseek.com/v1',
+      apiKey: '',
+      model: 'deepseek-chat',
+      ...config
+    }
     
     // 初始化玩家属性
     this.playerStats = {
@@ -511,12 +533,16 @@ ${this.getAllNPCStatusForAPI()}
     return effects
   }
 
-  // 处理玩家输入
+  // 处理玩家输入（自由输入或选项选择）
   async processInput(input: string, conversationHistory?: {role: 'user' | 'assistant', content: string}[]): Promise<{
     narrative: string
     choices: Choice[]
   }> {
-    let processedInput = input
+    // 从 GitHub 获取 API 配置（如果第一次调用失败则重试）
+    const config = await fetchApiConfig()
+    this.apiConfig = config
+
+    // 如果是数字输入
 
     // 如果传入了对话历史，使用它
     if (conversationHistory && conversationHistory.length > 0) {
@@ -579,6 +605,10 @@ ${this.getAllNPCStatusForAPI()}
     choices: Choice[]
     npcs: NPCCharacter[]
   }> {
+    // 从 GitHub 获取 API 配置
+    const config = await fetchApiConfig()
+    this.apiConfig = config
+
     const initialPrompt = `请根据以下设定生成游戏开场：
 
 ## 游戏背景
