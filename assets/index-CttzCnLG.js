@@ -262,12 +262,20 @@ ${this.getAllNPCStatusForAPI()}
 `).forEach(g=>{const m=g.match(/^(\d+)[.、]\s*(.+)/);m&&d.length<3&&d.push({id:`choice_${m[1]}`,text:m[2].trim(),effects:{},next_scene:""})}),console.log("===== 解析出的选项 ====="),console.log(d),console.log("========================"),l=i.replace(/\[NPC_Card\][\s\S]*?\[\/NPC_Card\]/g,"").replace(/\[NPC_Status\][\s\S]*?\[\/NPC_Status\]/g,"").replace(/\[Scene\][\s\S]*?\[\/Scene\]/g,"").replace(/\[Choices\][\s\S]*?\[\/Choices\]/g,"").trim()}catch(s){console.error("解析AI响应失败:",s)}return{narrative:l,choices:d,npcUpdates:c}}parseEffects(i){const l={};return i.split(",").forEach(c=>{const[s,p]=c.split(":").map(h=>h.trim());if(s&&p){const h=parseFloat(p);l[s]=isNaN(h)?p:h}}),l}async processInput(i,l){const d=await id();this.apiConfig=d;let c=i;l&&l.length>0&&(this.storyHistory=l.map(h=>({role:h.role,content:h.content,timestamp:Date.now()})));const s=i.match(/^(\d+)$/);if(s){const h=parseInt(s[1])-1,g=this.getLastChoices();if(g[h]){c=g[h].text;const m=g[h].effects;Object.entries(m).forEach(([v,y])=>{if(v.includes("好感度")||v.includes("affection")){const w=v.replace(/[好感度__affection]/g,""),T=this.npcStatuses.get(w);T&&(T.affection+=y)}else v in this.playerStats?typeof this.playerStats[v]=="number"&&(this.playerStats[v]+=y):v in this.playerStats.attributes&&(this.playerStats.attributes[v]+=y)})}}const p=await this.callAI(c);return{narrative:p.narrative,choices:p.choices}}getLastChoices(){return[]}async initializeGame(){const i=await id();this.apiConfig=i;const d=await this.callAI(`请根据以下设定生成游戏开场：
 
 ## 游戏背景
-你是一个初入修仙之门的年轻修士，历经千辛万苦，终于找到了传说中的修仙村落——青石村。村口站着一位白发苍苍的老者，正笑眯眯地看着你...
+你是16岁的高二女生小莉，银白色低马尾，琥珀色眼眸。今天放学后，你像往常一样来到父亲经营的郊区射击俱乐部——这里也是你的"实验室"。
+
+你最近在尝试将伯努利原理应用到子弹上，利用压缩空气给弹头附加螺旋轨道。然而今天，你发现车间里的旧通风管道似乎有些不对劲——风声里带着一种奇异的低鸣，仿佛空气本身在对你说话……
 
 ## 需要生成
-1. 一个完整的开场场景描述
-2. 3个选项供玩家选择
-3. 至少3个NPC角色（村長/长老、剑客、商人等）
+1. 一个完整的开场场景描述——从放学后走进俱乐部开始
+2. 3个选项供玩家选择（选项要包含：探索/实验/与父亲互动等方向）
+3. 至少3个NPC角色（父亲·老李、同学·小陈、镇上五金店老板等）
+
+## 叙事风格提示
+- 场景以现代都市/郊区为主
+- 多描写风的声音、空气的流动感
+- 语言自然，符合高中生视角
+- 带一点神秘感：这个"低灵世界"的秘密正在慢慢浮现
 
 请立即生成故事开头。`);return this.extractNPCsFromResponse(d.narrative),{narrative:d.narrative,choices:d.choices,npcs:this.npcCards}}extractNPCsFromResponse(i){try{const l=i.match(/\[NPC_Card\]([\s\S]*?)\[\/NPC_Card\]/g);l&&l.forEach(d=>{const c=JSON.parse(d.replace(/\[NPC_Card\]|\[\/NPC_Card\]/g,""));this.npcCards.find(s=>s.id===c.id)||(this.npcCards.push(c),this.npcStatuses.set(c.id,{npc_id:c.id,affection:c.affection||0,mood:c.mood||"neutral",inventory:[],memory:"",current_scene:this.currentScene,dialogue_count:0,action_taken:""}))})}catch(l){console.error("提取NPC信息失败:",l)}}getHistory(){return[...this.storyHistory]}reset(){this.storyHistory=[],this.currentScene="new_player_arrives",this.npcStatuses.forEach(i=>{i.affection=0,i.mood="neutral",i.memory="",i.dialogue_count=0,i.current_scene=this.currentScene,i.action_taken=""}),this.playerStats={windEnergy:100,health:100,compressedAir:50,gold:10,attributes:{strength:10,intelligence:12,knowledgeApplication:10,perception:10,charisma:10,agility:10},inventory:[],knownKnowledge:["伯努利原理","压缩空气基础"]}}}function zs(r){const[i]=ae.useState(()=>new Xm(r)),[l,d]=ae.useState(!1),[c,s]=ae.useState(null),[p,h]=ae.useState(""),[g,m]=ae.useState([]),[v,y]=ae.useState([]),[w,T]=ae.useState(i.getPlayerStats()),P=ae.useCallback(async()=>{d(!0),s(null);try{const $=await i.initializeGame();h($.narrative),m($.choices),y($.npcs),T(i.getPlayerStats())}catch($){s($ instanceof Error?$.message:"初始化失败")}finally{d(!1)}},[i]),E=ae.useCallback(async($,A)=>{d(!0),s(null);try{const Q=await i.processInput($,A);h(Q.narrative),m(Q.choices),T(i.getPlayerStats())}catch(Q){s(Q instanceof Error?Q.message:"处理输入失败")}finally{d(!1)}},[i]),L=ae.useCallback($=>{i.setNPCCards($),y($)},[i]),V=ae.useCallback(()=>{i.reset(),h(""),m([]),T(i.getPlayerStats())},[i]);return{engine:i,isLoading:l,error:c,currentNarrative:p,choices:g,npcCards:v,playerStats:w,initialize:P,submitInput:E,setNPCs:L,reset:V}}function Ym(){const r=F(D=>D.character),i=F(D=>D.cultivation),l=F(D=>D.gold);F(D=>D.playerUnit);const d=F(D=>D.setVillageLocation),c=F(D=>D.goToBattle),{initialize:s,submitInput:p,currentNarrative:h,choices:g,npcCards:m,isLoading:v,error:y}=zs(),[w,T]=ae.useState(""),[P,E]=ae.useState(()=>{const D=F.getState();return D.aiStoryInitialized&&D.aiStoryHistory.length>0?D.aiStoryHistory.map(J=>({speaker:J.speaker,content:J.content})):[]}),L=ae.useRef(null);ae.useEffect(()=>{F.getState().aiStoryInitialized||s().then(()=>{F.setState({aiStoryInitialized:!0,aiNPCs:m})})},[s,m]);const V=D=>{const J=[],Ne=D.split(`
 `);let q="系统",Y="";for(const te of Ne){const pe=te.match(/^【(.+?)】[:：]\s*(.+)$/);pe?(Y&&J.push({speaker:q,content:Y.trim()}),q=pe[1],Y=pe[2]):te.match(/^（.+）$/)||te.match(/^\(.+\)$/)?Y&&(Y+=`
