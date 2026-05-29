@@ -1,5 +1,5 @@
 {
-  "baseUrl": "https://api.deepseek.com/v1",
-  "apiKey": "sk-dd9...90b3",
-  "model": "deepseek-chat"
+  "baseUrl": "https://api.minimaxi.com/v1",
+  "apiKey": "sk-cp-Ku5dZDwaROf_KJrxNsjm1lSV3jdbRdYfzkYLQHloymoRsMxtT0JsDeUF0CEriOFsm2IYlliyYAN6LuQn1O9EyH-0CZC_UpVUTdCUo02B3K9aIn_OdNWUr5c",
+  "model": "MiniMax-M2.7"
 }
