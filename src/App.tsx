@@ -229,7 +229,7 @@ function App() {
     return (
       <div className="flex flex-col w-full h-screen bg-[#0f0f1a] overflow-hidden">
         {/* 上半部分 - 战斗场景 */}
-        <div className="relative h-[50vh] min-h-[280px] flex-shrink-0">
+        <div className="relative h-[60vh] min-h-[300px] flex-shrink-0">
           <BattleScene />
           
           {/* 返回按钮 - 悬浮在左上角 */}

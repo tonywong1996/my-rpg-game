@@ -208,7 +208,7 @@ function BattleCharacter({ unit, isPlayer, isHit }: { unit: BattleUnit; isPlayer
       <div>
         {isPlayer && charImage ? (
           // 玩家角色立绘 - 填满区域
-          <div className="w-40 h-48 md:w-48 md:h-56 animate-battle-idle-player">
+          <div className="w-36 h-44 md:w-40 md:h-52 animate-battle-idle-player">
             <img
               src={charImage}
               alt={unit.name}
@@ -219,7 +219,7 @@ function BattleCharacter({ unit, isPlayer, isHit }: { unit: BattleUnit; isPlayer
         ) : (
           // 靶场目标 - 放大
           <div
-            className={`w-32 h-32 md:w-40 md:h-40 animate-battle-idle-enemy`}
+            className={`w-28 h-28 md:w-36 md:h-36 animate-battle-idle-enemy`}
           >
             <svg viewBox="0 0 64 64" className="w-full h-full">
               {isPlayer ? (
