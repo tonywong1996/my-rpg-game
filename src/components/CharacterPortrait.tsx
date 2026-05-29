@@ -3,6 +3,7 @@ import { CharacterId } from '../store/useGameStore'
 import azurlaneSwordImage from '../../assets/images/char_azurlane_sword_001.png'
 import askzyuSwordImage from '../../assets/images/char_askzyu_sword_001.png'
 import xiaoliImage from '../assets/images/char_xiaoli_001.jpg'
+import xiaokeImage from '../assets/images/char_xiaoke_001.jpg'
 
 interface CharacterPortraitProps {
   characterId: CharacterId
@@ -31,6 +32,10 @@ export default function CharacterPortrait({ characterId, selected, onClick }: Ch
     imageSrc = xiaoliImage
     altText = '小 莉'
     titleText = '射 击 手'
+  } else if (characterId === 'xiaoke') {
+    imageSrc = xiaokeImage
+    altText = '小 可'
+    titleText = '千 机 士'
   } else {
     imageSrc = askzyuSwordImage
     altText = '灵剑士·无名'
@@ -44,7 +49,7 @@ export default function CharacterPortrait({ characterId, selected, onClick }: Ch
         relative w-32 h-32 md:w-40 md:h-40 rounded-xl overflow-hidden cursor-pointer
         transition-all duration-300 group
         ${selected 
-          ? 'ring-2 ring-[#3a8ac4] shadow-lg shadow-[#3a8ac4]/30 scale-105' 
+          ? 'ring-2 ring-[#3a8ac4] shadow-lg shadow-[#3a8ac4]/30' 
           : 'ring-1 ring-[#16213e] hover:ring-[#3a8ac4]/50 hover:scale-[1.02]'
         }
       `}

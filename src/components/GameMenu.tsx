@@ -29,12 +29,16 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
 
   const getCharacterName = (id: CharacterId) => {
     if (id === 'xiaoli') return '小 莉'
+    if (id === 'xiaoke') return '小 可'
     return id === 'azurlane_sword' ? '剑 灵 · 无 名' : '灵 剑 · 无 名'
   }
 
   const getCharacterDescription = (id: CharacterId) => {
     if (id === 'xiaoli') {
       return '银发温柔的射击少女。就读于普通高中，家境一般但成绩优异，是班里的学霸。性格温柔好奇，对新鲜事物充满热情。从小跟着父亲在靶场练出了一手好枪法（射击技术 8/10）。梦想用双手保护重要的人。'
+    }
+    if (id === 'xiaoke') {
+      return '蓝色短发的温柔大哥哥。中等家庭出身，从小就爱钻研机械，拆装各种装置。根据父亲设计的机械模型，经过多年改良，打造出了独一无二的千机伞——能变幻刀、盾、枪等多种形态。平时呆呆的不爱说话，但一到战斗中就会变得异常爆裂，喜欢贴身近战，令人难以招架。'
     }
     return id === 'azurlane_sword'
       ? '银色短发的少女剑修，翡翠绿眼眸中闪烁着得意的光芒。白色改良道袍融合水手服元素，裙摆流动着浅蓝色阵法图案。'
@@ -92,7 +96,7 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
               <div className={`
                 relative p-1 rounded-3xl transition-all duration-500
                 ${selectedCharacter === 'xiaoli'
-                  ? 'bg-gradient-to-r from-pink-400 to-rose-500 shadow-lg shadow-pink-500/30 scale-110'
+                  ? 'bg-gradient-to-r from-pink-400 to-rose-500 shadow-lg shadow-pink-500/30'
                   : 'bg-white/5 hover:bg-white/10'
                 }
               `}>
@@ -102,11 +106,6 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
                   selected={selectedCharacter === 'xiaoli'}
                   onClick={() => handleSelectCharacter('xiaoli')}
                 />
-                {selectedCharacter === 'xiaoli' && (
-                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-3 py-1 bg-pink-500 text-white text-[10px] font-bold rounded-full shadow-lg">
-                    已选择
-                  </div>
-                )}
               </div>
               <p className={`text-sm tracking-wider transition-all duration-300 ${
                 selectedCharacter === 'xiaoli' ? 'text-white font-semibold' : 'text-white/40'
@@ -115,31 +114,26 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
               </p>
             </div>
 
-            {/* 灵剑·无名 (右) */}
-            <div className="flex flex-col items-center gap-3 group cursor-pointer" onClick={() => handleSelectCharacter('askzyu_sword')}>
+            {/* 小可 (右) */}
+            <div className="flex flex-col items-center gap-3 group cursor-pointer" onClick={() => handleSelectCharacter('xiaoke')}>
               <div className={`
                 relative p-1 rounded-3xl transition-all duration-500
-                ${selectedCharacter === 'askzyu_sword'
-                  ? 'bg-gradient-to-r from-purple-500 to-pink-500 shadow-lg shadow-purple-500/30 scale-110'
+                ${selectedCharacter === 'xiaoke'
+                  ? 'bg-gradient-to-r from-blue-400 to-cyan-500 shadow-lg shadow-blue-500/30'
                   : 'bg-white/5 hover:bg-white/10'
                 }
               `}>
-                <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-purple-500/20 to-pink-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-blue-400/20 to-cyan-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
                 <CharacterPortrait
-                  characterId="askzyu_sword"
-                  selected={selectedCharacter === 'askzyu_sword'}
-                  onClick={() => handleSelectCharacter('askzyu_sword')}
+                  characterId="xiaoke"
+                  selected={selectedCharacter === 'xiaoke'}
+                  onClick={() => handleSelectCharacter('xiaoke')}
                 />
-                {selectedCharacter === 'askzyu_sword' && (
-                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-3 py-1 bg-purple-500 text-white text-[10px] font-bold rounded-full shadow-lg">
-                    已选择
-                  </div>
-                )}
               </div>
               <p className={`text-sm tracking-wider transition-all duration-300 ${
-                selectedCharacter === 'askzyu_sword' ? 'text-white font-semibold' : 'text-white/40'
+                selectedCharacter === 'xiaoke' ? 'text-white font-semibold' : 'text-white/40'
               }`}>
-                灵 剑 · 无 名
+                小 可
               </p>
             </div>
           </div>

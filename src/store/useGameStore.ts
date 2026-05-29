@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware'
 import Decimal from 'decimal.js'
 import { loadWithMigration } from '../utils/migration'
 
-export type CharacterId = 'azurlane_sword' | 'askzyu_sword' | 'xiaoli'
+export type CharacterId = 'azurlane_sword' | 'askzyu_sword' | 'xiaoli' | 'xiaoke'
 
 export interface CharacterData {
   id: CharacterId
@@ -418,6 +418,12 @@ const CHARACTER_DB: Record<CharacterId, CharacterData> = {
     name: '小莉',
     title: '射 击 手',
     description: '银发温柔的射击少女。就读于普通高中，家境一般但成绩优异，是班里的学霸。性格温柔好奇，对新鲜事物充满热情。从小跟着父亲在靶场练出了一手好枪法（射击技术 8/10）。梦想是用双手保护重要的人。',
+  },
+  xiaoke: {
+    id: 'xiaoke',
+    name: '小可',
+    title: '千 机 士',
+    description: '蓝色短发的温柔大哥哥。中等家庭出身，从小就爱钻研机械，拆装各种装置。根据父亲设计的机械模型，经过多年改良，打造出了独一无二的千机伞——能变幻刀、盾、枪等多种形态。平时呆呆的不爱说话，但一到战斗中就会变得异常爆裂，喜欢贴身近战，令人难以招架。',
   },
 }
 
