@@ -3,17 +3,26 @@ import { useGameStore, BattleUnit } from '../store/useGameStore'
 import azurlaneSwordImage from '../../assets/images/char_azurlane_sword_001.png'
 import askzyuSwordImage from '../../assets/images/char_askzyu_sword_001.png'
 import xiaoliImage from '../assets/images/char_xiaoli_001.jpg'
-import xiaoliBattleImage from '../assets/images/char_xiaoli_battle.jpg'
+import xiaoliBattleImage01 from '../assets/images/char_xiaoli_battle_01.png'
+import xiaoliBattleImage02 from '../assets/images/char_xiaoli_battle_02.png'
+import xiaoliBattleImage03 from '../assets/images/char_xiaoli_battle_03.png'
+import xiaoliBattleImage04 from '../assets/images/char_xiaoli_battle_04.png'
+const XIAOLI_BATTLE_FRAMES = [
+  xiaoliBattleImage01,
+  xiaoliBattleImage02,
+  xiaoliBattleImage03,
+  xiaoliBattleImage04,
+]
 import { SkillEffectImage, SkillEffectScreenFlash } from './SkillEffectOverlay'
 import { useBattleSFX } from '../hooks/useBattleSFX'
 
 /**
  * 获取角色立绘路径
  */
-function getCharacterImage(unit: BattleUnit): string {
+function getCharacterImage(unit: BattleUnit, attackFrame = 0): string {
   if (unit.isEnemy) return ''
   // 战斗中使用专用的战斗立绘
-  if (unit.characterId === 'xiaoli') return xiaoliBattleImage
+  if (unit.characterId === 'xiaoli') return XIAOLI_BATTLE_FRAMES[attackFrame] || xiaoliBattleImage01
   if (unit.characterId === 'azurlane_sword') return azurlaneSwordImage
   if (unit.characterId === 'askzyu_sword') return askzyuSwordImage
   return azurlaneSwordImage
@@ -178,10 +187,10 @@ function getDisplayName(unit: BattleUnit): string {
 /**
  * 单个战斗单位的角色绘制
  */
-function BattleCharacter({ unit, isPlayer, isHit }: { unit: BattleUnit; isPlayer: boolean; isHit: boolean }) {
+function BattleCharacter({ unit, isPlayer, isHit, attackFrame = 0 }: { unit: BattleUnit; isPlayer: boolean; isHit: boolean; attackFrame?: number }) {
   const hpPercent = (unit.hp / unit.maxHp) * 100
   const mpPercent = (unit.mp / unit.maxMp) * 100
-  const charImage = getCharacterImage(unit)
+  const charImage = getCharacterImage(unit, attackFrame)
 
   return (
     <div className={`flex flex-col items-center ${isHit ? 'hit-white-flash' : ''}`}>
@@ -204,18 +213,15 @@ function BattleCharacter({ unit, isPlayer, isHit }: { unit: BattleUnit; isPlayer
         <span className="text-[10px] text-white/60 ml-1">Lv.{unit.level}</span>
       </div>
 
-      {/* 角色形象 - 统一容器大小 */}
-      <div>
+      {/* 角色形象 - 统一容器大小，图片填满不裁剪不变形 */}
+      <div className="w-36 h-44 md:w-40 md:h-52 overflow-hidden flex items-center justify-center">
         {isPlayer && charImage ? (
-          // 玩家角色立绘 - 填满区域
-          <div className="w-36 h-44 md:w-40 md:h-52 animate-battle-idle-player">
-            <img
-              src={charImage}
-              alt={unit.name}
-              className="w-full h-full object-contain rounded-xl shadow-lg shadow-[#3a8ac4]/20"
-              style={{ imageRendering: 'auto' }}
-            />
-          </div>
+          <img
+            src={charImage}
+            alt={unit.name}
+            className="w-full h-full object-cover rounded-xl shadow-lg shadow-[#3a8ac4]/20"
+            style={{ imageRendering: 'auto' }}
+          />
         ) : (
           // 靶场目标 - 和玩家同样容器大小
           <div className="w-36 h-44 md:w-40 md:h-52 flex items-center justify-center">
@@ -498,6 +504,7 @@ export default function BattleScene() {
   const [showSkillImage, setShowSkillImage] = useState<string | null>(null)
   const [showDamage, setShowDamage] = useState<{ damage: number; isHeal: boolean; targetSide: 'player' | 'enemy' } | null>(null)
   const [hitTarget, setHitTarget] = useState<'enemy' | 'player' | null>(null)
+  const [attackFrame, setAttackFrame] = useState(0) // 攻击动画帧索引
 
   // 战斗音效
   const sfx = useBattleSFX({ enabled: true, volume: 0.4 })
@@ -576,7 +583,20 @@ export default function BattleScene() {
       // 玩家攻击动画 - 攻击技能晃动玩家侧，治疗技能则不动
       if (!isSupport) {
         setAttacking('player')
-        setTimeout(() => setAttacking(null), 800)
+        // 攻击动画：循环播放4帧，每100ms切换一帧
+        let frame = 0
+        const frameInterval = setInterval(() => {
+          frame++
+          if (frame >= XIAOLI_BATTLE_FRAMES.length) {
+            clearInterval(frameInterval)
+            return
+          }
+          setAttackFrame(frame)
+        }, 100)
+        setTimeout(() => {
+          setAttacking(null)
+          setAttackFrame(0)
+        }, 800)
 
         // 敌人被击中 - 在技能飞到中途（约350ms后）触发抖动和闪白
         setTimeout(() => {
@@ -640,7 +660,7 @@ export default function BattleScene() {
             {/* 左侧: 小莉卡片 */}
             <div className="flex flex-col items-center bg-black/20 backdrop-blur-sm rounded-[40px] px-6 py-4 md:px-8 md:py-5 border border-white/10 shadow-lg">
               <div className={`transition-transform duration-200 ${attacking === 'player' ? 'translate-x-4' : ''}`}>
-                <BattleCharacter unit={playerUnit} isPlayer={true} isHit={hitTarget === 'player'} />
+                <BattleCharacter unit={playerUnit} isPlayer={true} isHit={hitTarget === 'player'} attackFrame={attackFrame} />
               </div>
             </div>
 
