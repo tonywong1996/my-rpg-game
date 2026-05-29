@@ -46,10 +46,7 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
   }
 
   return (
-    <div className="relative w-full h-screen overflow-hidden flex flex-col items-center">
-      {/* 动态渐变背景 */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900" />
-
+    <div className="relative w-full h-screen overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       {/* 背景光晕 */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-[128px]" />
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-[128px]" />
@@ -71,11 +68,8 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
         ))}
       </div>
 
-      {/* 上撑开 */}
-      <div className="flex-1" />
-
-      {/* 菜单内容 */}
-      <div className="relative z-10 flex flex-col items-center px-4">
+      {/* 居中内容 */}
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center px-4">
         {/* 主标题 */}
         <h1 className="text-4xl md:text-5xl font-bold mb-2 tracking-[0.2em]">
           <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent drop-shadow-lg">
@@ -189,11 +183,8 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
           </button>
         </div>
 
-        {/* 下撑开 */}
-        <div className="flex-1" />
-
         {/* 底部提示 */}
-        <p className="text-xs text-white/20 tracking-widest pb-6">
+        <p className="text-xs text-white/20 tracking-widest mt-8 pb-2">
           {selectedCharacter ? '✓ 选定身份，踏入修真之路' : '请先选择身份'}
         </p>
       </div>
