@@ -93,22 +93,44 @@ function App() {
         <GameCover />
         
         {/* 开始按钮 - 点击进入菜单 */}
-        <div className="absolute bottom-[12%] left-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
+        <div className="absolute bottom-[10%] left-1/2 -translate-x-1/2 flex flex-col items-center gap-5">
+          {/* 主标题 */}
+          <h1 
+            className="text-5xl md:text-6xl font-light tracking-[0.6em] ml-3 text-white"
+            style={{
+              textShadow: '0 0 60px rgba(255,182,193,0.5), 0 0 120px rgba(200,150,255,0.3), 0 4px 20px rgba(0,0,0,0.6)',
+              fontFamily: '"Noto Serif SC", "STKaiti", "KaiTi", serif',
+              fontWeight: 200,
+              letterSpacing: '0.8em',
+            }}
+          >
+            修真
+          </h1>
+          {/* 副标题 */}
+          <p 
+            className="text-xs md:text-sm tracking-[0.8em] text-white/30"
+            style={{
+              fontFamily: '"Noto Serif SC", "STKaiti", "KaiTi", serif',
+              fontWeight: 300,
+            }}
+          >
+            仙 魔 殊 途 · 一 念 成 劫
+          </p>
           <button
             onClick={handleCoverClick}
-            className="group relative px-14 py-3.5 bg-gradient-to-r from-purple-600 to-cyan-500 
-                       text-white text-lg font-bold tracking-[0.4em] rounded-2xl
-                       hover:from-purple-500 hover:to-cyan-400 active:scale-95 
-                       transition-all duration-300 shadow-xl shadow-purple-500/30
-                       hover:shadow-purple-400/50 hover:shadow-2xl
-                       border border-white/20 overflow-hidden"
+            className="group relative px-14 py-3.5 bg-gradient-to-r from-pink-500/80 via-purple-500/80 to-indigo-500/80 
+                       text-white text-lg font-light tracking-[0.5em] rounded-2xl
+                       hover:from-pink-400/90 hover:via-purple-400/90 hover:to-indigo-400/90 active:scale-95 
+                       transition-all duration-300 shadow-xl shadow-purple-500/20
+                       hover:shadow-pink-400/40 hover:shadow-2xl
+                       border border-white/15 overflow-hidden backdrop-blur-sm"
           >
-            <span className="relative z-10 ml-2">踏入修真</span>
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent 
+            <span className="relative z-10 ml-3" style={{ fontWeight: 300, letterSpacing: '0.6em' }}>踏入修真</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent 
                           -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
           </button>
-          <p className="text-xs text-purple-300/50 tracking-[0.5em] animate-pulse">
-            点 击 进 入 · 一 念 成 劫
+          <p className="text-[10px] text-white/15 tracking-[0.6em] animate-pulse">
+            点 击 开 始 · 一 念 成 劫
           </p>
         </div>
       </div>
