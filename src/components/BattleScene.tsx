@@ -204,7 +204,7 @@ function BattleCharacter({ unit, isPlayer, isHit }: { unit: BattleUnit; isPlayer
         <span className="text-[10px] text-white/60 ml-1">Lv.{unit.level}</span>
       </div>
 
-      {/* 角色形象 */}
+      {/* 角色形象 - 统一容器大小 */}
       <div>
         {isPlayer && charImage ? (
           // 玩家角色立绘 - 填满区域
@@ -217,11 +217,9 @@ function BattleCharacter({ unit, isPlayer, isHit }: { unit: BattleUnit; isPlayer
             />
           </div>
         ) : (
-          // 靶场目标 - 放大
-          <div
-            className={`w-28 h-28 md:w-36 md:h-36 animate-battle-idle-enemy`}
-          >
-            <svg viewBox="0 0 64 64" className="w-full h-full">
+          // 靶场目标 - 和玩家同样容器大小
+          <div className="w-36 h-44 md:w-40 md:h-52 flex items-center justify-center">
+            <svg viewBox="0 0 64 64" className="w-28 h-28 md:w-36 md:h-36 animate-battle-idle-enemy">
               {isPlayer ? (
                 // 玩家角色（SVG后备方案）
                 <>
