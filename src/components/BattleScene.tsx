@@ -636,22 +636,18 @@ export default function BattleScene() {
 
   return (
     <>
-      {/* 战斗背景图 - 全屏绝对定位 */}
-      <img
-        src="/assets/images/battle_bg_new.png"
-        alt="战斗背景"
-        className="absolute inset-0 w-full h-full object-cover z-0"
-      />
-      <div className="relative z-10 w-full h-full bg-gradient-to-b from-[#0a0a1a]/60 via-[#0d2818]/50 to-[#1a0a2e]/70 overflow-hidden">
+      {/* 战斗纯白背景 */}
+      <div className="absolute inset-0 bg-gradient-to-b from-white via-[#f0f4ff] to-[#e8edf8] z-0" />
+      <div className="relative z-10 w-full h-full bg-white/40 overflow-hidden">
         {/* 地面 */}
-        <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-[#1a2a1a] to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-[#d0d5dc] to-transparent" />
 
-        {/* 装饰粒子 */}
-        <div className="absolute inset-0 opacity-20">
+        {/* 装饰光点 */}
+        <div className="absolute inset-0 opacity-10">
           {Array.from({ length: 15 }).map((_, i) => (
             <div
               key={i}
-              className="absolute w-0.5 h-0.5 bg-[#f5f0c4] rounded-full"
+              className="absolute w-0.5 h-0.5 bg-[#5ac8fa] rounded-full"
               style={{
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
@@ -719,7 +715,7 @@ export default function BattleScene() {
         </div>
 
         {/* 顶部渐变遮罩 */}
-        <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-[#0a0a1a] to-transparent pointer-events-none" />
+        <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-white/80 to-transparent pointer-events-none" />
       </div>
     </>
   )
