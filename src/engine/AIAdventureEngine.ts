@@ -437,7 +437,7 @@ ${this.getAllNPCStatusForAPI()}
     ]
 
     try {
-      const response = await fetch(`${this.apiConfig.baseUrl}/v1/chat/completions`, {
+      const response = await fetch(`${this.apiConfig.baseUrl}/chat/completions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -192,7 +192,7 @@ export default function VillageScene() {
       <div className="relative flex-1 min-h-0 overflow-hidden">
         {/* 背景 - 地图图片 */}
         <img
-          src="/assets/images/village_bg_new.png"
+          src="/assets/images/village_scene_new.png"
           alt="青石村"
           className="absolute inset-0 w-full h-full object-cover"
         />
