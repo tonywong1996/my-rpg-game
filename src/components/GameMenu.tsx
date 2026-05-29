@@ -46,7 +46,10 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
   }
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="relative w-full h-screen overflow-hidden">
+      {/* 渐变背景 */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900" />
+
       {/* 背景光晕 */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-[128px]" />
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-[128px]" />
@@ -68,19 +71,20 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
         ))}
       </div>
 
-      {/* 居中内容 */}
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center px-4">
-        {/* 主标题 */}
-        <h1 className="text-4xl md:text-5xl font-bold mb-2 tracking-[0.2em]">
-          <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent drop-shadow-lg">
-            仙魔录
-          </span>
-        </h1>
+      {/* 内容区 - 用flex完全居中 */}
+      <div className="relative z-10 w-full h-full flex items-center justify-center">
+        <div className="flex flex-col items-center px-4">
+          {/* 主标题 */}
+          <h1 className="text-4xl md:text-5xl font-bold mb-2 tracking-[0.2em]">
+            <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent drop-shadow-lg">
+              仙魔录
+            </span>
+          </h1>
 
-        {/* 副标题 */}
-        <p className="text-xs md:text-sm tracking-[0.8em] text-white/40 mb-8 md:mb-10">
-          仙魔殊途 · 一念成劫
-        </p>
+          {/* 副标题 */}
+          <p className="text-xs md:text-sm tracking-[0.8em] text-white/40 mb-8 md:mb-10">
+            仙魔殊途 · 一念成劫
+          </p>
 
         {/* 角色选择区 */}
         <div>
@@ -187,6 +191,7 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
         <p className="text-xs text-white/20 tracking-widest mt-8 pb-2">
           {selectedCharacter ? '✓ 选定身份，踏入修真之路' : '请先选择身份'}
         </p>
+        </div>
       </div>
     </div>
   )
