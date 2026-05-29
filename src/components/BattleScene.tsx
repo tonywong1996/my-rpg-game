@@ -3,6 +3,7 @@ import { useGameStore, BattleUnit } from '../store/useGameStore'
 import azurlaneSwordImage from '../../assets/images/char_azurlane_sword_001.png'
 import askzyuSwordImage from '../../assets/images/char_askzyu_sword_001.png'
 import xiaoliImage from '../assets/images/char_xiaoli_001.jpg'
+import xiaoliBattleImage from '../assets/images/char_xiaoli_battle.jpg'
 import { SkillEffectImage, SkillEffectScreenFlash } from './SkillEffectOverlay'
 import { useBattleSFX } from '../hooks/useBattleSFX'
 
@@ -11,9 +12,10 @@ import { useBattleSFX } from '../hooks/useBattleSFX'
  */
 function getCharacterImage(unit: BattleUnit): string {
   if (unit.isEnemy) return ''
+  // 战斗中使用专用的战斗立绘
+  if (unit.characterId === 'xiaoli') return xiaoliBattleImage
   if (unit.characterId === 'azurlane_sword') return azurlaneSwordImage
   if (unit.characterId === 'askzyu_sword') return askzyuSwordImage
-  if (unit.characterId === 'xiaoli') return xiaoliImage
   return azurlaneSwordImage
 }
 
