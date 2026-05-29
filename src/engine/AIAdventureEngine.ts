@@ -236,26 +236,41 @@ export interface APIConfig {
   model: string
 }
 
-// 从 GitHub 获取 API 配置
+// 从 GitHub 获取 API 配置（生产环境 / fallback）
 const GITHUB_CONFIG_URL = 'https://raw.githubusercontent.com/tonywong1996/my-rpg-game/master/api-config.json'
 
 let cachedApiConfig: APIConfig | null = null
 
 export async function fetchApiConfig(): Promise<APIConfig> {
+  // 优先使用 Vite 环境变量（本地 .env 或 GitHub Actions 注入）
+  const envKey = (import.meta as any).env?.VITE_MINIMAX_API_KEY
+  const envBaseUrl = (import.meta as any).env?.VITE_API_BASE_URL || ''
+  const envModel = (import.meta as any).env?.VITE_API_MODEL || ''
+
+  if (envKey) {
+    console.log('[API Config] 使用环境变量注入的 API Key')
+    cachedApiConfig = {
+      baseUrl: envBaseUrl || 'https://api.minimaxi.com/v1',
+      apiKey: envKey,
+      model: envModel || 'MiniMax-M2.7'
+    }
+    return cachedApiConfig
+  }
+
   if (cachedApiConfig) return cachedApiConfig
-  
+
   try {
     const res = await fetch(GITHUB_CONFIG_URL)
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
     cachedApiConfig = await res.json()
-    console.log('[API Config] 已从 GitHub 加载配置')
+    console.log('[API Config] 已从 GitHub 加载配置（无本地 .env）')
     return cachedApiConfig!
   } catch (err) {
     console.warn('[API Config] 从 GitHub 加载失败，使用默认配置:', err)
     return {
-      baseUrl: 'https://api.deepseek.com/v1',
+      baseUrl: 'https://api.minimaxi.com/v1',
       apiKey: '',
-      model: 'deepseek-chat'
+      model: 'MiniMax-M2.7'
     }
   }
 }
@@ -275,7 +290,7 @@ class AIAdventureEngine {
 
   constructor(config?: Partial<APIConfig>) {
     this.apiConfig = {
-      baseUrl: 'https://api.deepseek.com/v1',
+      baseUrl: 'https://api.deepseek.com',
       apiKey: '',
       model: 'deepseek-chat',
       ...config
@@ -422,7 +437,7 @@ ${this.getAllNPCStatusForAPI()}
     ]
 
     try {
-      const response = await fetch(`${this.apiConfig.baseUrl}/chat/completions`, {
+      const response = await fetch(`${this.apiConfig.baseUrl}/v1/chat/completions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
