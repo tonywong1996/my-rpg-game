@@ -72,7 +72,7 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
       </div>
 
       {/* 菜单内容 */}
-      <div className="relative z-10 flex flex-col items-center w-full h-full px-4 pt-14 md:pt-20">
+      <div className="relative z-10 flex flex-col items-center justify-center w-full h-full px-4">
         {/* 主标题 */}
         <h1 className="text-4xl md:text-5xl font-bold mb-2 tracking-[0.2em]">
           <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent drop-shadow-lg">
@@ -138,14 +138,14 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
             </div>
           </div>
 
-          {/* 角色描述 - 固定占位，不撑开布局 */}
-          <div className="mt-6 min-h-[80px] w-full max-w-md mx-auto">
+          {/* 角色描述 - 固定高度，不撑开布局 */}
+          <div className="mt-6 h-[90px] w-full max-w-md mx-auto relative">
             {selectedCharacter ? (
-              <p className="text-xs text-white/50 text-center leading-relaxed animate-fadeIn backdrop-blur-sm bg-white/5 rounded-2xl p-4">
+              <p className="absolute inset-0 text-xs text-white/50 text-center leading-relaxed backdrop-blur-sm bg-white/5 rounded-2xl p-4 animate-fadeIn overflow-y-auto">
                 {getCharacterDescription(selectedCharacter)}
               </p>
             ) : (
-              <p className="text-xs text-white/20 text-center leading-relaxed p-4">
+              <p className="absolute inset-0 text-xs text-white/20 text-center leading-relaxed p-4">
                 点击角色查看介绍
               </p>
             )}
@@ -153,7 +153,7 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
         </div>
 
         {/* 菜单按钮组 */}
-        <div className="flex flex-col items-center gap-4 mt-auto pb-16">
+        <div className="flex flex-col items-center gap-4">
           {/* 进入游戏 - 需选择角色 */}
           <button
             onClick={handleEnterGame}
