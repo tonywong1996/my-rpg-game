@@ -46,7 +46,7 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
   }
 
   return (
-    <div className="relative w-full min-h-screen overflow-hidden flex flex-col items-center">
+    <div className="relative w-full h-screen overflow-hidden flex flex-col items-center">
       {/* 动态渐变背景 */}
       <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900" />
 
