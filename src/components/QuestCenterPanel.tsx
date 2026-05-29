@@ -17,8 +17,8 @@ export default function QuestCenterPanel() {
   }
 
   return (
-    <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/70 backdrop-blur-md">
-      <div className="w-[92%] max-w-lg bg-gradient-to-b from-[#0a1a2a] to-[#050a12] rounded-2xl border border-[#3a6a9a]/40 shadow-2xl shadow-[#3a8ac4]/10 overflow-hidden animate-scale-in">
+    <div className="absolute inset-0 z-30 flex items-center justify-center bg-[#0a0a1a]/60 backdrop-blur-sm">
+      <div className="w-[92%] max-w-lg bg-gradient-to-b from-[#0f1f2f] to-[#09121c] rounded-2xl border border-[#3a6a9a]/50 shadow-2xl shadow-[#3a8ac4]/20 overflow-hidden animate-scale-in">
         {/* 顶部装饰光带 */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#3a8ac4] to-transparent" />
         
@@ -50,10 +50,10 @@ export default function QuestCenterPanel() {
               key={quest.id}
               className={`relative p-4 rounded-xl border-2 transition-all duration-300 ${
                 quest.completed
-                  ? 'bg-gradient-to-b from-[#0a2a1a]/80 to-[#061a0e] border-[#2a6a3a]/60 shadow-lg shadow-[#2a6a3a]/10'
+                  ? 'bg-gradient-to-b from-[#0a2a1a]/60 to-[#061a0e] border-[#2a6a3a]/60 shadow-lg shadow-[#2a6a3a]/10'
                   : quest.accepted
-                  ? 'bg-gradient-to-b from-[#0a1a2a]/80 to-[#060e1a] border-[#1a4a6a]/60 shadow-lg shadow-[#1a4a6a]/10'
-                  : 'bg-gradient-to-b from-[#0f0f1a]/80 to-[#0a0a12] border-[#1a2a4a]/40 hover:border-[#3a8ac4]/40 hover:shadow-lg hover:shadow-[#3a8ac4]/5'
+                  ? 'bg-gradient-to-b from-[#0a1a2a]/60 to-[#060e1a] border-[#1a4a6a]/60 shadow-lg shadow-[#1a4a6a]/10'
+                  : 'bg-gradient-to-b from-[#12122a]/60 to-[#0c0c18] border-[#1a2a4a]/40 hover:border-[#3a8ac4]/40 hover:shadow-lg hover:shadow-[#3a8ac4]/5'
               }`}
             >
               {/* 任务编号 */}
