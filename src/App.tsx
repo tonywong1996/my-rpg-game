@@ -98,13 +98,13 @@ function App() {
           <h1 
             className="text-5xl md:text-6xl font-light tracking-[0.6em] ml-3 text-white"
             style={{
-              textShadow: '0 0 60px rgba(255,182,193,0.5), 0 0 120px rgba(200,150,255,0.3), 0 4px 20px rgba(0,0,0,0.6)',
+              textShadow: '0 0 60px rgba(100,200,255,0.4), 0 0 120px rgba(150,180,255,0.3), 0 4px 20px rgba(0,0,0,0.6)',
               fontFamily: '"Noto Serif SC", "STKaiti", "KaiTi", serif',
               fontWeight: 200,
               letterSpacing: '0.8em',
             }}
           >
-            修真
+            风引
           </h1>
           {/* 副标题 */}
           <p 
@@ -114,23 +114,26 @@ function App() {
               fontWeight: 300,
             }}
           >
-            仙 魔 殊 途 · 一 念 成 劫
+            知 识 即 是 力 量
           </p>
           <button
             onClick={handleCoverClick}
-            className="group relative px-14 py-3.5 bg-gradient-to-r from-pink-500/80 via-purple-500/80 to-indigo-500/80 
-                       text-white text-lg font-light tracking-[0.5em] rounded-2xl
-                       hover:from-pink-400/90 hover:via-purple-400/90 hover:to-indigo-400/90 active:scale-95 
-                       transition-all duration-300 shadow-xl shadow-purple-500/20
-                       hover:shadow-pink-400/40 hover:shadow-2xl
-                       border border-white/15 overflow-hidden backdrop-blur-sm"
+            className="group relative px-20 py-5 bg-gradient-to-r from-cyan-500/90 via-blue-500/90 to-purple-500/90 
+                       text-white text-xl font-bold tracking-[0.4em] rounded-2xl
+                       hover:from-cyan-400 hover:via-blue-400 hover:to-purple-400 active:scale-95 
+                       transition-all duration-300 
+                       shadow-[0_0_30px_rgba(0,200,255,0.25)] shadow-cyan-500/30
+                       hover:shadow-[0_0_50px_rgba(0,200,255,0.4)]
+                       border border-white/20 overflow-hidden backdrop-blur-sm"
           >
-            <span className="relative z-10 ml-3" style={{ fontWeight: 300, letterSpacing: '0.6em' }}>踏入修真</span>
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent 
+            <span className="relative z-10 ml-4" style={{ fontWeight: 700, letterSpacing: '0.5em' }}>开始冒险</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent 
                           -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+            {/* 装饰光晕 */}
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-cyan-400/10 via-blue-400/10 to-purple-400/10 blur-xl" />
           </button>
-          <p className="text-[10px] text-white/15 tracking-[0.6em] animate-pulse">
-            点 击 开 始 · 一 念 成 劫
+          <p className="text-xs text-white/20 tracking-[0.6em] animate-pulse mt-1">
+            选 择 角 色 开 始
           </p>
         </div>
       </div>
