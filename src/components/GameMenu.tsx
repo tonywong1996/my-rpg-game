@@ -28,10 +28,14 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
   }
 
   const getCharacterName = (id: CharacterId) => {
+    if (id === 'xiaoli') return '小 莉'
     return id === 'azurlane_sword' ? '剑 灵 · 无 名' : '灵 剑 · 无 名'
   }
 
   const getCharacterDescription = (id: CharacterId) => {
+    if (id === 'xiaoli') {
+      return '银发温柔的射击少女。就读于普通高中，家境一般但成绩优异，是班里的学霸。性格温柔好奇，对新鲜事物充满热情。从小跟着父亲在靶场练出了一手好枪法（射击技术 8/10）。梦想用双手保护重要的人。'
+    }
     return id === 'azurlane_sword'
       ? '银色短发的少女剑修，翡翠绿眼眸中闪烁着得意的光芒。白色改良道袍融合水手服元素，裙摆流动着浅蓝色阵法图案。'
       : '银白短发的少女剑修，翡翠绿眼眸中透着灵动与狡黠。白色道袍随风飘扬，黑色百褶裙上流转着阵法光芒。'
@@ -83,31 +87,31 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
             选 择 你 的 身 份
           </p>
           <div className="flex items-center gap-8 md:gap-16">
-            {/* 剑灵·无名 (左) */}
-            <div className="flex flex-col items-center gap-3 group cursor-pointer" onClick={() => handleSelectCharacter('azurlane_sword')}>
+            {/* 小莉 (左) */}
+            <div className="flex flex-col items-center gap-3 group cursor-pointer" onClick={() => handleSelectCharacter('xiaoli')}>
               <div className={`
                 relative p-1 rounded-3xl transition-all duration-500
-                ${selectedCharacter === 'azurlane_sword'
-                  ? 'bg-gradient-to-r from-cyan-500 to-blue-500 shadow-lg shadow-cyan-500/30 scale-110'
+                ${selectedCharacter === 'xiaoli'
+                  ? 'bg-gradient-to-r from-pink-400 to-rose-500 shadow-lg shadow-pink-500/30 scale-110'
                   : 'bg-white/5 hover:bg-white/10'
                 }
               `}>
-                <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-cyan-500/20 to-blue-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-pink-400/20 to-rose-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
                 <CharacterPortrait
-                  characterId="azurlane_sword"
-                  selected={selectedCharacter === 'azurlane_sword'}
-                  onClick={() => handleSelectCharacter('azurlane_sword')}
+                  characterId="xiaoli"
+                  selected={selectedCharacter === 'xiaoli'}
+                  onClick={() => handleSelectCharacter('xiaoli')}
                 />
-                {selectedCharacter === 'azurlane_sword' && (
-                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-3 py-1 bg-cyan-500 text-white text-[10px] font-bold rounded-full shadow-lg">
+                {selectedCharacter === 'xiaoli' && (
+                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-3 py-1 bg-pink-500 text-white text-[10px] font-bold rounded-full shadow-lg">
                     已选择
                   </div>
                 )}
               </div>
               <p className={`text-sm tracking-wider transition-all duration-300 ${
-                selectedCharacter === 'azurlane_sword' ? 'text-white font-semibold' : 'text-white/40'
+                selectedCharacter === 'xiaoli' ? 'text-white font-semibold' : 'text-white/40'
               }`}>
-                剑 灵 · 无 名
+                小 莉
               </p>
             </div>
 

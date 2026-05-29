@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware'
 import Decimal from 'decimal.js'
 import { loadWithMigration } from '../utils/migration'
 
-export type CharacterId = 'azurlane_sword' | 'askzyu_sword'
+export type CharacterId = 'azurlane_sword' | 'askzyu_sword' | 'xiaoli'
 
 export interface CharacterData {
   id: CharacterId
@@ -412,6 +412,12 @@ const CHARACTER_DB: Record<CharacterId, CharacterData> = {
     name: '灵剑·无名',
     title: '灵 剑 士',
     description: '银白短发的少女剑修，翡翠绿眼眸中透着灵动与狡黠。白色道袍随风飘扬，黑色百褶裙上流转着阵法光芒。脚下冰晶巨剑悬浮，背后飞剑扇列如屏，手中符咒散发着神秘的光芒。',
+  },
+  xiaoli: {
+    id: 'xiaoli',
+    name: '小莉',
+    title: '射 击 手',
+    description: '银发温柔的射击少女。就读于普通高中，家境一般但成绩优异，是班里的学霸。性格温柔好奇，对新鲜事物充满热情。从小跟着父亲在靶场练出了一手好枪法（射击技术 8/10）。梦想是用双手保护重要的人。',
   },
 }
 

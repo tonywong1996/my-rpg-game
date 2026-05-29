@@ -2,6 +2,7 @@ import React from 'react'
 import { CharacterId } from '../store/useGameStore'
 import azurlaneSwordImage from '../../assets/images/char_azurlane_sword_001.png'
 import askzyuSwordImage from '../../assets/images/char_askzyu_sword_001.png'
+import xiaoliImage from '../assets/images/char_xiaoli_001.jpg'
 
 interface CharacterPortraitProps {
   characterId: CharacterId
@@ -15,9 +16,26 @@ interface CharacterPortraitProps {
  *
  * - azurlane_sword: Azur Lane风格少女剑修立绘
  * - askzyu_sword: Askzyu风格少女剑修立绘
+ * - xiaoli: 温柔大姐姐 小莉
  */
 export default function CharacterPortrait({ characterId, selected, onClick }: CharacterPortraitProps) {
-  const imageSrc = characterId === 'azurlane_sword' ? azurlaneSwordImage : askzyuSwordImage
+  let imageSrc
+  let altText
+  let titleText
+
+  if (characterId === 'azurlane_sword') {
+    imageSrc = azurlaneSwordImage
+    altText = '剑修·无名'
+    titleText = '剑 修'
+  } else if (characterId === 'xiaoli') {
+    imageSrc = xiaoliImage
+    altText = '小 莉'
+    titleText = '射 击 手'
+  } else {
+    imageSrc = askzyuSwordImage
+    altText = '灵剑士·无名'
+    titleText = '灵 剑 士'
+  }
 
   return (
     <div
@@ -34,7 +52,7 @@ export default function CharacterPortrait({ characterId, selected, onClick }: Ch
       {/* 角色立绘 */}
       <img
         src={imageSrc}
-        alt={characterId === 'azurlane_sword' ? '剑修·无名' : '灵剑士·无名'}
+        alt={altText}
         className="w-full h-full object-cover"
         style={{ imageRendering: 'auto' }}
       />
@@ -48,7 +66,7 @@ export default function CharacterPortrait({ characterId, selected, onClick }: Ch
           : 'bg-black/60 text-[#a0a0b0]/70'
         }
       `}>
-        {characterId === 'azurlane_sword' ? '剑 修' : '灵 剑 士'}
+        {titleText}
       </div>
 
       {/* 悬停遮罩 */}
