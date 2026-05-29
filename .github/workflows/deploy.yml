@@ -6,11 +6,20 @@ on:
       - master
   workflow_dispatch:
 
+permissions:
+  contents: write
+  pages: write
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
+        run: |
+          echo "NODE_VERSION: ${{ env.NODE_VERSION }}"
+          echo "RUNNER_TEMP: ${{ runner.temp }}"
+          ls -la ${{ github.workspace }}
+          echo "GITHUB_TOKEN length: ${{ secrets.GITHUB_TOKEN | length }}"
         uses: actions/checkout@v4
 
       - name: Setup Node
@@ -20,14 +29,24 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: |
+          echo "=== npm ci ==="
+          npm ci 2>&1
+          echo "EXIT: $?"
 
       - name: Build
         env:
           VITE_MINIMAX_API_KEY: ${{ secrets.MINIMAX_API_KEY }}
           VITE_API_BASE_URL: ${{ secrets.API_BASE_URL }}
           VITE_API_MODEL: ${{ secrets.API_MODEL }}
-        run: npm run build
+        run: |
+          echo "=== npm run build ==="
+          echo "VITE_MINIMAX_API_KEY present: ${{ env.VITE_MINIMAX_API_KEY != '' }}"
+          npm run build 2>&1
+          echo "EXIT: $?"
 
       - name: Deploy
-        run: npx gh-pages -d dist
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
