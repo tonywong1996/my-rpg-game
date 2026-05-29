@@ -197,11 +197,11 @@ function BattleCharacter({ unit, isPlayer, isHit }: { unit: BattleUnit; isPlayer
       )}
 
       {/* 角色名称标签 */}
-      <div className="whitespace-nowrap mb-1">
-        <span className="text-xs font-bold tracking-wider text-[#f5f0c4] drop-shadow-lg">
+      <div className="whitespace-nowrap mb-2">
+        <span className="text-xs font-bold tracking-wider text-white drop-shadow-lg">
           {getDisplayName(unit)}
         </span>
-        <span className="text-[10px] text-[#a0a0b0] ml-1">Lv.{unit.level}</span>
+        <span className="text-[10px] text-white/60 ml-1">Lv.{unit.level}</span>
       </div>
 
       {/* 角色形象 */}
@@ -373,32 +373,26 @@ function BattleCharacter({ unit, isPlayer, isHit }: { unit: BattleUnit; isPlayer
         )}
       </div>
 
-      {/* HP 和 MP 条 - 统一在角色下方 */}
-      <div className="mt-2 space-y-1">
-        <div className="flex items-center gap-1">
-          <span className="text-[10px] text-[#e94560] font-bold w-5">HP</span>
-          <div className="w-24 h-3 bg-[#1a0a0a] rounded-full overflow-hidden border border-[#3a1a1a]">
-            <div
-              className="h-full bg-gradient-to-r from-[#e94560] to-[#ff6b6b] transition-all duration-300 rounded-full"
-              style={{ width: `${hpPercent}%` }}
-            />
-          </div>
-          <span className="text-[10px] text-[#e94560] font-mono">{unit.hp}/{unit.maxHp}</span>
+      {/* HP/MP 一体化显示 - 仿sample风格 */}
+      <div className="mt-2 px-3 py-1.5 bg-[#2c2c2c] rounded-full border border-white/10 min-w-[140px]">
+        <div className="flex items-center justify-between gap-2 text-[11px]">
+          <span className="text-[#ffd966] font-bold">❤️</span>
+          <span className="text-white/90 font-mono">{unit.hp}/{unit.maxHp}</span>
+          <span className="text-[#5ac8fa] font-bold">⚡</span>
+          <span className="text-white/70 font-mono">{unit.mp}/{unit.maxMp}</span>
         </div>
-        <div className="flex items-center gap-1">
-          <span className="text-[10px] text-[#3a8ac4] font-bold w-5">MP</span>
-          <div className="w-24 h-3 bg-[#0a0a1a] rounded-full overflow-hidden border border-[#1a1a3a]">
-            <div
-              className="h-full bg-gradient-to-r from-[#3a8ac4] to-[#5ab8ff] transition-all duration-300 rounded-full"
-              style={{ width: `${mpPercent}%` }}
-            />
-          </div>
-          <span className="text-[10px] text-[#3a8ac4] font-mono">{unit.mp}/{unit.maxMp}</span>
+        {/* HP条 */}
+        <div className="mt-1 h-1.5 bg-[#1a0a0a] rounded-full overflow-hidden">
+          <div className="h-full bg-gradient-to-r from-[#e94560] to-[#ff6b6b] transition-all duration-300 rounded-full" style={{ width: `${hpPercent}%` }} />
         </div>
       </div>
 
       {/* 玩家技能图标 - 在角色下方显示已解锁的技能 */}
-      {isPlayer && <SkillIcons />}
+      {isPlayer && (
+        <div className="mt-2 text-[10px] text-white/60 bg-white/10 px-3 py-1 rounded-full">
+          🌀 气流环绕
+        </div>
+      )}
     </div>
   )
 }
@@ -638,27 +632,42 @@ export default function BattleScene() {
 
   return (
     <>
-      {/* 战斗纯白背景 */}
-      <div className="absolute inset-0 bg-gradient-to-b from-white via-[#f0f4ff] to-[#e8edf8] z-0" />
-      <div className="relative z-10 w-full h-full bg-white/40 overflow-hidden">
-        {/* 地面 */}
-        <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-[#d0d5dc] to-transparent" />
+      {/* 战斗背景 - 暖色森林渐变 */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#92b37c] via-[#7ca368] to-[#5e7c4c] z-0" />
+      <div className="relative z-10 w-full h-full overflow-hidden">
+        {/* 战斗主容器 - 圆角卡片 */}
+        <div className="h-full flex flex-col">
+          {/* 战斗画面区 */}
+          <div className="flex-1 flex items-center justify-center gap-4 md:gap-8 px-3 pt-2 pb-2">
+            {/* 左侧: 小莉卡片 */}
+            <div className="flex flex-col items-center bg-black/20 backdrop-blur-sm rounded-[40px] px-6 py-4 md:px-8 md:py-5 border border-white/10 shadow-lg">
+              <div className={`transition-transform duration-200 ${attacking === 'player' ? 'translate-x-4' : ''}`}>
+                <BattleCharacter unit={playerUnit} isPlayer={true} isHit={hitTarget === 'player'} />
+              </div>
+            </div>
 
-        {/* 装饰光点 */}
-        <div className="absolute inset-0 opacity-10">
-          {Array.from({ length: 15 }).map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-0.5 h-0.5 bg-[#5ac8fa] rounded-full"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                opacity: Math.random() * 0.5 + 0.1,
-                animation: `pulse ${2 + Math.random() * 3}s infinite`,
-                animationDelay: `${Math.random() * 2}s`,
-              }}
-            />
-          ))}
+            {/* VS 标识 */}
+            <div className="flex flex-col items-center gap-1 flex-shrink-0">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#e94560] to-[#6b2d8c]
+                             flex items-center justify-center shadow-lg shadow-[#e94560]/30
+                             animate-pulse-slow border-2 border-white/20">
+                <span className="text-[10px] font-bold text-white tracking-widest">VS</span>
+              </div>
+              <div className="w-px h-12 bg-gradient-to-b from-white/30 to-transparent" />
+            </div>
+
+            {/* 右侧: 靶子卡片 */}
+            <div className="flex flex-col items-center bg-black/20 backdrop-blur-sm rounded-[40px] px-6 py-4 md:px-8 md:py-5 border border-white/10 shadow-lg">
+              <div className={`transition-transform duration-200 ${attacking === 'enemy' ? '-translate-x-4' : ''}`}>
+                <BattleCharacter unit={enemyUnit} isPlayer={false} isHit={hitTarget === 'enemy'} />
+              </div>
+            </div>
+          </div>
+
+          {/* 底部: 技能按钮栏 */}
+          <div className="flex-shrink-0 bg-[#2e2c2a] px-4 py-3 border-t-2 border-[#cb9e6b] flex items-center justify-center gap-2 flex-wrap">
+            <SkillIcons />
+          </div>
         </div>
 
         {/* 技能特效 - CSS 粒子 */}
@@ -669,17 +678,15 @@ export default function BattleScene() {
           </>
         )}
 
-        {/* 技能特效 - 图片（基于生成的精灵图） */}
+        {/* 技能特效 - 图片 */}
         {showSkillImage && (
           <>
-            {/* 技能图片特效 */}
             <SkillEffectImage skillId={showSkillImage} show={true} />
-            {/* 全屏闪光 */}
             <SkillEffectScreenFlash skillId={showSkillImage} show={true} />
           </>
         )}
 
-        {/* 漂浮伤害数字 - 根据技能类型定位到玩家或敌人侧 */}
+        {/* 漂浮伤害数字 */}
         {showDamage && (
           <FloatingDamage
             damage={showDamage.damage}
@@ -692,32 +699,6 @@ export default function BattleScene() {
         {/* 攻击闪动效果 */}
         {attacking === 'enemy' && <AttackFlash show={true} isPlayer={true} />}
         {attacking === 'player' && <AttackFlash show={true} isPlayer={false} />}
-
-        {/* 敌我布局 */}
-        <div className="relative z-10 flex items-center justify-center gap-6 md:gap-12 h-full px-2 pt-4 pb-6">
-          {/* 玩家 - 左侧 */}
-          <div className={`transition-transform duration-200 ${attacking === 'player' ? 'translate-x-4' : ''}`}>
-            <BattleCharacter unit={playerUnit} isPlayer={true} isHit={hitTarget === 'player'} />
-          </div>
-
-          {/* VS 标识 */}
-          <div className="flex flex-col items-center gap-1 flex-shrink-0">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#e94560] to-[#6b2d8c]
-                           flex items-center justify-center shadow-lg shadow-[#e94560]/30
-                           animate-pulse-slow">
-              <span className="text-[10px] font-bold text-white tracking-widest">VS</span>
-            </div>
-            <div className="w-px h-16 bg-gradient-to-b from-[#e94560]/50 to-transparent" />
-          </div>
-
-          {/* 敌人 - 右侧 */}
-          <div className={`transition-transform duration-200 ${attacking === 'enemy' ? '-translate-x-4' : ''}`}>
-            <BattleCharacter unit={enemyUnit} isPlayer={false} isHit={hitTarget === 'enemy'} />
-          </div>
-        </div>
-
-        {/* 顶部渐变遮罩 */}
-        <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-white/80 to-transparent pointer-events-none" />
       </div>
     </>
   )
