@@ -138,12 +138,18 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
             </div>
           </div>
 
-          {/* 角色描述 */}
-          {selectedCharacter && (
-            <p className="mt-6 text-xs text-white/50 text-center max-w-md mx-auto leading-relaxed animate-fadeIn backdrop-blur-sm bg-white/5 rounded-2xl p-4">
-              {getCharacterDescription(selectedCharacter)}
-            </p>
-          )}
+          {/* 角色描述 - 固定占位，不撑开布局 */}
+          <div className="mt-6 min-h-[80px] w-full max-w-md mx-auto">
+            {selectedCharacter ? (
+              <p className="text-xs text-white/50 text-center leading-relaxed animate-fadeIn backdrop-blur-sm bg-white/5 rounded-2xl p-4">
+                {getCharacterDescription(selectedCharacter)}
+              </p>
+            ) : (
+              <p className="text-xs text-white/20 text-center leading-relaxed p-4">
+                点击角色查看介绍
+              </p>
+            )}
+          </div>
         </div>
 
         {/* 菜单按钮组 */}
