@@ -207,19 +207,19 @@ function BattleCharacter({ unit, isPlayer, isHit }: { unit: BattleUnit; isPlayer
       {/* 角色形象 */}
       <div>
         {isPlayer && charImage ? (
-          // 玩家角色立绘 - 采用竖版比例
-          <div className="w-32 h-44 md:w-36 md:h-52 animate-battle-idle-player">
+          // 玩家角色立绘 - 填满区域
+          <div className="w-40 h-48 md:w-48 md:h-56 animate-battle-idle-player">
             <img
               src={charImage}
               alt={unit.name}
-              className="w-full h-full object-contain rounded-xl shadow-lg shadow-[#3a8ac4]/20"
+              className="w-full h-full object-cover rounded-xl shadow-lg shadow-[#3a8ac4]/20"
               style={{ imageRendering: 'auto' }}
             />
           </div>
         ) : (
-          // 靶场目标
+          // 靶场目标 - 放大
           <div
-            className={`w-28 h-28 md:w-36 md:h-36 animate-battle-idle-enemy`}
+            className={`w-32 h-32 md:w-40 md:h-40 animate-battle-idle-enemy`}
           >
             <svg viewBox="0 0 64 64" className="w-full h-full">
               {isPlayer ? (
@@ -694,14 +694,14 @@ export default function BattleScene() {
         {attacking === 'player' && <AttackFlash show={true} isPlayer={false} />}
 
         {/* 敌我布局 */}
-        <div className="relative z-10 flex items-center justify-around h-full px-4 pt-4 pb-8">
+        <div className="relative z-10 flex items-center justify-center gap-6 md:gap-12 h-full px-2 pt-4 pb-6">
           {/* 玩家 - 左侧 */}
           <div className={`transition-transform duration-200 ${attacking === 'player' ? 'translate-x-4' : ''}`}>
             <BattleCharacter unit={playerUnit} isPlayer={true} isHit={hitTarget === 'player'} />
           </div>
 
           {/* VS 标识 */}
-          <div className="flex flex-col items-center gap-1">
+          <div className="flex flex-col items-center gap-1 flex-shrink-0">
             <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#e94560] to-[#6b2d8c]
                            flex items-center justify-center shadow-lg shadow-[#e94560]/30
                            animate-pulse-slow">
