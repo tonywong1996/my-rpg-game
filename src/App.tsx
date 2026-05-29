@@ -93,18 +93,22 @@ function App() {
         <GameCover />
         
         {/* 开始按钮 - 点击进入菜单 */}
-        <div className="absolute bottom-[12%] left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
+        <div className="absolute bottom-[12%] left-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
           <button
             onClick={handleCoverClick}
-            className="px-8 py-2.5 bg-[#3a8ac4] text-white text-base font-bold rounded-lg 
-                       hover:bg-[#4a9ad4] active:scale-95 transition-all 
-                       shadow-lg shadow-[#3a8ac4]/30 tracking-[0.3em] ml-2"
-            style={{ imageRendering: 'pixelated' }}
+            className="group relative px-14 py-3.5 bg-gradient-to-r from-purple-600 to-cyan-500 
+                       text-white text-lg font-bold tracking-[0.4em] rounded-2xl
+                       hover:from-purple-500 hover:to-cyan-400 active:scale-95 
+                       transition-all duration-300 shadow-xl shadow-purple-500/30
+                       hover:shadow-purple-400/50 hover:shadow-2xl
+                       border border-white/20 overflow-hidden"
           >
-            踏入修真
+            <span className="relative z-10 ml-2">踏入修真</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent 
+                          -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
           </button>
-          <p className="text-[10px] text-[#f5f0c4]/40 tracking-widest">
-            点击进入 · 一念成劫
+          <p className="text-xs text-purple-300/50 tracking-[0.5em] animate-pulse">
+            点 击 进 入 · 一 念 成 劫
           </p>
         </div>
       </div>

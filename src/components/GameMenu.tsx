@@ -158,7 +158,7 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
               group relative px-16 py-4 w-72 text-base font-bold tracking-[0.3em] rounded-2xl
               transition-all duration-500 overflow-hidden
               ${selectedCharacter
-                ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:from-cyan-400 hover:to-blue-400 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:scale-105 active:scale-95'
+                ? 'bg-gradient-to-r from-purple-600 to-cyan-500 text-white hover:from-purple-500 hover:to-cyan-400 shadow-xl shadow-purple-500/25 hover:shadow-purple-400/40 hover:scale-105 active:scale-95 border border-white/20'
                 : 'bg-white/5 text-white/20 cursor-not-allowed border border-white/10'
               }
             `}
@@ -172,11 +172,13 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
           {/* 存档选择 */}
           <button
             onClick={onSelectSave}
-            className="group relative px-16 py-4 w-72 bg-white/5 text-white/60 text-base font-bold tracking-[0.3em] rounded-2xl
-                       hover:bg-white/10 hover:text-white/80 hover:scale-105 active:scale-95 transition-all duration-300
-                       border border-white/10 hover:border-white/20"
+            className="group relative px-16 py-4 w-72 text-base font-bold tracking-[0.3em] rounded-2xl
+                       bg-white/5 text-white/60 border border-white/10
+                       hover:bg-white/10 hover:text-white/80 hover:border-purple-400/40 hover:scale-105 active:scale-95 
+                       transition-all duration-300 overflow-hidden"
           >
             <span className="relative z-10">存档选择</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-500/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
           </button>
         </div>
 
