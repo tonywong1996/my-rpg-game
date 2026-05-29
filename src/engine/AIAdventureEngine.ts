@@ -250,7 +250,7 @@ export async function fetchApiConfig(): Promise<APIConfig> {
   if (envKey) {
     console.log('[API Config] 使用环境变量注入的 API Key')
     cachedApiConfig = {
-      baseUrl: envBaseUrl || 'https://api.minimaxi.com/v1',
+      baseUrl: envBaseUrl,
       apiKey: envKey,
       model: envModel || 'MiniMax-M2.7'
     }
@@ -268,7 +268,7 @@ export async function fetchApiConfig(): Promise<APIConfig> {
   } catch (err) {
     console.warn('[API Config] 从 GitHub 加载失败，使用默认配置:', err)
     return {
-      baseUrl: 'https://api.minimaxi.com/v1',
+      baseUrl: 'https://api.minimaxi.com',
       apiKey: '',
       model: 'MiniMax-M2.7'
     }
@@ -290,7 +290,7 @@ class AIAdventureEngine {
 
   constructor(config?: Partial<APIConfig>) {
     this.apiConfig = {
-      baseUrl: 'https://api.deepseek.com',
+      baseUrl: 'https://api.minimaxi.com',
       apiKey: '',
       model: 'deepseek-chat',
       ...config
