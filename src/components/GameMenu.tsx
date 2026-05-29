@@ -72,27 +72,27 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
       </div>
 
       {/* 菜单内容 */}
-      <div className="relative z-10 flex flex-col items-center justify-center w-full h-full px-4">
+      <div className="relative z-10 flex flex-col items-center w-full h-full px-4 pt-14 md:pt-20">
         {/* 主标题 */}
-        <h1 className="text-4xl md:text-5xl font-bold mb-3 tracking-[0.2em]">
+        <h1 className="text-4xl md:text-5xl font-bold mb-2 tracking-[0.2em]">
           <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent drop-shadow-lg">
             仙魔录
           </span>
         </h1>
 
         {/* 副标题 */}
-        <p className="text-xs md:text-sm tracking-[0.8em] text-white/40 mb-10">
+        <p className="text-xs md:text-sm tracking-[0.8em] text-white/40 mb-8 md:mb-10">
           仙魔殊途 · 一念成劫
         </p>
 
         {/* 角色选择区 */}
-        <div className="mb-10">
+        <div>
           <p className="text-center text-xs text-white/30 tracking-widest mb-6">
             选 择 你 的 身 份
           </p>
-          <div className="flex items-center gap-8 md:gap-16">
+          <div className="flex items-center justify-center gap-8 md:gap-16">
             {/* 小莉 (左) */}
-            <div className="flex flex-col items-center gap-3 group cursor-pointer" onClick={() => handleSelectCharacter('xiaoli')}>
+            <div className="flex flex-col items-center gap-3 group cursor-pointer flex-shrink-0" onClick={() => handleSelectCharacter('xiaoli')}>
               <div className={`
                 relative p-1 rounded-3xl transition-all duration-500
                 ${selectedCharacter === 'xiaoli'
@@ -115,7 +115,7 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
             </div>
 
             {/* 小可 (右) */}
-            <div className="flex flex-col items-center gap-3 group cursor-pointer" onClick={() => handleSelectCharacter('xiaoke')}>
+            <div className="flex flex-col items-center gap-3 group cursor-pointer flex-shrink-0" onClick={() => handleSelectCharacter('xiaoke')}>
               <div className={`
                 relative p-1 rounded-3xl transition-all duration-500
                 ${selectedCharacter === 'xiaoke'
@@ -153,7 +153,7 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
         </div>
 
         {/* 菜单按钮组 */}
-        <div className="flex flex-col items-center gap-4">
+        <div className="flex flex-col items-center gap-4 mt-auto pb-16">
           {/* 进入游戏 - 需选择角色 */}
           <button
             onClick={handleEnterGame}
