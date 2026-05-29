@@ -35,7 +35,7 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
 
   const getCharacterDescription = (id: CharacterId) => {
     if (id === 'xiaoli') {
-      return '银发温柔的射击少女。就读于普通高中，家境一般但成绩优异，是班里的学霸。性格温柔好奇，对新鲜事物充满热情。从小跟着父亲在靶场练出了一手好枪法（射击技术 8/10）。梦想用双手保护重要的人。'
+      return '银白低马尾的高二女生，琥珀色眼眸中总带着温和的好奇心。就读普通高中，成绩年级前三。父亲是前军队射击教官，母亲早逝。从小在靶场长大，枪法精准。一次擦枪时偶然将"伯努利原理"注入子弹，发现了用知识驱动风的秘密——从此开始用物理课本上的公式改造子弹和装备。战斗方式不是蛮力，而是工程思维。'
     }
     if (id === 'xiaoke') {
       return '蓝色短发的温柔大哥哥。中等家庭出身，从小就爱钻研机械，拆装各种装置。根据父亲设计的机械模型，经过多年改良，打造出了独一无二的千机伞——能变幻刀、盾、枪等多种形态。平时呆呆的不爱说话，但一到战斗中就会变得异常爆裂，喜欢贴身近战，令人难以招架。'
@@ -76,14 +76,14 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
         <div className="flex flex-col items-center px-4">
           {/* 主标题 */}
           <h1 className="text-4xl md:text-5xl font-bold mb-2 tracking-[0.2em]">
-            <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent drop-shadow-lg">
-              仙魔录
+            <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-sky-400 bg-clip-text text-transparent drop-shadow-lg">
+              风引
             </span>
           </h1>
 
           {/* 副标题 */}
-          <p className="text-xs md:text-sm tracking-[0.8em] text-white/40 mb-8 md:mb-10">
-            仙魔殊途 · 一念成劫
+          <p className="text-xs md:text-sm tracking-[0.6em] text-white/40 mb-8 md:mb-10">
+            知识即是力量
           </p>
 
         {/* 角色选择区 */}
@@ -189,7 +189,7 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
 
         {/* 底部提示 */}
         <p className="text-xs text-white/20 tracking-widest mt-8 pb-2">
-          {selectedCharacter ? '✓ 选定身份，踏入修真之路' : '请先选择身份'}
+          {selectedCharacter ? '✓ 选定身份，踏入世界' : '请先选择身份'}
         </p>
         </div>
       </div>

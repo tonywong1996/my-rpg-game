@@ -31,7 +31,7 @@ export default function CharacterPortrait({ characterId, selected, onClick }: Ch
   } else if (characterId === 'xiaoli') {
     imageSrc = xiaoliImage
     altText = '小 莉'
-    titleText = '射 击 手'
+    titleText = '风 引 者'
   } else if (characterId === 'xiaoke') {
     imageSrc = xiaokeImage
     altText = '小 可'
