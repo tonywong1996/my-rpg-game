@@ -47,12 +47,16 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
 
   return (
     <div className="relative w-full h-screen overflow-hidden">
-      {/* 渐变背景 */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900" />
+      {/* 渐变背景 - 深蓝夜幕 + 暖紫点缀 */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#0b1120] via-[#161b35] to-[#0a0a18]" />
 
-      {/* 背景光晕 */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-[128px]" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-[128px]" />
+      {/* 三层光晕 - 暖玫瑰 + 冷蓝 + 紫罗兰，营造层次感 */}
+      <div className="absolute top-1/5 left-1/5 w-[500px] h-[500px] bg-rose-400/15 rounded-full blur-[180px]" />
+      <div className="absolute bottom-1/3 right-1/6 w-[450px] h-[450px] bg-sky-400/15 rounded-full blur-[180px]" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-violet-500/12 rounded-full blur-[200px]" />
+
+      {/* 上方柔光 */}
+      <div className="absolute top-0 left-0 right-0 h-1/3 bg-gradient-to-b from-white/[0.03] to-transparent" />
 
       {/* 装饰性粒子层 */}
       <div className="absolute inset-0">
@@ -88,19 +92,19 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
 
         {/* 角色选择区 */}
         <div>
-          <p className="text-center text-xs text-white/30 tracking-widest mb-6">
+          <p className="text-center text-xs text-white/40 tracking-widest mb-6">
             选 择 你 的 身 份
           </p>
           <div className="flex items-center justify-center gap-8 md:gap-16">
             {/* 小莉 (左) */}
             <div className="flex flex-col items-center gap-3 group cursor-pointer flex-shrink-0" onClick={() => handleSelectCharacter('xiaoli')}>
-              <div className={`
-                relative p-1 rounded-3xl transition-all duration-500
+                <div className={` 
+                relative p-1.5 rounded-3xl transition-all duration-500
                 ${selectedCharacter === 'xiaoli'
                   ? 'bg-gradient-to-r from-pink-400 to-rose-500 shadow-lg shadow-pink-500/30'
-                  : 'bg-white/5 hover:bg-white/10'
+                  : 'bg-white/[0.06] hover:bg-white/[0.10]'
                 }
-              `}>
+              `}> 
                 <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-pink-400/20 to-rose-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
                 <CharacterPortrait
                   characterId="xiaoli"
@@ -142,11 +146,11 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
           {/* 角色描述 - 固定高度，不撑开布局 */}
           <div className="mt-6 h-[90px] w-full max-w-md mx-auto relative">
             {selectedCharacter ? (
-              <p className="absolute inset-0 text-xs text-white/50 text-center leading-relaxed backdrop-blur-sm bg-white/5 rounded-2xl p-4 animate-fadeIn overflow-y-auto">
+              <p className="absolute inset-0 text-xs text-white/70 text-center leading-relaxed backdrop-blur-md bg-white/[0.06] rounded-2xl p-4 animate-fadeIn overflow-y-auto border border-white/10">
                 {getCharacterDescription(selectedCharacter)}
               </p>
             ) : (
-              <p className="absolute inset-0 text-xs text-white/20 text-center leading-relaxed p-4">
+              <p className="absolute inset-0 text-xs text-white/30 text-center leading-relaxed p-4">
                 点击角色查看介绍
               </p>
             )}
