@@ -118,7 +118,7 @@ function App() {
           </p>
           <button
             onClick={handleCoverClick}
-            className="group relative px-20 py-5 bg-gradient-to-r from-cyan-500/90 via-blue-500/90 to-purple-500/90 
+            className="group relative px-28 py-5 bg-gradient-to-r from-cyan-500/90 via-blue-500/90 to-purple-500/90 
                        text-white text-xl font-bold tracking-[0.4em] rounded-2xl
                        hover:from-cyan-400 hover:via-blue-400 hover:to-purple-400 active:scale-95 
                        transition-all duration-300 
