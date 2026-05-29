@@ -47,13 +47,13 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
 
   return (
     <div className="relative w-full h-screen overflow-hidden">
-      {/* 渐变背景 - 深蓝夜幕 + 暖紫点缀 */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0b1120] via-[#161b35] to-[#0a0a18]" />
+      {/* 渐变背景 - 蓝紫夜幕 + 暖光点缀 */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#1a2a4a] via-[#2a3a6a] to-[#1a1a3a]" />
 
       {/* 三层光晕 - 暖玫瑰 + 冷蓝 + 紫罗兰，营造层次感 */}
-      <div className="absolute top-1/5 left-1/5 w-[500px] h-[500px] bg-rose-400/15 rounded-full blur-[180px]" />
-      <div className="absolute bottom-1/3 right-1/6 w-[450px] h-[450px] bg-sky-400/15 rounded-full blur-[180px]" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-violet-500/12 rounded-full blur-[200px]" />
+      <div className="absolute top-1/5 left-1/5 w-[500px] h-[500px] bg-rose-400/30 rounded-full blur-[180px]" />
+      <div className="absolute bottom-1/3 right-1/6 w-[450px] h-[450px] bg-sky-400/30 rounded-full blur-[180px]" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-violet-500/25 rounded-full blur-[200px]" />
 
       {/* 上方柔光 */}
       <div className="absolute top-0 left-0 right-0 h-1/3 bg-gradient-to-b from-white/[0.03] to-transparent" />
@@ -102,7 +102,7 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
                 relative p-1.5 rounded-3xl transition-all duration-500
                 ${selectedCharacter === 'xiaoli'
                   ? 'bg-gradient-to-r from-pink-400 to-rose-500 shadow-lg shadow-pink-500/30'
-                  : 'bg-white/[0.06] hover:bg-white/[0.10]'
+                  : 'bg-white/[0.12] hover:bg-white/[0.18] border border-white/20'
                 }
               `}> 
                 <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-pink-400/20 to-rose-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -125,7 +125,7 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
                 relative p-1 rounded-3xl transition-all duration-500
                 ${selectedCharacter === 'xiaoke'
                   ? 'bg-gradient-to-r from-blue-400 to-cyan-500 shadow-lg shadow-blue-500/30'
-                  : 'bg-white/5 hover:bg-white/10'
+                  : 'bg-white/[0.12] hover:bg-white/[0.18] border border-white/20'
                 }
               `}>
                 <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-blue-400/20 to-cyan-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
