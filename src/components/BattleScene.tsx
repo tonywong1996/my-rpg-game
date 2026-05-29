@@ -213,15 +213,24 @@ function BattleCharacter({ unit, isPlayer, isHit, attackFrame = 0 }: { unit: Bat
         <span className="text-[10px] text-white/60 ml-1">Lv.{unit.level}</span>
       </div>
 
-      {/* 角色形象 - 统一容器大小，图片填满不裁剪不变形 */}
-      <div className="w-36 h-44 md:w-40 md:h-52 overflow-hidden flex items-center justify-center">
-        {isPlayer && charImage ? (
-          <img
-            src={charImage}
-            alt={unit.name}
-            className="w-full h-full object-cover rounded-xl shadow-lg shadow-[#3a8ac4]/20"
-            style={{ imageRendering: 'auto' }}
-          />
+      {/* 角色形象 - 统一容器大小，攻击动画用CSS背景定位切换帧 */}
+      <div className="w-36 h-44 md:w-40 md:h-52 overflow-hidden flex items-center justify-center relative">
+        {isPlayer ? (
+          <>
+            {XIAOLI_BATTLE_FRAMES.map((frame, i) => (
+              <img
+                key={i}
+                src={frame}
+                alt=""
+                className="absolute w-36 h-44 md:w-40 md:h-52 object-cover rounded-xl shadow-lg shadow-[#3a8ac4]/20 transition-opacity duration-75"
+                style={{
+                  opacity: attackFrame === i ? 1 : 0,
+                  imageRendering: 'auto',
+                  pointerEvents: 'none',
+                }}
+              />
+            ))}
+          </>
         ) : (
           // 靶场目标 - 和玩家同样容器大小
           <div className="w-36 h-44 md:w-40 md:h-52 flex items-center justify-center">
