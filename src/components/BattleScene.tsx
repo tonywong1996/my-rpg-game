@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useGameStore, BattleUnit } from '../store/useGameStore'
 import azurlaneSwordImage from '../../assets/images/char_azurlane_sword_001.png'
 import askzyuSwordImage from '../../assets/images/char_askzyu_sword_001.png'
+import xiaoliImage from '../assets/images/char_xiaoli_001.jpg'
 import { SkillEffectImage, SkillEffectScreenFlash } from './SkillEffectOverlay'
 import { useBattleSFX } from '../hooks/useBattleSFX'
 
@@ -12,6 +13,7 @@ function getCharacterImage(unit: BattleUnit): string {
   if (unit.isEnemy) return ''
   if (unit.characterId === 'azurlane_sword') return azurlaneSwordImage
   if (unit.characterId === 'askzyu_sword') return askzyuSwordImage
+  if (unit.characterId === 'xiaoli') return xiaoliImage
   return azurlaneSwordImage
 }
 
@@ -203,20 +205,19 @@ function BattleCharacter({ unit, isPlayer, isHit }: { unit: BattleUnit; isPlayer
       {/* 角色形象 */}
       <div>
         {isPlayer && charImage ? (
-          // 玩家角色立绘
-          <div className="w-36 h-36 md:w-44 md:h-44 animate-battle-idle-player">
+          // 玩家角色立绘 - 采用竖版比例
+          <div className="w-32 h-44 md:w-36 md:h-52 animate-battle-idle-player">
             <img
               src={charImage}
               alt={unit.name}
-              className="w-full h-full object-cover rounded-xl shadow-lg shadow-[#3a8ac4]/20"
-              style={{ imageRendering: 'auto', transform: 'scaleX(-1)' }}
+              className="w-full h-full object-contain rounded-xl shadow-lg shadow-[#3a8ac4]/20"
+              style={{ imageRendering: 'auto' }}
             />
           </div>
         ) : (
-          // 像素SVG角色（玩家后备 + 敌人）
+          // 靶场目标
           <div
-            className={`w-28 h-28 md:w-36 md:h-36 animate-battle-idle-${isPlayer ? 'player' : 'enemy'}`}
-            style={{ imageRendering: 'pixelated' }}
+            className={`w-28 h-28 md:w-36 md:h-36 animate-battle-idle-enemy`}
           >
             <svg viewBox="0 0 64 64" className="w-full h-full">
               {isPlayer ? (
@@ -235,120 +236,135 @@ function BattleCharacter({ unit, isPlayer, isHit }: { unit: BattleUnit; isPlayer
                   <rect x="18" y="34" width="28" height="3" fill="#6a7b7b" />
                 </>
               ) : (
-                // 敌人角色
-                <>
-                  {unit.name === '山魈' && (
+                // 靶场目标
+                <g>
+                  {/* 固定靶 */}
+                  {unit.name === '固定靶' && (
                     <>
-                      <rect x="10" y="8" width="44" height="46" fill="#4a6b3a" rx="4" />
-                      <rect x="16" y="14" width="32" height="24" fill="#5a7b4a" rx="3" />
-                      <rect x="20" y="20" width="6" height="5" fill="#ff0000" />
-                      <rect x="38" y="20" width="6" height="5" fill="#ff0000" />
-                      <rect x="22" y="21" width="2" height="3" fill="#ff4444" />
-                      <rect x="40" y="21" width="2" height="3" fill="#ff4444" />
-                      <rect x="22" y="30" width="20" height="6" fill="#2a0a0a" />
-                      <rect x="22" y="30" width="20" height="2" fill="#8a0a0a" />
-                      <rect x="22" y="30" width="3" height="4" fill="#fff" />
-                      <rect x="39" y="30" width="3" height="4" fill="#fff" />
-                      <rect x="8" y="12" width="6" height="4" fill="#3a5a2a" />
-                      <rect x="50" y="12" width="6" height="4" fill="#3a5a2a" />
-                      <rect x="14" y="6" width="36" height="4" fill="#3a5a2a" />
-                    </>
-                  )}
-                  {unit.name === '野狼' && (
-                    <>
-                      <rect x="8" y="16" width="48" height="32" fill="#6b6b5a" rx="6" />
-                      <rect x="12" y="20" width="40" height="22" fill="#7a7a6a" rx="4" />
-                      <rect x="16" y="24" width="6" height="4" fill="#ffff00" />
-                      <rect x="42" y="24" width="6" height="4" fill="#ffff00" />
-                      <rect x="18" y="25" width="2" height="2" fill="#1a1a0a" />
-                      <rect x="44" y="25" width="2" height="2" fill="#1a1a0a" />
-                      <rect x="24" y="32" width="16" height="4" fill="#3a3a2a" />
-                      <rect x="12" y="8" width="8" height="10" fill="#5a5a4a" />
-                      <rect x="44" y="8" width="8" height="10" fill="#5a5a4a" />
-                      <rect x="0" y="30" width="8" height="4" fill="#5a5a4a" />
-                    </>
-                  )}
-                  {unit.name === '毒蛇' && (
-                    <>
-                      <rect x="4" y="24" width="56" height="16" fill="#4a6b3a" rx="8" />
-                      <rect x="6" y="26" width="52" height="12" fill="#5a7b4a" rx="6" />
-                      <rect x="16" y="26" width="4" height="6" fill="#00ff00" />
-                      <rect x="44" y="26" width="4" height="6" fill="#00ff00" />
-                      <rect x="17" y="28" width="2" height="2" fill="#0a1a0a" />
-                      <rect x="45" y="28" width="2" height="2" fill="#0a1a0a" />
-                      <rect x="54" y="30" width="6" height="2" fill="#ff0000" />
-                      <rect x="56" y="28" width="2" height="6" fill="#ff0000" />
-                      <rect x="22" y="28" width="4" height="4" fill="#4a6b3a" />
-                      <rect x="30" y="28" width="4" height="4" fill="#4a6b3a" />
-                      <rect x="38" y="28" width="4" height="4" fill="#4a6b3a" />
-                    </>
-                  )}
-                  {unit.name === '盗匪' && (
-                    <>
-                      <rect x="12" y="8" width="40" height="44" fill="#3a2a1a" rx="3" />
-                      <rect x="14" y="14" width="36" height="24" fill="#4a3a2a" rx="3" />
-                      <rect x="20" y="20" width="6" height="4" fill="#fff" />
-                      <rect x="38" y="20" width="6" height="4" fill="#fff" />
-                      <rect x="22" y="21" width="3" height="2" fill="#0a0a0a" />
-                      <rect x="39" y="21" width="3" height="2" fill="#0a0a0a" />
-                      <rect x="14" y="10" width="36" height="6" fill="#6b2d2d" rx="2" />
-                      <rect x="14" y="8" width="36" height="3" fill="#8a3d3d" />
-                      <rect x="18" y="26" width="6" height="1" fill="#6b4a3a" />
-                      <rect x="46" y="30" width="6" height="18" fill="#6b6b6b" />
-                      <rect x="48" y="28" width="2" height="4" fill="#8a8a8a" />
+                      {/* 靶面 */}
+                      <circle cx="32" cy="28" r="22" fill="#e8e8e8" stroke="#888" strokeWidth="2" />
+                      <circle cx="32" cy="28" r="16" fill="#e94560" />
+                      <circle cx="32" cy="28" r="10" fill="#fff" />
+                      <circle cx="32" cy="28" r="4" fill="#e94560" />
+                      {/* 靶架 */}
+                      <rect x="30" y="50" width="4" height="12" fill="#6b6b6b" />
+                      <rect x="20" y="60" width="24" height="3" fill="#5a5a5a" rx="1" />
                     </>
                   )}
 
-                  {/* 新增怪物：妖兽 */}
-                  {unit.name === '妖兽' && (
+                  {/* 移动靶 */}
+                  {unit.name === '移动靶' && (
                     <>
-                      <rect x="8" y="4" width="48" height="48" fill="#3a1a2a" rx="6" />
-                      <rect x="12" y="10" width="40" height="30" fill="#4a2a3a" rx="4" />
-                      <rect x="16" y="16" width="8" height="6" fill="#ff4400" />
-                      <rect x="40" y="16" width="8" height="6" fill="#ff4400" />
-                      <rect x="18" y="17" width="4" height="4" fill="#ff8800" />
-                      <rect x="42" y="17" width="4" height="4" fill="#ff8800" />
-                      <rect x="18" y="28" width="28" height="8" fill="#2a0a1a" />
-                      <rect x="18" y="28" width="28" height="2" fill="#8a0a2a" />
-                      <rect x="6" y="8" width="4" height="20" fill="#2a1a1a" />
-                      <rect x="54" y="8" width="4" height="20" fill="#2a1a1a" />
-                      <rect x="24" y="40" width="4" height="10" fill="#2a1a1a" />
-                      <rect x="36" y="40" width="4" height="10" fill="#2a1a1a" />
+                      <circle cx="32" cy="26" r="18" fill="#2a6aaa" stroke="#3a8ac4" strokeWidth="2" />
+                      <circle cx="32" cy="26" r="12" fill="#fff" />
+                      <circle cx="32" cy="26" r="5" fill="#2a6aaa" />
+                      {/* 轨道底座 */}
+                      <rect x="8" y="52" width="48" height="4" fill="#4a4a4a" rx="2" />
+                      <rect x="28" y="44" width="8" height="8" fill="#5a5a5a" rx="1" />
+                      {/* 移动箭头 */}
+                      <polygon points="8,46 4,54 12,54" fill="#e94560" />
+                      <polygon points="56,46 60,54 52,54" fill="#e94560" />
                     </>
                   )}
 
-                  {/* 新增怪物：心魔 */}
-                  {unit.name === '心魔' && (
+                  {/* 无人机靶 */}
+                  {unit.name === '无人机靶' && (
                     <>
-                      <rect x="6" y="8" width="52" height="48" fill="#1a0a2a" rx="8" />
-                      <rect x="10" y="14" width="44" height="30" fill="#2a1a3a" rx="6" />
-                      <rect x="16" y="20" width="10" height="8" fill="#8800ff" />
-                      <rect x="38" y="20" width="10" height="8" fill="#8800ff" />
-                      <rect x="18" y="22" width="6" height="4" fill="#ff00ff" />
-                      <rect x="40" y="22" width="6" height="4" fill="#ff00ff" />
-                      <rect x="20" y="34" width="24" height="6" fill="#3a1a4a" />
-                      <rect x="28" y="34" width="8" height="2" fill="#ff00ff" />
-                      <rect x="2" y="16" width="6" height="24" fill="#1a0a2a" rx="2" />
-                      <rect x="56" y="16" width="6" height="24" fill="#1a0a2a" rx="2" />
-                      <rect x="26" y="46" width="4" height="8" fill="#1a0a2a" />
-                      <rect x="34" y="46" width="4" height="8" fill="#1a0a2a" />
-                      <rect x="14" y="2" width="36" height="8" fill="#2a1a3a" rx="4" />
+                      <rect x="14" y="20" width="36" height="24" fill="#5a7b4a" rx="4" stroke="#6b8b5a" strokeWidth="2" />
+                      <circle cx="32" cy="32" r="6" fill="#ff4444" />
+                      <circle cx="32" cy="32" r="3" fill="#fff" />
+                      {/* 旋翼 */}
+                      <rect x="6" y="28" width="10" height="2" fill="#8a8a8a" rx="1" />
+                      <rect x="48" y="28" width="10" height="2" fill="#8a8a8a" rx="1" />
+                      <rect x="24" y="10" width="2" height="10" fill="#8a8a8a" rx="1" />
+                      <rect x="38" y="10" width="2" height="10" fill="#8a8a8a" rx="1" />
+                      {/* 螺旋桨 */}
+                      <ellipse cx="11" cy="28" rx="7" ry="1" fill="#cccccc" opacity="0.6">
+                        <animateTransform attributeName="transform" type="rotate" from="0 11 28" to="360 11 28" dur="0.3s" repeatCount="indefinite" />
+                      </ellipse>
+                      <ellipse cx="53" cy="28" rx="7" ry="1" fill="#cccccc" opacity="0.6">
+                        <animateTransform attributeName="transform" type="rotate" from="0 53 28" to="360 53 28" dur="0.3s" repeatCount="indefinite" />
+                      </ellipse>
                     </>
                   )}
 
-                  {/* 通用敌人（未匹配到的） */}
-                  {!['山魈', '野狼', '毒蛇', '盗匪', '妖兽', '心魔'].includes(unit.name) && (
+                  {/* 风压测试机 */}
+                  {unit.name === '风压测试机' && (
                     <>
-                      <rect x="10" y="10" width="44" height="44" fill="#3a2a3a" rx="5" />
-                      <rect x="16" y="16" width="32" height="24" fill="#4a3a4a" rx="4" />
-                      <rect x="20" y="22" width="6" height="4" fill="#ff6666" />
-                      <rect x="38" y="22" width="6" height="4" fill="#ff6666" />
-                      <rect x="22" y="23" width="3" height="2" fill="#1a0a0a" />
-                      <rect x="39" y="23" width="3" height="2" fill="#1a0a0a" />
-                      <rect x="22" y="34" width="20" height="4" fill="#4a3a3a" />
+                      <rect x="10" y="12" width="44" height="36" fill="#2a3a5a" rx="4" stroke="#3a5a8a" strokeWidth="2" />
+                      {/* 压力表 */}
+                      <circle cx="32" cy="26" r="10" fill="#1a1a2a" stroke="#4a7aba" strokeWidth="2" />
+                      <circle cx="32" cy="26" r="8" fill="#0a0a1a" />
+                      <line x1="32" y1="26" x2="38" y2="22" stroke="#e94560" strokeWidth="2" />
+                      <circle cx="32" cy="26" r="2" fill="#5ac8fa" />
+                      {/* 出风口 */}
+                      <rect x="14" y="42" width="36" height="4" fill="#3a4a6a" rx="1" />
+                      {/* 风纹 */}
+                      <path d="M12 44 Q8 40 12 36" fill="none" stroke="#5ac8fa" strokeWidth="1.5" opacity="0.6">
+                        <animate attributeName="opacity" values="0.6;0.2;0.6" dur="1s" repeatCount="indefinite" />
+                      </path>
+                      <path d="M52 44 Q56 40 52 36" fill="none" stroke="#5ac8fa" strokeWidth="1.5" opacity="0.4">
+                        <animate attributeName="opacity" values="0.4;0.1;0.4" dur="1.5s" repeatCount="indefinite" />
+                      </path>
                     </>
                   )}
-                </>
+
+                  {/* 装甲靶 */}
+                  {unit.name === '装甲靶' && (
+                    <>
+                      <rect x="8" y="10" width="48" height="40" fill="#3a3a3a" rx="5" stroke="#6b6b6b" strokeWidth="3" />
+                      <rect x="14" y="16" width="36" height="28" fill="#5a5a5a" rx="3" stroke="#7a7a7a" strokeWidth="1" />
+                      <circle cx="32" cy="30" r="12" fill="#e94560" stroke="#ff6666" strokeWidth="2" />
+                      <circle cx="32" cy="30" r="7" fill="#fff" />
+                      <circle cx="32" cy="30" r="3" fill="#e94560" />
+                      {/* 装甲螺栓 */}
+                      <circle cx="14" cy="14" r="2" fill="#8a8a8a" />
+                      <circle cx="50" cy="14" r="2" fill="#8a8a8a" />
+                      <circle cx="14" cy="50" r="2" fill="#8a8a8a" />
+                      <circle cx="50" cy="50" r="2" fill="#8a8a8a" />
+                    </>
+                  )}
+
+                  {/* 全息模拟BOSS */}
+                  {unit.name === '全息模拟BOSS' && (
+                    <>
+                      {/* 全息投影光环 */}
+                      <ellipse cx="32" cy="44" rx="20" ry="6" fill="none" stroke="#5ac8fa" strokeWidth="1" opacity="0.5">
+                        <animate attributeName="opacity" values="0.5;0.2;0.5" dur="2s" repeatCount="indefinite" />
+                      </ellipse>
+                      {/* 身体 */}
+                      <rect x="14" y="12" width="36" height="32" fill="none" stroke="#5ac8fa" strokeWidth="2" rx="4" opacity="0.8">
+                        <animate attributeName="opacity" values="0.8;0.4;0.8" dur="1.5s" repeatCount="indefinite" />
+                      </rect>
+                      {/* 扫描线头部 */}
+                      <rect x="18" y="16" width="28" height="12" fill="#5ac8fa" opacity="0.15" rx="2" />
+                      <line x1="20" y1="20" x2="44" y2="20" stroke="#5ac8fa" strokeWidth="1.5" opacity="0.6" />
+                      <line x1="20" y1="24" x2="44" y2="24" stroke="#5ac8fa" strokeWidth="1.5" opacity="0.6" />
+                      {/* 全息眼睛 */}
+                      <circle cx="26" cy="22" r="3" fill="#5ac8fa" opacity="0.9" />
+                      <circle cx="38" cy="22" r="3" fill="#5ac8fa" opacity="0.9" />
+                      {/* 数据流 */}
+                      <text x="8" y="8" fill="#5ac8fa" fontSize="4" opacity="0.6">BOSS.exe</text>
+                      <text x="38" y="58" fill="#5ac8fa" fontSize="3" opacity="0.4">99%</text>
+                      {/* 扫描线动画 */}
+                      <rect x="14" y="12" width="36" height="2" fill="#5ac8fa" opacity="0.3">
+                        <animate attributeName="y" values="12;44;12" dur="2s" repeatCount="indefinite" />
+                      </rect>
+                    </>
+                  )}
+
+                  {/* 通用靶（未匹配到的） */}
+                  {!['固定靶', '移动靶', '无人机靶', '风压测试机', '装甲靶', '全息模拟BOSS'].includes(unit.name) && (
+                    <>
+                      <circle cx="32" cy="28" r="20" fill="#e8e8e8" stroke="#aaa" strokeWidth="2" />
+                      <circle cx="32" cy="28" r="14" fill="#e94560" />
+                      <circle cx="32" cy="28" r="8" fill="#fff" />
+                      <circle cx="32" cy="28" r="3" fill="#e94560" />
+                      <rect x="30" y="48" width="4" height="12" fill="#6b6b6b" />
+                      <rect x="20" y="58" width="24" height="3" fill="#5a5a5a" rx="1" />
+                    </>
+                  )}
+                </g>
               )}
             </svg>
           </div>
