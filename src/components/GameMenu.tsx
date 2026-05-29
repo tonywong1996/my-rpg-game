@@ -46,7 +46,7 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
   }
 
   return (
-    <div className="relative w-full h-full overflow-hidden">
+    <div className="relative w-full min-h-screen overflow-hidden flex flex-col items-center">
       {/* 动态渐变背景 */}
       <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900" />
 
@@ -71,8 +71,11 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
         ))}
       </div>
 
+      {/* 上撑开 */}
+      <div className="flex-1" />
+
       {/* 菜单内容 */}
-      <div className="relative z-10 flex flex-col items-center justify-center w-full h-full px-4">
+      <div className="relative z-10 flex flex-col items-center px-4">
         {/* 主标题 */}
         <h1 className="text-4xl md:text-5xl font-bold mb-2 tracking-[0.2em]">
           <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent drop-shadow-lg">
@@ -186,8 +189,11 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
           </button>
         </div>
 
+        {/* 下撑开 */}
+        <div className="flex-1" />
+
         {/* 底部提示 */}
-        <p className="absolute bottom-8 text-xs text-white/20 tracking-widest">
+        <p className="text-xs text-white/20 tracking-widest pb-6">
           {selectedCharacter ? '✓ 选定身份，踏入修真之路' : '请先选择身份'}
         </p>
       </div>
