@@ -354,13 +354,13 @@ export default function AIStoryPanel({ onBack }: AIStoryPanelProps) {
       {/* 顶部状态栏 */}
       <div className="flex items-center justify-between px-4 py-2 bg-[#12121c] border-b border-[#2a2a3a]">
         <div className="flex items-center gap-4">
-          <span className="text-xs text-[#6a6a8a]">📖 青石村</span>
+          <span className="text-xs text-[#6a6a8a]">🏘️ 射击俱乐部</span>
         </div>
         <div className="flex items-center gap-4 text-xs">
-          <span className="text-[#4a9a6a]">修为: {playerStats.cultivation}</span>
+          <span className="text-[#4a9a6a]">风能: {playerStats.windEnergy}</span>
           <span className="text-[#c4a86a]">金币: {playerStats.gold}</span>
           <span className="text-[#6a8aca]">HP: {playerStats.health}</span>
-          <span className="text-[#8a6aca]">MP: {playerStats.mana}</span>
+          <span className="text-[#8a6aca]">压缩气: {playerStats.compressedAir}</span>
         </div>
       </div>
 
