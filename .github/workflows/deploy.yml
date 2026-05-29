@@ -6,6 +6,11 @@ on:
       - master
   workflow_dispatch:
 
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -29,9 +34,13 @@ jobs:
           VITE_API_MODEL: ${{ secrets.API_MODEL }}
         run: npm run build
 
-      - name: Deploy via gh-pages CLI
-        run: |
-          npm i -g gh-pages
-          git config --global user.email "github-actions@bot.github"
-          git config --global user.name "github-actions"
-          npx gh-pages -d dist -u "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
