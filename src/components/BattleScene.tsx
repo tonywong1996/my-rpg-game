@@ -212,7 +212,7 @@ function BattleCharacter({ unit, isPlayer, isHit }: { unit: BattleUnit; isPlayer
             <img
               src={charImage}
               alt={unit.name}
-              className="w-full h-full object-cover rounded-xl shadow-lg shadow-[#3a8ac4]/20"
+              className="w-full h-full object-contain rounded-xl shadow-lg shadow-[#3a8ac4]/20"
               style={{ imageRendering: 'auto' }}
             />
           </div>
