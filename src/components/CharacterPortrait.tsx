@@ -50,7 +50,7 @@ export default function CharacterPortrait({ characterId, selected, onClick }: Ch
         transition-all duration-300 group
         ${selected 
           ? 'ring-2 ring-[#3a8ac4] shadow-lg shadow-[#3a8ac4]/30' 
-          : 'ring-1 ring-[#16213e] hover:ring-[#3a8ac4]/50 hover:scale-[1.02]'
+          : 'ring-2 ring-transparent hover:ring-[#3a8ac4]/50'
         }
       `}
     >
