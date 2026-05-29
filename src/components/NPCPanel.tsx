@@ -56,10 +56,10 @@ export default function NPCPanel() {
     setDialogueHistory([])
     // 首次与NPC对话，调用AI生成开场
     setTimeout(() => {
-      const initialPrompt = `【${npc.name}】是青石村的一位居民。请以这个NPC的身份说一段开场白，可以包括：
+      const initialPrompt = `【${npc.name}】是射击俱乐部附近的一位邻居。请以这个NPC的身份说一段开场白，可以包括：
 - 自我介绍
-- 对玩家的态度
-- 可能的请求或任务线索
+- 对路过的学生的态度
+- 可能的请求或线索
 
 请生成3个选项让玩家选择后续对话方向。`
       submitInput(initialPrompt)
@@ -191,10 +191,10 @@ export default function NPCPanel() {
               ✕
             </button>
           </div>
-          <div className="text-4xl mb-2">🏘️</div>
-          <h2 className="text-lg font-bold text-[#c47ac4] tracking-widest">村 民</h2>
+          <div className="text-4xl mb-2">🗂️</div>
+          <h2 className="text-lg font-bold text-[#c47ac4] tracking-widest">邻 居</h2>
           <p className="text-[11px] text-[#a0a0b0]/50 mt-1 tracking-wider">
-            点击村民开始对话，了解青石村的故事
+            点击邻居开始对话，了解俱乐部附近的街坊故事
           </p>
         </div>
 
@@ -203,9 +203,9 @@ export default function NPCPanel() {
           {displayNPCs.length === 0 ? (
             <div className="text-center py-8">
               <div className="text-4xl mb-3">📜</div>
-              <p className="text-[#a0a0b0] text-sm mb-2">暂无村民信息</p>
+              <p className="text-[#a0a0b0] text-sm mb-2">暂无邻居信息</p>
               <p className="text-[#6a6a8a] text-xs">
-                请先在下方与AI互动，了解青石村的故事
+                请先在下方与AI互动，了解俱乐部周边的故事
               </p>
             </div>
           ) : (
@@ -238,7 +238,7 @@ export default function NPCPanel() {
         {/* 底部装饰 */}
         <div className="px-5 py-3 bg-[#0a050a]/80 border-t border-[#3a1a4a]/30">
           <div className="flex items-center justify-between">
-            <span className="text-[9px] text-[#a0a0b0]/30 tracking-wider">青石村 · 居民名录</span>
+            <span className="text-[9px] text-[#a0a0b0]/30 tracking-wider">射击俱乐部 · 街坊名录</span>
             <span className="text-[9px] text-[#a0a0b0]/20">共 {displayNPCs.length} 位村民</span>
           </div>
         </div>

@@ -35,7 +35,7 @@ export default function QuestCenterPanel() {
           <div className="text-4xl mb-2">📜</div>
           <h2 className="text-lg font-bold text-[#3a8ac4] tracking-widest">任 务 中 心</h2>
           <p className="text-[11px] text-[#a0a0b0]/50 mt-1 tracking-wider">
-            完成悬赏 · 获取 <span className="text-[#ffd700] font-bold">金币</span> 与 <span className="text-[#e94560] font-bold">修为</span>
+            完成悬赏 · 获取 <span className="text-[#ffd700] font-bold">金币</span> 与 <span className="text-[#5ac8fa] font-bold">风能经验</span>
           </p>
           <div className="mt-2 inline-flex items-center gap-1.5 px-3 py-1 bg-[#0a1a2a]/80 rounded-full border border-[#1a3a5a]/50">
             <span className="text-[10px] text-[#a0a0b0]/60">当前金币</span>
@@ -154,7 +154,7 @@ export default function QuestCenterPanel() {
         {/* 底部装饰 */}
         <div className="px-5 py-3 bg-[#050a12]/80 border-t border-[#1a3a5a]/30">
           <div className="flex items-center justify-between">
-            <span className="text-[9px] text-[#a0a0b0]/30 tracking-wider">青石村 · 悬赏令</span>
+            <span className="text-[9px] text-[#a0a0b0]/30 tracking-wider">射击俱乐部 · 训练任务</span>
             <span className="text-[9px] text-[#a0a0b0]/20">任务数量: {quests.length}</span>
           </div>
         </div>

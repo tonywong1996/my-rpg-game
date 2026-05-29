@@ -279,7 +279,7 @@ export default function VillageScene() {
             <div className="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-b from-[#2a0a0a] to-[#1a0000] rounded-lg border-2 border-[#4a1a1a]/50 flex items-center justify-center group-hover:border-[#e94560]/50 transition-all">
               <span className="text-2xl md:text-3xl">⚔️</span>
             </div>
-            <span className="text-[10px] text-[#f5f0c4] group-hover:text-[#e94560]">历练</span>
+            <span className="text-[10px] text-[#f5f0c4] group-hover:text-[#e94560]">锻炼</span>
           </button>
         </div>
       </div>

@@ -217,11 +217,11 @@ const ALL_SKILLS: Skill[] = [
 ]
 
 // ============================
-// 怪物数据（修仙风格）
+// 靶场训练目标
 // ============================
 export const ALL_MONSTERS: MonsterTemplate[] = [
   {
-    name: '野狼', icon: '🐺', title: '山野凶兽',
+    name: '固定靶', icon: '🎯', title: '初级训练靶',
     hp: 60, mp: 10, level: 1, attack: 8, defense: 2,
     expReward: 15, goldReward: 8,
     drops: [
@@ -230,7 +230,7 @@ export const ALL_MONSTERS: MonsterTemplate[] = [
     ],
   },
   {
-    name: '毒蛇', icon: '🐍', title: '毒瘴异兽',
+    name: '移动靶', icon: '🏃', title: '中级训练靶',
     hp: 45, mp: 20, level: 2, attack: 12, defense: 1,
     expReward: 20, goldReward: 10,
     drops: [
@@ -239,7 +239,7 @@ export const ALL_MONSTERS: MonsterTemplate[] = [
     ],
   },
   {
-    name: '山魈', icon: '🦧', title: '深山妖物',
+    name: '无人机靶', icon: '🛸', title: '高速训练靶',
     hp: 90, mp: 15, level: 3, attack: 15, defense: 5,
     expReward: 30, goldReward: 15,
     drops: [
@@ -249,7 +249,7 @@ export const ALL_MONSTERS: MonsterTemplate[] = [
     ],
   },
   {
-    name: '盗匪', icon: '🗡️', title: '流窜恶徒',
+    name: '风压测试机', icon: '💨', title: '高压训练器',
     hp: 110, mp: 12, level: 4, attack: 18, defense: 4,
     expReward: 35, goldReward: 25,
     drops: [
@@ -259,7 +259,7 @@ export const ALL_MONSTERS: MonsterTemplate[] = [
     ],
   },
   {
-    name: '妖兽', icon: '👹', title: '修炼成精',
+    name: '装甲靶', icon: '🛡️', title: '重型训练靶',
     hp: 150, mp: 30, level: 5, attack: 22, defense: 8,
     expReward: 50, goldReward: 30,
     drops: [
@@ -270,7 +270,7 @@ export const ALL_MONSTERS: MonsterTemplate[] = [
     ],
   },
   {
-    name: '心魔', icon: '👁️', title: '无形之敌',
+    name: '全息模拟BOSS', icon: '👁️', title: '终极训练挑战',
     hp: 200, mp: 50, level: 7, attack: 30, defense: 12,
     expReward: 80, goldReward: 50,
     drops: [
@@ -514,12 +514,12 @@ function createEnemyUnit(level?: number): BattleUnit {
 // 初始化商店物品
 function createDefaultShopItems(): ShopItem[] {
   return [
-    { id: 'hp_potion_s', name: '小回血丹', icon: '💊', description: '恢复 40 HP', price: 40, effect: 'hp_40', bought: false },
-    { id: 'hp_potion_m', name: '大回血丹', icon: '💊', description: '恢复 100 HP', price: 100, effect: 'hp_100', bought: false },
-    { id: 'mp_potion_s', name: '小回灵水', icon: '💧', description: '恢复 30 MP', price: 50, effect: 'mp_30', bought: false },
-    { id: 'mp_potion_m', name: '大回灵水', icon: '💧', description: '恢复 80 MP', price: 130, effect: 'mp_80', bought: false },
-    { id: 'hp_potion_l', name: '千年灵芝', icon: '🍄', description: '恢复 300 HP（保命神药）', price: 400, effect: 'hp_300', bought: false },
-    { id: 'spirit_pill', name: '聚灵丹', icon: '💎', description: '获得 200 修为', price: 250, effect: 'exp_200', bought: false },
+    { id: 'hp_potion_s', name: '急救绷带', icon: '🩹', description: '恢复 40 HP', price: 40, effect: 'hp_40', bought: false },
+    { id: 'hp_potion_m', name: '医疗包', icon: '🏥', description: '恢复 100 HP', price: 100, effect: 'hp_100', bought: false },
+    { id: 'mp_potion_s', name: '小型压缩气罐', icon: '🫧', description: '恢复 30 压缩气', price: 50, effect: 'mp_30', bought: false },
+    { id: 'mp_potion_m', name: '大型压缩气罐', icon: '🛢️', description: '恢复 80 压缩气', price: 130, effect: 'mp_80', bought: false },
+    { id: 'hp_potion_l', name: '紧急医疗箱', icon: '🚑', description: '恢复 300 HP（救命装备）', price: 400, effect: 'hp_300', bought: false },
+    { id: 'spirit_pill', name: '风能结晶', icon: '💎', description: '获得 200 风能经验', price: 250, effect: 'exp_200', bought: false },
   ]
 }
 
@@ -528,10 +528,10 @@ function createDefaultQuests(): Quest[] {
   return [
     {
       id: 'quest_kill_wolves',
-      name: '狼患清除',
-      icon: '🐺',
-      description: '野狼在村庄附近出没，威胁村民安全。消灭 3 只野狼。',
-      requirement: '击杀野狼 0/3',
+      name: '射击初体验',
+      icon: '🎯',
+      description: '靶场的基本功不能落下。完成 3 次固定靶射击。',
+      requirement: '固定靶击破 0/3',
       progress: 0,
       maxProgress: 3,
       reward: 100,
@@ -540,10 +540,10 @@ function createDefaultQuests(): Quest[] {
     },
     {
       id: 'quest_kill_monsters',
-      name: '初出茅庐',
-      icon: '👹',
-      description: '在这片荒野中证明自己，击败 5 只任意怪物。',
-      requirement: '击杀怪物 0/5',
+      name: '百发百中',
+      icon: '💨',
+      description: '各种靶型都要掌握。完成 5 次任意靶场训练。',
+      requirement: '训练完成 0/5',
       progress: 0,
       maxProgress: 5,
       reward: 200,
@@ -552,10 +552,10 @@ function createDefaultQuests(): Quest[] {
     },
     {
       id: 'quest_collect_exp',
-      name: '修炼之路',
-      icon: '✨',
-      description: '积累 1000 修为，感受修炼的成果。',
-      requirement: '修为 0/1000',
+      name: '风能积累',
+      icon: '🌀',
+      description: '在训练中积累 1000 风能经验，感受知识的力量。',
+      requirement: '风能经验 0/1000',
       progress: 0,
       maxProgress: 1000,
       reward: 500,
@@ -569,41 +569,41 @@ function createDefaultQuests(): Quest[] {
 function createDefaultNPCs(): NPCData[] {
   return [
     {
-      id: 'npc_elder',
-      name: '村长',
-      title: '新手村长老',
-      avatar: '👴',
+      id: 'npc_dad',
+      name: '老李（父亲）',
+      title: '射击俱乐部主理人',
+      avatar: '👨‍🔧',
       dialogues: [
-        '欢迎来到青石村，年轻的修士。我是这里的村长。',
-        '村外荒野中有许多怪物，但也是历练的好地方。',
-        '你可以去商店购买补给，去任务中心领取赏金任务。',
-        '记住，每次战斗后都可以回到村庄休整。准备好了就从村口出发吧！',
+        '莉莉，放学了？正好，我刚把后院的靶场整理好，你上次改的那把枪我帮你调了调瞄准镜。',
+        '你妈留下的那本笔记...我翻到了一些关于空气流动的草图。也许对你有用，自己去车库找找看。',
+        '对了，街口五金店的陈叔说最近郊外有些奇怪的动静，你去练枪的时候小心点。',
+        '你这孩子，又在算那些我看不懂的公式。行吧，别搞太晚，晚饭我给你留着。',
       ],
       currentDialogueIndex: 0,
     },
     {
-      id: 'npc_blacksmith',
-      name: '铁匠老张',
-      title: '铁匠铺师傅',
-      avatar: '🔨',
+      id: 'npc_classmate',
+      name: '小陈（同学）',
+      title: '同班·物理课代表',
+      avatar: '👦',
       dialogues: [
-        '嘿，新来的修士！我是村中铁匠老张。',
-        '我这里有上好的铁器，虽然比不上那些仙家法宝，但对付村外的野怪绰绰有余！',
-        '攒够钱就去商店看看，买把好武器能让你在战斗中轻松不少。',
-        '有需要打造装备的话随时来找我！',
+        '莉莉！你猜我昨天在图书馆找到了什么？——<流体力学精要>！里面有一章专门讲螺旋弹道的！',
+        '我爸说上次你用压缩空气做的那个小装置，他拿去厂里给工程师看了，他们都说有意思。',
+        '周末要不要一起去郊外？我知道有个废弃的工厂，里面的管道通风结构很特别。',
+        '对了，物理老师让我问你，有没有兴趣参加下个月的科学竞赛？主题是"能源利用"。',
       ],
       currentDialogueIndex: 0,
     },
     {
-      id: 'npc_merchant',
-      name: '行商李嫂',
-      title: '游方商人',
-      avatar: '🧳',
+      id: 'npc_shopkeeper',
+      name: '陈叔',
+      title: '街口五金店老板',
+      avatar: '🧰',
       dialogues: [
-        '哎呀，好俊俏的小修士！我是走南闯北的行商李嫂。',
-        '我这里的丹药可是从青云宗那边进来的上等货！',
-        '战斗前记得备好丹药，关键时刻能救你一命。',
-        '下次再来啊，我给你留着好货！',
+        '哟，小莉来了！你要的密封圈和铜管我进货了，按老规矩给你算成本价。',
+        '你爸上次来买气阀的时候，说到你最近在搞什么"压缩空气推进装置"，听起来挺唬人的！',
+        '我年轻时候也爱捣鼓这些玩意儿，可惜没你那么聪明。你有什么不懂的尽管来问。',
+        '听说郊外那个旧靶场要翻新了？你要是需要什么材料，跟我说一声就行。',
       ],
       currentDialogueIndex: 0,
     },
