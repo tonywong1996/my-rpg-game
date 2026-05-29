@@ -427,7 +427,7 @@ const CHARACTER_DB: Record<CharacterId, CharacterData> = {
   },
 }
 
-const DEFAULT_CHARACTER_ID: CharacterId = 'azurlane_sword'
+const DEFAULT_CHARACTER_ID: CharacterId = 'xiaoli'
 
 // 计算玩家属性（基于装备 + 心法加成）
 function calculatePlayerStats(
