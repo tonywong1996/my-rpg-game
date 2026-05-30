@@ -534,9 +534,6 @@ ${this.getAllNPCStatusForAPI()}
    * - onChunk: 收到新的文本片段时调用，参数是纯文本字符串
    * - onComplete: 流结束后调用，参数是完整原始文本，用于解析 final JSON
    * - onError: 出错时调用
-   *
-   * 注意：MiniMax 模型会在 content 中包含<think>...</think> 思考标签，
-   * 解析前需要剥离这些标签。
    */
   async callAISSE(
     userInput: string,
@@ -584,9 +581,6 @@ ${this.getAllNPCStatusForAPI()}
         { role: 'user', content: userInput, timestamp: Date.now() }
       )
 
-      // 标志位：是否正在思考（think标签内部的内容不显示给用户）
-      let inThinkingBlock = false
-
       while (true) {
         const { done, value } = await reader.read()
         if (done) break
@@ -607,16 +601,7 @@ ${this.getAllNPCStatusForAPI()}
             const content = parsed.choices?.[0]?.delta?.content
             if (content) {
               fullText += content
-
-              // 检测 thinking 开始/结束
-              if (content === '<think>') {
-                inThinkingBlock = true
-              } else if (content === '</think>') {
-                inThinkingBlock = false
-              } else if (!inThinkingBlock) {
-                // 只在非思考块时回调给 UI 显示
-                onChunk(content)
-              }
+              onChunk(content)
             }
           } catch {
             // 忽略解析失败的块
@@ -624,7 +609,7 @@ ${this.getAllNPCStatusForAPI()}
         }
       }
 
-      // 保存 assistant 响应到历史（包含完整原始内容含thinking标签）
+      // 保存 assistant 响应到历史
       this.storyHistory.push(
         { role: 'assistant', content: fullText, timestamp: Date.now() }
       )
@@ -637,28 +622,14 @@ ${this.getAllNPCStatusForAPI()}
   }
 
   // 解析纯文本 JSON 响应（方案A核心）
-  // 自动剥离<think>...</think> 思考标签，并智能提取 JSON
   parseTextResponse(fullText: string): {
     narrative: string
     choices: Choice[]
     nextScene: string
     npcUpdates: Record<string, Partial<NPCStatus>>
   } {
-    // 第一步：剥离思考标签
-    const thinkRegex = new RegExp('</think>([^]*?)</think>', 'gi')
-    let cleaned = fullText.replace(thinkRegex, '').trim()
-
-    // 第二步：如果清理后文本不是以 { 开头，说明前面有额外文字，
-    // 找第一个 { 的位置开始解析（模型可能先输出说明文字）
-    let jsonStr = cleaned
-    const firstBrace = cleaned.indexOf('{')
-    const lastBrace = cleaned.lastIndexOf('}')
-    if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
-      jsonStr = cleaned.slice(firstBrace, lastBrace + 1)
-    }
-
     try {
-      const args = JSON.parse(jsonStr)
+      const args = JSON.parse(fullText)
 
       // 解析 NPC 状态更新
       const npcUpdates: Record<string, Partial<NPCStatus>> = {}
@@ -688,7 +659,7 @@ ${this.getAllNPCStatusForAPI()}
         npcUpdates
       }
     } catch (error) {
-      console.error('解析 JSON 响应失败:', error, '清理后文本:', cleaned.slice(0, 300))
+      console.error('解析 JSON 响应失败:', error, '原始文本:', fullText.slice(0, 200))
       return {
         narrative: '【解析失败】AI响应格式异常',
         choices: [],
