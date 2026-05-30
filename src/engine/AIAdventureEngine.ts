@@ -100,7 +100,6 @@ export interface CombatTrigger {
 export interface AIResponseResult {
   narrative: string
   choices: AIOption[]
-  combatTrigger?: CombatTrigger
 }
 
 export interface PlayerStats {
@@ -121,60 +120,94 @@ export interface PlayerStats {
 }
 
 // ============================
+// Tool Schema — advance_story
+// ============================
+
+export const ADVANCE_STORY_TOOL_SCHEMA = {
+  "type": "function" as const,
+  "function": {
+    "name": "advance_story",
+    "description": "推进剧情。返回叙事文字和玩家选项。",
+    "parameters": {
+      "type": "object" as const,
+      "properties": {
+        "narrative": {
+          "type": "string" as const,
+          "description": "【上半区】叙事文字，80~150字。描述场景、NPC、玩家行动的结果。不要包含选项文字。"
+        },
+        "choices": {
+          "type": "array" as const,
+          "description": "【下半区气泡卡片】3个选项，每个8~15字，以'你'开头。应涵盖不同策略（直接、谨慎、观察）。",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": { "type": "string" as const }
+        },
+        "next_scene": {
+          "type": "string" as const,
+          "description": "下一场景ID，不变时填'same'。"
+        },
+        "npc_status_updates": {
+          "type": "array" as const,
+          "description": "NPC状态变化（好感度、情绪等），无变化时为空数组。",
+          "items": {
+            "type": "object" as const,
+            "properties": {
+              "npc_id": { "type": "string" as const },
+              "affection": { "type": "number" as const, "minimum": -100, "maximum": 100 },
+              "mood": { "type": "string" as const, "enum": ["happy", "angry", "sad", "neutral", "excited"] as const },
+              "current_scene": { "type": "string" as const }
+            },
+            "required": ["npc_id", "mood"] as string[]
+          }
+        }
+      },
+      "required": ["narrative", "choices", "next_scene"] as string[]
+    }
+  }
+}
+
+// ============================
 // 系统Prompt配置
 // ============================
 
-export const SYSTEM_PROMPT_TEMPLATE = `你是物理风RPG游戏《风引》的叙事AI。请严格遵循以下规则：
+export const SYSTEM_PROMPT_TEMPLATE = `你是游戏《知识即是力量》的叙事引擎。玩家扮演小莉——16岁银发少女，能用物理学知识操控风。
 
-## 世界观设定
-这是一个"低灵世界"——没有绚丽的法术，没有修仙门派。知识是最强大的武器。能真正理解原理的人，才能将知识转化为力量。
+你的唯一职责：调用 advance_story 函数，提供 narrative 和 choices。
 
-## 角色设定
-玩家扮演小莉——16岁普通高二女生，银白低马尾，琥珀色眼眸，成绩年级前三。母亲早逝，父亲老李在郊区经营射击俱乐部，教她一手精准枪法。她擅长用物理公式改造子弹，但只是当作兴趣和实验。
+【世界观与角色】
+- 小莉：温柔、好奇、学霸。银白色低马尾，琥珀色眼眸。
+- 能力来源：真实知识（伯努利原理、流体力学等） + 相信力。知识越深，能力越强。
+- 当前能力：破风弹（穿透子弹）、气垫滑板（短距滑行）、真空弹（抽空空气）、空气护盾（偏转投射物）。
+- 装备：改造老式步枪（父亲留下的）、便携气罐腰带（储存压缩空气）、防风护目镜。
+- 战斗风格：远程射手，擅长利用气流和工程思维。尽量避免近身。
+- 性格癖好：解题时转笔，紧张时摸马尾。
 
-## 开头叙事格式（必须严格遵循）
-开头必须是**日常校园开场**，不要有任何幻想元素！格式如下：
+【叙事要求】
+- 长度：80~150字。
+- 风格：简洁、画面感、科学感。适当使用物理名词（气压、涡流、伯努利效应），但不晦涩。
+- 禁止：选项文字、反问玩家、打破第四面墙。
 
-**第一句交代身份**——小莉是普通高中生，正在经历普通的日常（上课、回家、实验等）
+【选项要求】
+- 必须3个。
+- 每个8~15字，以"你"开头。
+- 应覆盖三种类型：一个利用知识/技能的（聪明解法），一个直接行动的（勇气/武力），一个观察/对话的（社交/探索）。
+- 示例：
+  - "你计算风向，用气垫滑板无声接近。"
+  - "你端起改造步枪，警惕地瞄准灌木丛。"
+  - "你蹲下身，仔细观察地上的脚印。"
 
-**然后突然发生突发事件**（选一个）：
-- 校园里突然出现异常现象（空气扭曲、物品飘浮、奇怪的低频声）
-- 城市某处传来爆炸或异响
-- 父亲突然联系不上，俱乐部方向天空出现诡异云层
-- 课堂上某个实验失控，产生连锁反应
-- 神秘人物出现在学校周围
-- 地下震动、建筑裂缝、异常生物出现
+【场景切换】
+- 如果玩家留在当前场景，next_scene 填 "same"。
+- 否则填短ID（如 "club_yard"、"forest_path"）。
 
-**突发事件后，小莉意识到这不是普通现象，触发她的物理知识本能**
+【NPC状态更新】
+- 当NPC情绪或好感明显变化时更新。例如：帮了NPC → affection +5，mood happy。
+- 无变化传空数组。
 
-开头叙事的结构：
-1. 日常场景（1-2句）
-2. 突发事件（2-3句，环境变化要具体）
-3. 玩家决定（给出3个选项）
-
-## 叙事风格
-- 前期以现代都市/校园为主，物理感真实（风、压力、声波等）
-- 突发事件要有紧迫感，环境变化要具体描写
-- 对话自然，符合高中生/普通人语气
-- 不要输出JSON标签，直接段落叙述
-- NPC说话格式：【NPC名】: 说话内容
-- 玩家行动格式：【你】: 行动描述
-- **重要：你的输出只包含[故事]标签内的叙事内容。不要输出任何游戏设定、世界观、角色背景等系统提示内容。如果你想描写背景信息，必须通过故事情节自然呈现，不能直接说明。**
-
-## 选项格式
-每个选项单独占一行："1. 选项内容" / "2. 选项内容" / "3. 选项内容"
-战斗选项末尾必须加"（战斗）"标记
-
-## 小莉的能力（初期只有基础）
-- 枪法精准（父亲训练的结果）
-- 基础物理知识（高中水平）
-- 尚未觉醒"知识武装"能力
-
-## 战斗数值设计规则
-- 玩家等级=1时，怪物等级必须控制在1-3范围内
-- 玩家等级提升后，怪物等级=玩家等级±2
-- 绝不允许出现"等级差距悬殊"的怪物
-`
+【重要禁止项】
+- 不输出任何函数调用以外的文字。
+- 不在 narrative 中包含选项编号。
+- 不计算数值战斗（如伤害、血量）。如果玩家选择攻击，叙事中描述效果即可，不涉及具体数字。`
 
 // ============================
 // API配置
@@ -374,15 +407,16 @@ ${this.getAllNPCStatusForAPI()}
 请根据以上信息生成故事叙述。`
   }
 
-  // 调用AI API
+  // 调用AI API（工具调用模式）
   async callAI(userInput: string): Promise<{
     narrative: string
     choices: Choice[]
+    nextScene: string
     npcUpdates: Record<string, Partial<NPCStatus>>
   }> {
     const messages = [
       { role: 'system' as const, content: this.buildSystemPrompt() },
-      ...this.storyHistory.slice(-10), // 保留最近10条对话历史
+      ...this.storyHistory.slice(-10),
       { role: 'user' as const, content: userInput }
     ]
 
@@ -396,6 +430,8 @@ ${this.getAllNPCStatusForAPI()}
         body: JSON.stringify({
           model: this.apiConfig.model,
           messages: messages,
+          tools: [ADVANCE_STORY_TOOL_SCHEMA],
+          tool_choice: { type: 'function', function: { name: 'advance_story' } },
           temperature: 0.8,
           max_tokens: 2000
         })
@@ -406,123 +442,77 @@ ${this.getAllNPCStatusForAPI()}
       }
 
       const data = await response.json()
-      const aiResponse = data.choices[0]?.message?.content || ''
+      const aiMessage = data.choices[0]?.message
 
       // 保存对话历史
       this.storyHistory.push(
         { role: 'user', content: userInput, timestamp: Date.now() },
-        { role: 'assistant', content: aiResponse, timestamp: Date.now() }
+        { role: 'assistant', content: JSON.stringify(aiMessage), timestamp: Date.now() }
       )
 
-      // 解析AI响应
-      return this.parseAIResponse(aiResponse)
+      // 解析工具调用
+      return this.parseToolCall(aiMessage)
     } catch (error) {
       console.error('AI调用错误:', error)
       throw error
     }
   }
 
-  // 解析AI响应
-  private parseAIResponse(response: string): {
+  // 解析工具调用响应
+  private parseToolCall(aiMessage: any): {
     narrative: string
     choices: Choice[]
+    nextScene: string
     npcUpdates: Record<string, Partial<NPCStatus>>
   } {
-    let narrative = response
-    let choices: Choice[] = []
-    const npcUpdates: Record<string, Partial<NPCStatus>> = {}
+    const toolCall = aiMessage?.tool_calls?.[0]
+    const argsStr = toolCall?.function?.arguments || '{}'
 
-    // 打印完整响应用于调试
-    console.log('===== AI 完整响应 =====')
-    console.log(response)
+    console.log('===== AI Tool Call =====')
+    console.log('Function:', toolCall?.function?.name)
+    console.log('Arguments:', argsStr)
     console.log('========================')
 
     try {
-      // 解析NPC状态更新
-      const npcStatusMatch = response.match(/\[NPC_Status\]([\s\S]*?)\[\/NPC_Status\]/)
-      if (npcStatusMatch) {
-        const statusData = JSON.parse(npcStatusMatch[1])
-        Object.entries(statusData).forEach(([npcId, updates]) => {
-          const currentStatus = this.npcStatuses.get(npcId)
-          if (currentStatus) {
-            const update = updates as Partial<NPCStatus>
-            if (update.affection !== undefined) {
-              currentStatus.affection += update.affection
-              // 限制在 -100 到 100 之间
-              currentStatus.affection = Math.max(-100, Math.min(100, currentStatus.affection))
-            }
-            if (update.mood) currentStatus.mood = update.mood
-            if (update.memory) currentStatus.memory = update.memory
-            if (update.action_taken) {
-              currentStatus.action_taken = update.action_taken
-              currentStatus.dialogue_count++
-            }
-            npcUpdates[npcId] = update
+      const args = JSON.parse(argsStr)
+
+      // 解析 NPC 状态更新
+      const npcUpdates: Record<string, Partial<NPCStatus>> = {}
+      ;(args.npc_status_updates || []).forEach((update: any) => {
+        const currentStatus = this.npcStatuses.get(update.npc_id)
+        if (currentStatus) {
+          if (update.affection !== undefined) {
+            currentStatus.affection = Math.max(-100, Math.min(100, currentStatus.affection + update.affection))
           }
-        })
+          if (update.mood) currentStatus.mood = update.mood
+          if (update.current_scene) currentStatus.current_scene = update.current_scene
+          npcUpdates[update.npc_id] = update
+        }
+      })
+
+      // 构建 Choice 数组
+      const choices: Choice[] = (args.choices || []).map((text: string, i: number) => ({
+        id: `choice_${i + 1}`,
+        text,
+        effects: {},
+        next_scene: args.next_scene || 'same'
+      }))
+
+      return {
+        narrative: args.narrative || '',
+        choices,
+        nextScene: args.next_scene || 'same',
+        npcUpdates
       }
-
-      // 解析选项 - 支持两种格式：
-      // 1. [Choices]...[/Choices] 标签格式
-      // 2. 自然段落格式：以 "1." "2." "3." 开头的行
-      let choicesMatch = response.match(/\[Choices\]([\s\S]*?)\[\/Choices\]/)
-      if (choicesMatch) {
-        const choicesText = choicesMatch[1]
-        const choiceLines = choicesText.split('\n').filter(line => line.trim())
-        
-        choiceLines.forEach((line, index) => {
-          const match = line.match(/\d+\.\s*(.+)/)
-          if (match) {
-            choices.push({
-              id: `choice_${index + 1}`,
-              text: match[1].trim(),
-              effects: {},
-              next_scene: ''
-            })
-          }
-        })
-      } else {
-        // 尝试从自然段落中提取选项
-        const lines = response.split('\n')
-        lines.forEach((line) => {
-          const match = line.match(/^(\d+)[.、]\s*(.+)/)
-          if (match && choices.length < 3) {
-            choices.push({
-              id: `choice_${match[1]}`,
-              text: match[2].trim(),
-              effects: {},
-              next_scene: ''
-            })
-          }
-        })
-      }
-
-      // 打印解析出的选项
-      console.log('===== 解析出的选项 =====')
-      console.log(choices)
-      console.log('========================')
-
-      // 清理响应，移除标签
-    // 优先提取[故事]标签内的内容，否则使用完整响应
-    const storyMatch = response.match(/\[故事\]([\s\S]*?)\[\/故事\]/)
-    if (storyMatch) {
-      narrative = storyMatch[1].trim()
-    } else {
-      // 如果没有[故事]标签，清理其他标签后使用
-      narrative = response
-        .replace(/\[NPC_Card\][\s\S]*?\[\/NPC_Card\]/g, '')
-        .replace(/\[NPC_Status\][\s\S]*?\[\/NPC_Status\]/g, '')
-        .replace(/\[Scene\][\s\S]*?\[\/Scene\]/g, '')
-        .replace(/\[Choices\][\s\S]*?\[\/Choices\]/g, '')
-        .replace(/\[\/?[^\]]+\]/g, '') // 移除所有剩余标签
-        .trim()
-    }
-
     } catch (error) {
-      console.error('解析AI响应失败:', error)
+      console.error('解析Tool Call失败:', error)
+      return {
+        narrative: '【解析失败】AI响应格式异常',
+        choices: [],
+        nextScene: 'same',
+        npcUpdates: {}
+      }
     }
-
-    return { narrative, choices, npcUpdates }
   }
 
   // 解析效果字符串
@@ -545,6 +535,7 @@ ${this.getAllNPCStatusForAPI()}
   async processInput(input: string, conversationHistory?: {role: 'user' | 'assistant', content: string}[]): Promise<{
     narrative: string
     choices: Choice[]
+    nextScene: string
   }> {
     // 从 GitHub 获取 API 配置（如果第一次调用失败则重试）
     const config = await fetchApiConfig()
@@ -566,23 +557,20 @@ ${this.getAllNPCStatusForAPI()}
     const numMatch = input.match(/^(\d+)$/)
     if (numMatch) {
       const choiceIndex = parseInt(numMatch[1]) - 1
-      // 从故事历史中获取上一次的选项
       const lastChoices = this.getLastChoices()
       if (lastChoices[choiceIndex]) {
         processedInput = lastChoices[choiceIndex].text
-        
+
         // 应用选项效果
         const effects = lastChoices[choiceIndex].effects
         Object.entries(effects).forEach(([key, value]) => {
           if (key.includes('好感度') || key.includes('affection')) {
-            // 处理好感度更新
             const npcName = key.replace(/[好感度__affection]/g, '')
             const npcStatus = this.npcStatuses.get(npcName)
             if (npcStatus) {
               npcStatus.affection += value as number
             }
           } else if (key in this.playerStats) {
-            // 更新玩家属性
             if (typeof this.playerStats[key as keyof PlayerStats] === 'number') {
               (this.playerStats as any)[key] += value as number
             }
@@ -594,9 +582,16 @@ ${this.getAllNPCStatusForAPI()}
     }
 
     const result = await this.callAI(processedInput)
+
+    // 如果 next_scene 不是 'same'，更新场景
+    if (result.nextScene && result.nextScene !== 'same') {
+      this.setCurrentScene(result.nextScene)
+    }
+
     return {
       narrative: result.narrative,
-      choices: result.choices
+      choices: result.choices,
+      nextScene: result.nextScene
     }
   }
 
@@ -633,7 +628,7 @@ ${this.getAllNPCStatusForAPI()}
 - 场景以现代都市/郊区为主
 - 多描写风的声音、空气的流动感
 - 语言自然，符合高中生视角
-- 带一点神秘感：这个"低灵世界"的秘密正在慢慢浮现
+- 带一点神秘感：这个"低灵世界"秘密正在慢慢浮现
 
 请立即生成故事开头。`
 
@@ -729,7 +724,7 @@ export function useAIAdventureEngine(apiConfig?: Partial<APIConfig>) {
   const initialize = useCallback(async () => {
     setIsLoading(true)
     setError(null)
-    
+
     try {
       const result = await engine.initializeGame()
       setCurrentNarrative(result.narrative)
@@ -747,7 +742,7 @@ export function useAIAdventureEngine(apiConfig?: Partial<APIConfig>) {
   const submitInput = useCallback(async (input: string, conversationHistory?: {role: 'user' | 'assistant', content: string}[]) => {
     setIsLoading(true)
     setError(null)
-    
+
     try {
       const result = await engine.processInput(input, conversationHistory)
       setCurrentNarrative(result.narrative)

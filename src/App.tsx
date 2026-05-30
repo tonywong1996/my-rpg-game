@@ -199,10 +199,10 @@ function App() {
       {/* 顶部返回菜单按钮 */}
       <button
         onClick={handleBackToMenu}
-        className="absolute top-1 left-2 z-20 px-2 py-1 bg-[#e8e0d0]/80 text-[#3d405b] text-[10px] rounded-md
+        className="absolute top-1 right-2 z-20 px-2 py-1 bg-[#e8e0d0]/80 text-[#3d405b] text-[10px] rounded-md
                    border border-[#c4b8a8] hover:bg-[#d4c8b8] hover:text-[#3d405b] transition-all duration-200"
       >
-        ← 菜单
+        菜单 →
       </button>
 
       {/* 返回村庄提示消息 */}

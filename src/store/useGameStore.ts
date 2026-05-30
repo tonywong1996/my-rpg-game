@@ -332,6 +332,7 @@ interface GameState {
   // AI故事系统
   aiStoryInitialized: boolean
   aiStoryHistory: {speaker: string, content: string}[]
+  aiStoryNarrative: string
   aiNPCs: {id: string, name: string, title: string}[]
 
   // AI战斗系统
@@ -671,6 +672,7 @@ export const useGameStore = create<GameState>()(
         postBattleLoot: { exp: 0, gold: 0, items: [] },
         aiStoryInitialized: false,
         aiStoryHistory: [],
+        aiStoryNarrative: '',
         aiNPCs: [],
         battleState: {
           isBattling: false,
@@ -1233,6 +1235,7 @@ export const useGameStore = create<GameState>()(
             postBattleLoot: { exp: 0, gold: 0, items: [] },
             aiStoryInitialized: false,
             aiStoryHistory: [],
+            aiStoryNarrative: '',
             aiNPCs: [],
             battleState: {
               isBattling: false,

@@ -90,6 +90,9 @@ export default function AIStoryPanel({ onBack }: AIStoryPanelProps) {
   const [inputText, setInputText] = useState('')
   const storyRef = useRef<HTMLDivElement>(null)
   
+  // 折叠旧消息：默认只显示最近 5 条，0 = 显示全部
+  const [collapsedCount, setCollapsedCount] = useState(5)
+  
   // 解析选项中的战斗标记
   const [parsedChoices, setParsedChoices] = useState<ExtendedChoice[]>([])
   
@@ -146,11 +149,10 @@ export default function AIStoryPanel({ onBack }: AIStoryPanelProps) {
       setHistory(prev => {
         const newHistory = [
           ...prev,
-          { role: 'system', content: '（战斗已结束）' }
+          { role: 'assistant', content: '（战斗已结束）' }
         ]
-        // 保存到store
         const newStoryHistory = newHistory.map(msg => ({
-          speaker: msg.role === 'user' ? '玩家' : (msg.role === 'system' ? '系统' : 'AI'),
+          speaker: msg.role === 'user' ? '玩家' : 'AI',
           content: msg.content
         }))
         useGameStore.setState({ aiStoryHistory: newStoryHistory })
@@ -351,126 +353,165 @@ export default function AIStoryPanel({ onBack }: AIStoryPanelProps) {
 
   return (
     <div className="flex flex-col h-full bg-[#0a0a12] text-[#c4b896]">
-      {/* 顶部状态栏 */}
-      <div className="flex items-center justify-between px-4 py-2 bg-[#12121c] border-b border-[#2a2a3a]">
-        <div className="flex items-center gap-4">
-          <span className="text-xs text-[#6a6a8a]">🏘️ 射击俱乐部</span>
+
+      {/* 上半 80% - 叙事区域 */}
+      <div className="flex-[8] flex flex-col min-h-0">
+
+        {/* 顶部状态栏 */}
+        <div className="flex items-center justify-between px-4 py-2 bg-[#12121c] border-b border-[#2a2a3a] flex-shrink-0">
+          <div className="flex items-center gap-4">
+            <span className="text-xs text-[#6a6a8a]">🏘️ 射击俱乐部</span>
+          </div>
+          <div className="flex items-center gap-4 text-xs">
+            <span className="text-[#4a9a6a]">风能: {playerStats.windEnergy}</span>
+            <span className="text-[#c4a86a]">金币: {playerStats.gold}</span>
+            <span className="text-[#6a8aca]">HP: {playerStats.health}</span>
+            <span className="text-[#8a6aca]">压缩气: {playerStats.compressedAir}</span>
+          </div>
         </div>
-        <div className="flex items-center gap-4 text-xs">
-          <span className="text-[#4a9a6a]">风能: {playerStats.windEnergy}</span>
-          <span className="text-[#c4a86a]">金币: {playerStats.gold}</span>
-          <span className="text-[#6a8aca]">HP: {playerStats.health}</span>
-          <span className="text-[#8a6aca]">压缩气: {playerStats.compressedAir}</span>
+
+        {/* 故事内容区域 */}
+        <div
+          ref={storyRef}
+          className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-[#2a2a3a]"
+        >
+          {/* NPC角色显示 */}
+          {displayNpcCards.length > 0 && (
+            <div className="flex gap-2 mb-4 overflow-x-auto pb-2">
+              {displayNpcCards.map(npc => (
+                <div
+                  key={npc.id}
+                  className="flex-shrink-0 px-3 py-1.5 bg-[#1a1a2a] rounded-lg border border-[#2a2a3a] text-xs"
+                >
+                  <span className="text-[#c4a86a]">{npc.name}</span>
+                  <span className="text-[#6a6a8a] ml-1">· {npc.title}</span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* 消息历史 */}
+          {history.length > collapsedCount && collapsedCount > 0 && (
+            <button
+              onClick={() => setCollapsedCount(0)}
+              className="w-full py-2 text-sm text-[#6a6a8a] hover:text-[#c4a86a] text-center"
+            >
+              ▼ 展开早期消息 ({history.length - collapsedCount} 条)
+            </button>
+          )}
+          {(collapsedCount === 0 ? history : history.slice(-collapsedCount)).map((msg, index) => {
+            const actualIndex = collapsedCount === 0 ? index : history.length - collapsedCount + index
+            return (
+            <div
+              key={actualIndex}
+              className={`p-4 rounded-lg ${
+                msg.role === 'user'
+                  ? 'ml-8 bg-[#1a2a2a] border-l-2 border-[#4a8a6a]'
+                  : 'mr-8 bg-[#2a1a2a] border-l-2 border-[#8a6a9a]'
+              }`}
+            >
+              <p className="text-base leading-loose whitespace-pre-wrap">
+                {msg.content}
+              </p>
+            </div>
+          )})}
+          {history.length > collapsedCount && collapsedCount === 0 && (
+            <button
+              onClick={() => setCollapsedCount(5)}
+              className="w-full py-2 text-sm text-[#6a6a8a] hover:text-[#c4a86a] text-center"
+            >
+              ▲ 收起旧消息
+            </button>
+          )}
+
+          {/* 加载状态 */}
+          {isLoading && (
+            <div className="flex items-center gap-2 text-[#6a6a8a] text-sm">
+              <span className="animate-pulse">⏳ AI正在思考...</span>
+            </div>
+          )}
+
+          {/* 错误显示 */}
+          {error && (
+            <div className="p-3 bg-[#2a1a1a] border border-[#8a4a4a] rounded-lg text-[#c46a6a] text-sm">
+              ❌ {error}
+            </div>
+          )}
         </div>
       </div>
 
-      {/* 故事内容区域 */}
-      <div 
-        ref={storyRef}
-        className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-[#2a2a3a]"
-      >
-        {/* NPC角色显示 */}
-        {displayNpcCards.length > 0 && (
-          <div className="flex gap-2 mb-4 overflow-x-auto pb-2">
-            {displayNpcCards.map(npc => (
-              <div 
-                key={npc.id}
-                className="flex-shrink-0 px-3 py-1.5 bg-[#1a1a2a] rounded-lg border border-[#2a2a3a] text-xs"
-              >
-                <span className="text-[#c4a86a]">{npc.name}</span>
-                <span className="text-[#6a6a8a] ml-1">· {npc.title}</span>
-              </div>
-            ))}
-          </div>
-        )}
+      {/* 下半 20% - 2:8 分割：左侧头像 | 右侧选项+输入 */}
+      <div className="flex-[2] flex flex-shrink-0 border-t border-[#2a2a3a]">
 
-        {/* 消息历史 */}
-        {history.map((msg, index) => (
-          <div 
-            key={index}
-            className={`p-4 rounded-lg ${
-              msg.role === 'user' 
-                ? 'ml-8 bg-[#1a2a2a] border-l-2 border-[#4a8a6a]'
-                : msg.role === 'system'
-                ? 'bg-[#1a1a2a] border-l-4 border-[#c4a86a]'
-                : 'mr-8 bg-[#2a1a2a] border-l-2 border-[#8a6a9a]'
-            }`}
-          >
-            <p className="text-base leading-loose whitespace-pre-wrap">
-              {msg.content}
-            </p>
-          </div>
-        ))}
-
-        {/* 加载状态 */}
-        {isLoading && (
-          <div className="flex items-center gap-2 text-[#6a6a8a] text-sm">
-            <span className="animate-pulse">⏳ AI正在思考...</span>
-          </div>
-        )}
-
-        {/* 错误显示 */}
-        {error && (
-          <div className="p-3 bg-[#2a1a1a] border border-[#8a4a4a] rounded-lg text-[#c46a6a] text-sm">
-            ❌ {error}
-          </div>
-        )}
-      </div>
-
-      {/* 选项区域 */}
-      {parsedChoices.length > 0 && !isLoading && (
-        <div className="p-3 bg-[#12121c] border-t border-[#2a2a3a]">
-          <p className="text-sm text-[#c4a86a] mb-3 font-bold">请选择你的行动：</p>
-          <div className="space-y-3">
-            {parsedChoices.map((choice, index) => (
-              <button
-                key={choice.id}
-                onClick={() => handleChoice(choice, index)}
-                className={`w-full p-4 text-left rounded-xl transition-all duration-200 group ${choice.isCombat 
-                    ? 'bg-[#2a1a1a] hover:bg-[#3a2a2a] border-2 border-[#8a4a4a] hover:border-[#ca6a6a]' 
-                    : 'bg-[#1a1a2a] hover:bg-[#2a2a3a] border-2 border-[#3a3a4a] hover:border-[#c4a86a]'
-                }`}
-              >
-                <div className={`font-bold text-xl mb-2 block ${choice.isCombat ? 'text-[#ca6a6a]' : 'text-[#c4a86a]'}`}>
-                  {index + 1}. 
-                  {choice.isCombat && <span className="ml-2 text-sm">⚔️ 战斗</span>}
-                </div>
-                <div className={`text-base leading-relaxed block ${choice.isCombat ? 'text-[#eaa]' : 'text-[#c4b896]'}`}>
-                  {choice.text}
-                </div>
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* 自由输入区域 */}
-      <form onSubmit={handleFreeInput} className="p-3 bg-[#12121c] border-t border-[#2a2a3a]">
-        <div className="flex gap-2">
-          <input
-            type="text"
-            value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
-            placeholder="输入你想说的话..."
-            disabled={isLoading}
-            className="flex-1 px-4 py-3 bg-[#1a1a2a] border-2 border-[#2a2a3a] hover:border-[#3a3a4a] rounded-xl
-                       text-base text-[#c4b896] placeholder-[#4a4a5a]
-                       focus:outline-none focus:border-[#c4a86a] focus:ring-1 focus:ring-[#c4a86a]
-                       disabled:opacity-50"
+        {/* 左侧 2 - 主角头像 */}
+        <div className="w-[16.7%] flex flex-col items-center justify-center p-2 bg-[#12121c] border-r border-[#2a2a3a]">
+          <img
+            src={`/assets/char_xiaoli_battle_01-Cxejhfsc.png`}
+            alt={store.character.name}
+            className="w-full max-h-[70%] object-contain rounded-lg"
           />
-          <button
-            type="submit"
-            disabled={isLoading || !inputText.trim()}
-            className="px-6 py-3 bg-[#2a4a3a] hover:bg-[#3a5a4a] text-[#8aba9a] rounded-xl text-lg font-bold transition-all duration-200 shadow-md hover:shadow-lg
-                       disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            发送
-          </button>
+          <p className="text-[10px] text-[#c4a86a] mt-1 text-center truncate w-full">
+            {store.character.name}
+          </p>
+          <p className="text-[9px] text-[#6a6a8a] truncate w-full text-center">
+            {store.character.title}
+          </p>
         </div>
-        <p className="text-[10px] text-[#4a4a5a] mt-1">
-          提示：也可以直接输入数字(1/2/3)选择选项
-        </p>
-      </form>
+
+        {/* 右侧 8 - 选项 + 输入 */}
+        <div className="flex-[8] flex flex-col justify-end">
+          {/* 选项区域 */}
+          {parsedChoices.length > 0 && !isLoading && (
+            <div className="flex-1 overflow-y-auto p-2 space-y-1">
+              <p className="text-xs text-[#c4a86a] mb-1 font-bold">请选择：</p>
+              <div className="space-y-1">
+                {parsedChoices.map((choice, index) => (
+                  <button
+                    key={choice.id}
+                    onClick={() => handleChoice(choice, index)}
+                    className={`w-full px-3 py-2 text-left rounded-lg transition-all text-sm group ${choice.isCombat
+                        ? 'bg-[#2a1a1a] hover:bg-[#3a2a2a] border border-[#8a4a4a] hover:border-[#ca6a6a]'
+                        : 'bg-[#1a1a2a] hover:bg-[#2a2a3a] border border-[#3a3a4a] hover:border-[#c4a86a]'
+                    }`}
+                  >
+                    <span className={`font-bold ${choice.isCombat ? 'text-[#ca6a6a]' : 'text-[#c4a86a]'}`}>
+                      {index + 1}. {choice.isCombat && <span className="text-xs ml-1">⚔️</span>}
+                    </span>
+                    <span className={`ml-2 ${choice.isCombat ? 'text-[#eaa]' : 'text-[#c4b896]'}`}>
+                      {choice.text}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* 自由输入区域 */}
+          <form onSubmit={handleFreeInput} className="p-2 bg-[#12121c]">
+            <div className="flex gap-1">
+              <input
+                type="text"
+                value={inputText}
+                onChange={(e) => setInputText(e.target.value)}
+                placeholder="输入..."
+                disabled={isLoading}
+                className="flex-1 px-3 py-2 bg-[#1a1a2a] border border-[#2a2a3a] hover:border-[#3a3a4a] rounded-lg
+                           text-sm text-[#c4b896] placeholder-[#4a4a5a]
+                           focus:outline-none focus:border-[#c4a86a]
+                           disabled:opacity-50"
+              />
+              <button
+                type="submit"
+                disabled={isLoading || !inputText.trim()}
+                className="px-4 py-2 bg-[#2a4a3a] hover:bg-[#3a5a4a] text-[#8aba9a] rounded-lg text-sm font-bold transition-all
+                           disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                发送
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   )
 }
