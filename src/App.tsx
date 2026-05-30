@@ -303,8 +303,12 @@ function App() {
     )
   }
 
-  // 默认返回村庄
-  return null
+  // 默认返回村庄（避免黑屏）
+  return (
+    <div className="relative w-full h-screen overflow-hidden" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
+      <VillageScene />
+    </div>
+  )
 }
 
 export default App
