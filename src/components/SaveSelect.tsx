@@ -34,12 +34,12 @@ export default function SaveSelect({ onClose, onLoadSave }: SaveSelectProps) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
       {/* 弹窗容器 */}
-      <div className="relative w-full max-w-md mx-4 bg-[#1a1a2e] border border-[#16213e] rounded-2xl shadow-2xl overflow-hidden">
+      <div className="relative w-full max-w-md mx-4 bg-[#f5efe6] border border-[#c4b8a8] rounded-2xl shadow-2xl overflow-hidden">
         {/* 弹窗标题 */}
-        <div className="px-6 py-5 border-b border-[#16213e]">
-          <h2 className="text-xl font-bold text-[#f5f0c4] tracking-wider text-center">
+        <div className="px-6 py-5 border-b border-[#c4b8a8]">
+          <h2 className="text-xl font-bold text-[#3d405b] tracking-wider text-center">
             选 择 存 档
           </h2>
         </div>
@@ -50,21 +50,21 @@ export default function SaveSelect({ onClose, onLoadSave }: SaveSelectProps) {
           <div className={`
             relative p-4 rounded-xl border transition-all duration-300
             ${hasSave 
-              ? 'border-[#3a8ac4]/30 bg-[#0f1a2e] hover:border-[#3a8ac4]/60 hover:bg-[#0f1a2e]/80 cursor-pointer' 
-              : 'border-[#16213e] bg-[#0f0f1a] opacity-50'
+              ? 'border-[#81b29a]/30 bg-[#ede8de] hover:border-[#81b29a]/60 hover:bg-[#e8e0d0] cursor-pointer' 
+              : 'border-[#c4b8a8] bg-[#e8e0d0] opacity-50'
             }
           `}>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-[#a0a0b0] tracking-wider">
+              <span className="text-sm font-medium text-[#6b6b7b] tracking-wider">
                 存档位 1
               </span>
               {hasSave && (
-                <span className="text-xs text-[#3a8ac4] bg-[#3a8ac4]/10 px-2 py-0.5 rounded-full">
+                <span className="text-xs text-[#81b29a] bg-[#81b29a]/10 px-2 py-0.5 rounded-full">
                   有存档
                 </span>
               )}
               {!hasSave && (
-                <span className="text-xs text-[#6b2d8c] bg-[#6b2d8c]/10 px-2 py-0.5 rounded-full">
+                <span className="text-xs text-[#a09080] bg-[#a09080]/10 px-2 py-0.5 rounded-full">
                   空
                 </span>
               )}
@@ -72,17 +72,17 @@ export default function SaveSelect({ onClose, onLoadSave }: SaveSelectProps) {
 
             {hasSave && (
               <div className="space-y-1">
-                <p className="text-lg font-bold text-[#e94560]">
+                <p className="text-lg font-bold text-[#e07a5f]">
                   修为: {formatCultivation(cultivation)}
                 </p>
-                <p className="text-xs text-[#a0a0b0]">
+                <p className="text-xs text-[#6b6b7b]">
                   精确值: {cultivation.toString()}
                 </p>
               </div>
             )}
 
             {!hasSave && (
-              <p className="text-sm text-[#a0a0b0]/50">
+              <p className="text-sm text-[#a09080]/50">
                 暂无存档数据
               </p>
             )}
@@ -93,8 +93,8 @@ export default function SaveSelect({ onClose, onLoadSave }: SaveSelectProps) {
                 {hasSave && (
                   <button
                     onClick={handleLoadSave}
-                    className="flex-1 px-3 py-2 text-sm bg-[#3a8ac4] text-white rounded-lg 
-                               hover:bg-[#4a9ad4] active:scale-95 transition-all font-medium tracking-wider"
+                    className="flex-1 px-3 py-2 text-sm bg-[#81b29a] text-white rounded-lg 
+                               hover:bg-[#6a9a84] active:scale-95 transition-all font-medium tracking-wider"
                   >
                     加载存档
                   </button>
@@ -102,8 +102,8 @@ export default function SaveSelect({ onClose, onLoadSave }: SaveSelectProps) {
                 <button
                   onClick={handleNewGame}
                   className={`${hasSave ? 'flex-1' : 'w-full'} px-3 py-2 text-sm 
-                             border border-[#e94560] text-[#e94560] rounded-lg 
-                             hover:bg-[#e94560]/10 active:scale-95 transition-all font-medium tracking-wider`}
+                             border border-[#e07a5f] text-[#e07a5f] rounded-lg 
+                             hover:bg-[#e07a5f]/10 active:scale-95 transition-all font-medium tracking-wider`}
                 >
                   新开游戏
                 </button>
@@ -112,8 +112,8 @@ export default function SaveSelect({ onClose, onLoadSave }: SaveSelectProps) {
               {hasSave && (
                 <button
                   onClick={handleDeleteSave}
-                  className="w-full px-3 py-2 text-sm border border-[#8a3a3a] text-[#c45a5a] rounded-lg 
-                             hover:bg-[#8a3a3a]/20 active:scale-95 transition-all font-medium tracking-wider"
+                  className="w-full px-3 py-2 text-sm border border-[#c46060] text-[#c46060] rounded-lg 
+                             hover:bg-[#c46060]/20 active:scale-95 transition-all font-medium tracking-wider"
                 >
                   🗑 删除存档
                 </button>

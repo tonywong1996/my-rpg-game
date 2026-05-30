@@ -128,6 +128,7 @@ export interface BattleUnit {
 export type NavTab = 'system' | 'equipment' | 'skills' | 'quests'
 export type GameMode = 'village' | 'battle' | 'postBattle'
 export type VillageLocation = 'center' | 'shop' | 'smithy' | 'quest_center' | 'npc'
+export type Screen = 'cover' | 'menu' | 'game' | 'saveSelect' | 'aiStory'
 
 export interface ShopItem {
   id: string
@@ -169,51 +170,51 @@ export interface LogEntry {
 }
 
 // ============================
-// 修仙装备数据
+// 低灵装备数据（知识武装）
 // ============================
 export const ALL_EQUIPMENT: Equipment[] = [
-  // 武器 - 剑类
-  { id: 'wood_sword', name: '桃木剑', slot: 'weapon', type: '剑', rarity: '凡品', icon: '🪵', attack: 5, defense: 0, mp_bonus: 0, hp_bonus: 0, description: '入门级桃木剑，蕴含微弱灵力', equipped: true },
-  { id: 'iron_sword', name: '玄铁剑', slot: 'weapon', type: '剑', rarity: '法器', icon: '🗡️', attack: 15, defense: 0, mp_bonus: 5, hp_bonus: 0, description: '玄铁打造，剑气凌厉', equipped: false },
-  { id: 'spirit_sword', name: '灵风剑', slot: 'weapon', type: '剑', rarity: '灵器', icon: '⚔️', attack: 30, defense: 0, mp_bonus: 10, hp_bonus: 20, description: '风灵加持，剑出如风', equipped: false },
-  { id: 'frost_sword', name: '寒霜剑', slot: 'weapon', type: '剑', rarity: '法宝', icon: '❄️', attack: 55, defense: 5, mp_bonus: 20, hp_bonus: 30, description: '千年寒冰所铸，冻结万物', equipped: false },
-  { id: 'celestial_sword', name: '天罡剑', slot: 'weapon', type: '剑', rarity: '仙器', icon: '🌟', attack: 100, defense: 10, mp_bonus: 50, hp_bonus: 60, description: '上古仙兵，斩妖除魔', equipped: false },
-  // 防具
-  { id: 'cloth_robe', name: '粗布道袍', slot: 'armor', type: '法袍', rarity: '凡品', icon: '👕', attack: 0, defense: 3, mp_bonus: 0, hp_bonus: 10, description: '普通道袍，聊胜于无', equipped: true },
-  { id: 'leather_armor', name: '兽皮甲', slot: 'armor', type: '护甲', rarity: '法器', icon: '🦺', attack: 0, defense: 8, mp_bonus: 5, hp_bonus: 30, description: '妖兽皮革制成，坚韧耐用', equipped: false },
-  { id: 'spirit_robe', name: '灵纹法袍', slot: 'armor', type: '法袍', rarity: '灵器', icon: '👘', attack: 5, defense: 15, mp_bonus: 20, hp_bonus: 40, description: '刻有防御法阵，灵力流转', equipped: false },
-  { id: 'celestial_armor', name: '天蚕宝甲', slot: 'armor', type: '护甲', rarity: '法宝', icon: '🛡️', attack: 10, defense: 30, mp_bonus: 30, hp_bonus: 80, description: '天蚕丝织就，刀枪不入', equipped: false },
-  // 饰品
-  { id: 'jade_pendant', name: '白玉佩', slot: 'accessory', type: '玉佩', rarity: '法器', icon: '📿', attack: 3, defense: 3, mp_bonus: 10, hp_bonus: 20, description: '温润白玉，养气凝神', equipped: false },
-  { id: 'spirit_ring', name: '聚灵戒', slot: 'accessory', type: '戒指', rarity: '灵器', icon: '💍', attack: 8, defense: 5, mp_bonus: 25, hp_bonus: 30, description: '汇聚天地灵气，提升修为', equipped: false },
-  { id: 'gourd_flask', name: '炼妖壶', slot: 'accessory', type: '葫芦', rarity: '法宝', icon: '🫙', attack: 15, defense: 10, mp_bonus: 40, hp_bonus: 50, description: '可收妖炼化，妙用无穷', equipped: false },
+  // 武器 - 子弹/弹药类
+  { id: 'wood_sword', name: '初速弹', slot: 'weapon', type: '剑', rarity: '凡品', icon: '🔫', attack: 5, defense: 0, mp_bonus: 0, hp_bonus: 0, description: '标准口径弹头，初速度约400m/s，基础动能伤害', equipped: true },
+  { id: 'iron_sword', name: '穿甲弹', slot: 'weapon', type: '剑', rarity: '法器', icon: '💨', attack: 15, defense: 0, mp_bonus: 5, hp_bonus: 0, description: '碳化钨芯穿甲弹，运用动量定理穿透护甲', equipped: false },
+  { id: 'spirit_sword', name: '伯努利弹', slot: 'weapon', type: '剑', rarity: '灵器', icon: '🌀', attack: 30, defense: 0, mp_bonus: 10, hp_bonus: 20, description: '弹头注入伯努利方程，空气流速快处压强低，形成精准风刃', equipped: false },
+  { id: 'frost_sword', name: '液氮弹', slot: 'weapon', type: '剑', rarity: '法宝', icon: '❄️', attack: 55, defense: 5, mp_bonus: 20, hp_bonus: 30, description: '液氮急速冷冻弹，触发莱顿弗罗斯特效应，冰封万物', equipped: false },
+  { id: 'celestial_sword', name: '量子隧穿弹', slot: 'weapon', type: '剑', rarity: '仙器', icon: '⚛️', attack: 100, defense: 10, mp_bonus: 50, hp_bonus: 60, description: '利用量子隧穿效应，子弹概率穿入目标内部，无法防御', equipped: false },
+  // 防具 - 战术装备
+  { id: 'cloth_robe', name: '战术背心', slot: 'armor', type: '法袍', rarity: '凡品', icon: '🦺', attack: 0, defense: 3, mp_bonus: 0, hp_bonus: 10, description: '凯夫拉纤维防弹层基础款，能挡低速破片', equipped: true },
+  { id: 'leather_armor', name: '应力分散甲', slot: 'armor', type: '护甲', rarity: '法器', icon: '🛡️', attack: 0, defense: 8, mp_bonus: 5, hp_bonus: 30, description: '蜂窝结构铝合金，将冲击波均压分散至全身', equipped: false },
+  { id: 'spirit_robe', name: '电磁护盾服', slot: 'armor', type: '法袍', rarity: '灵器', icon: '⚡', attack: 5, defense: 15, mp_bonus: 20, hp_bonus: 40, description: '通电线圈产生电磁偏转，原理类似劳伦兹力，偏移来袭弹丸', equipped: false },
+  { id: 'celestial_armor', name: '惯性护甲', slot: 'armor', type: '护甲', rarity: '法宝', icon: '🛡️', attack: 10, defense: 30, mp_bonus: 30, hp_bonus: 80, description: '非牛顿力学材料，常态柔软，高速冲击时瞬间固化抵御', equipped: false },
+  // 饰品 - 知识辅助器
+  { id: 'jade_pendant', name: '知识芯片', slot: 'accessory', type: '玉佩', rarity: '法器', icon: '📿', attack: 3, defense: 3, mp_bonus: 10, hp_bonus: 20, description: '微型计算核心，实时解算弹道和物理方程，辅助瞄准', equipped: false },
+  { id: 'spirit_ring', name: '公式戒指', slot: 'accessory', type: '戒指', rarity: '灵器', icon: '💍', attack: 8, defense: 5, mp_bonus: 25, hp_bonus: 30, description: '刻蚀基础物理公式，随时调用强化知识输出，增幅理解力', equipped: false },
+  { id: 'gourd_flask', name: '知识炼化壶', slot: 'accessory', type: '葫芦', rarity: '法宝', icon: '🫙', attack: 15, defense: 10, mp_bonus: 40, hp_bonus: 50, description: '将公式外显炼化为实体，战斗中随时注入弹头，妙用无穷', equipped: false },
 ]
 
 // ============================
-// 修仙技能数据
+// 知识技能数据（物理学武装）
 // ============================
 // 将所有技能标记为已解锁（测试模式）
 const ALL_SKILLS: Skill[] = [
-  // 剑诀系
-  { id: 'basic_attack', name: '基础剑诀', type: '剑诀', icon: '⚔️', description: '以气御剑，对敌人造成基础伤害', damage: 12, mpCost: 0, healAmount: 0, target: 'enemy', level: 1, maxLevel: 5, unlocked: true, unlockCost: 0, levelUpCost: 100 },
-  { id: 'sweeping_sword', name: '横扫千军', type: '剑诀', icon: '🌪️', description: '剑气横扫，造成大量伤害', damage: 30, mpCost: 10, healAmount: 0, target: 'enemy', level: 1, maxLevel: 5, unlocked: true, unlockCost: 500, levelUpCost: 300 },
-  { id: 'sword_rain', name: '万剑归宗', type: '剑诀', icon: '🌧️', description: '万千剑影从天而降，威力惊人', damage: 60, mpCost: 25, healAmount: 0, target: 'enemy', level: 1, maxLevel: 5, unlocked: true, unlockCost: 2000, levelUpCost: 800 },
-  // 法术系
-  { id: 'heal_spell', name: '回春术', type: '法术', icon: '💚', description: '引天地灵气，恢复自身生命', damage: 0, mpCost: 15, healAmount: 25, target: 'self', level: 1, maxLevel: 5, unlocked: true, unlockCost: 400, levelUpCost: 250 },
-  { id: 'ice_spell', name: '寒冰诀', type: '法术', icon: '🧊', description: '凝聚冰霜之力冰冻敌人', damage: 25, mpCost: 12, healAmount: 0, target: 'enemy', level: 1, maxLevel: 5, unlocked: true, unlockCost: 800, levelUpCost: 400 },
-  { id: 'fire_spell', name: '烈火咒', type: '法术', icon: '🔥', description: '召唤烈焰焚烧敌人', damage: 45, mpCost: 20, healAmount: 0, target: 'enemy', level: 1, maxLevel: 5, unlocked: true, unlockCost: 1500, levelUpCost: 600 },
-  // 心法系（被动增益）
-  { id: 'body_refine', name: '炼体诀', type: '心法', icon: '💪', description: '淬炼肉身，最大HP+20/级', damage: 0, mpCost: 0, healAmount: 20, target: 'self', level: 1, maxLevel: 5, unlocked: true, unlockCost: 300, levelUpCost: 200 },
-  { id: 'mind_cultivate', name: '凝神诀', type: '心法', icon: '🧠', description: '凝神静气，最大MP+15/级', damage: 0, mpCost: 0, healAmount: 15, target: 'self', level: 1, maxLevel: 5, unlocked: true, unlockCost: 600, levelUpCost: 300 },
-  { id: 'sword_mind', name: '剑心诀', type: '心法', icon: '✨', description: '剑心通明，攻击力+10/级', damage: 10, mpCost: 0, healAmount: 0, target: 'self', level: 1, maxLevel: 5, unlocked: true, unlockCost: 1200, levelUpCost: 500 },
+  // 剑诀系（物理攻击）
+  { id: 'basic_attack', name: '动能定理', type: '剑诀', icon: '⚔️', description: '基础牛顿第二定律，E=½mv²，将动能转化为伤害', damage: 12, mpCost: 0, healAmount: 0, target: 'enemy', level: 1, maxLevel: 5, unlocked: true, unlockCost: 0, levelUpCost: 100 },
+  { id: 'sweeping_sword', name: '动量定理', type: '剑诀', icon: '🌪️', description: '动量守恒批量计算，一次射击多目标，p=mv全域覆盖', damage: 30, mpCost: 10, healAmount: 0, target: 'enemy', level: 1, maxLevel: 5, unlocked: true, unlockCost: 500, levelUpCost: 300 },
+  { id: 'sword_rain', name: '万有引力', type: '剑诀', icon: '🌧️', description: '将重力加速度g=9.8注入弹雨，每颗子弹自带下落修正', damage: 60, mpCost: 25, healAmount: 0, target: 'enemy', level: 1, maxLevel: 5, unlocked: true, unlockCost: 2000, levelUpCost: 800 },
+  // 法术系（知识应用）
+  { id: 'heal_spell', name: '共振修复', type: '法术', icon: '💚', description: '利用共振频率修复受损肌理，特定声波频率加速细胞修复', damage: 0, mpCost: 15, healAmount: 25, target: 'self', level: 1, maxLevel: 5, unlocked: true, unlockCost: 400, levelUpCost: 250 },
+  { id: 'ice_spell', name: '莱顿弗罗斯特', type: '法术', icon: '🧊', description: '触发莱顿弗罗斯特效应，液氮与高温表面形成蒸汽层，冰封敌人', damage: 25, mpCost: 12, healAmount: 0, target: 'enemy', level: 1, maxLevel: 5, unlocked: true, unlockCost: 800, levelUpCost: 400 },
+  { id: 'fire_spell', name: '燃烧方程', type: '法术', icon: '🔥', description: '铯金属与水反应剧烈放热，链式方程式引爆目标', damage: 45, mpCost: 20, healAmount: 0, target: 'enemy', level: 1, maxLevel: 5, unlocked: true, unlockCost: 1500, levelUpCost: 600 },
+  // 心法系（被动知识增益）
+  { id: 'body_refine', name: '应力强化', type: '心法', icon: '💪', description: '肌肉应力分析训练，最大HP+20/级，弹性极限提升', damage: 0, mpCost: 0, healAmount: 20, target: 'self', level: 1, maxLevel: 5, unlocked: true, unlockCost: 300, levelUpCost: 200 },
+  { id: 'mind_cultivate', name: '脑波同步', type: '心法', icon: '🧠', description: '提升大脑皮层活跃度，MP+15/级，公式调用更高效', damage: 0, mpCost: 0, healAmount: 15, target: 'self', level: 1, maxLevel: 5, unlocked: true, unlockCost: 600, levelUpCost: 300 },
+  { id: 'sword_mind', name: '公式直觉', type: '心法', icon: '✨', description: '物理公式内化为本能直觉，攻击力+10/级，无需计算直接触发', damage: 10, mpCost: 0, healAmount: 0, target: 'self', level: 1, maxLevel: 5, unlocked: true, unlockCost: 1200, levelUpCost: 500 },
   
   // 新增高级技能
-  { id: 'thunder_sword', name: '雷影剑诀', type: '剑诀', icon: '⚡', description: '引九天雷霆之力，造成巨额雷电伤害', damage: 45, mpCost: 18, healAmount: 0, target: 'enemy', level: 1, maxLevel: 5, unlocked: true, unlockCost: 2500, levelUpCost: 900 },
-  { id: 'phoenix_fire', name: '凤凰火', type: '法术', icon: '🦅', description: '召唤凤凰真炎焚烧敌人，威力无穷', damage: 55, mpCost: 22, healAmount: 0, target: 'enemy', level: 1, maxLevel: 5, unlocked: true, unlockCost: 3000, levelUpCost: 1000 },
-  { id: 'moon_heal', name: '月华术', type: '法术', icon: '🌙', description: '引月华之力，大量恢复自身生命', damage: 0, mpCost: 20, healAmount: 50, target: 'self', level: 1, maxLevel: 5, unlocked: true, unlockCost: 1800, levelUpCost: 700 },
-  { id: 'shadow_step', name: '影步', type: '剑诀', icon: '👻', description: '如影随形，对敌人造成致命一击', damage: 40, mpCost: 15, healAmount: 0, target: 'enemy', level: 1, maxLevel: 5, unlocked: true, unlockCost: 2200, levelUpCost: 800 },
-  { id: 'ice_barrier', name: '寒冰障', type: '法术', icon: '🛡️', description: '凝聚冰霜护盾，临时提升防御力', damage: 0, mpCost: 12, healAmount: 0, target: 'self', level: 1, maxLevel: 5, unlocked: true, unlockCost: 1500, levelUpCost: 600 },
-  { id: 'void_sword', name: '虚空斩', type: '剑诀', icon: '🌀', description: '撕裂虚空的斩击，造成毁灭性伤害', damage: 75, mpCost: 30, healAmount: 0, target: 'enemy', level: 1, maxLevel: 5, unlocked: true, unlockCost: 4000, levelUpCost: 1200 },
+  { id: 'thunder_sword', name: '电磁炮击', type: '剑诀', icon: '⚡', description: '通电导线在磁场中受安培力，洛伦兹力驱动弹丸，伤害极高', damage: 45, mpCost: 18, healAmount: 0, target: 'enemy', level: 1, maxLevel: 5, unlocked: true, unlockCost: 2500, levelUpCost: 900 },
+  { id: 'phoenix_fire', name: '铝热反应', type: '法术', icon: '🦅', description: '铝热剂剧烈反应放热，Fe₂O₃+2Al→2Fe+Al₂O₃+热量，焚毁一切', damage: 55, mpCost: 22, healAmount: 0, target: 'enemy', level: 1, maxLevel: 5, unlocked: true, unlockCost: 3000, levelUpCost: 1000 },
+  { id: 'moon_heal', name: '光合修复', type: '法术', icon: '🌙', description: '特定频率光线刺激线粒体ATP合成，大量恢复自身生命', damage: 0, mpCost: 20, healAmount: 50, target: 'self', level: 1, maxLevel: 5, unlocked: true, unlockCost: 1800, levelUpCost: 700 },
+  { id: 'shadow_step', name: '卡西米尔步态', type: '剑诀', icon: '👻', description: '利用卡西米尔效应微观力场，短暂穿透经典力学限制，致命一击', damage: 40, mpCost: 15, healAmount: 0, target: 'enemy', level: 1, maxLevel: 5, unlocked: true, unlockCost: 2200, levelUpCost: 800 },
+  { id: 'ice_barrier', name: '热力学屏障', type: '法术', icon: '🛡️', description: '建立绝热层隔离，热传导中断，临时抵御所有热属性攻击', damage: 0, mpCost: 12, healAmount: 0, target: 'self', level: 1, maxLevel: 5, unlocked: true, unlockCost: 1500, levelUpCost: 600 },
+  { id: 'void_sword', name: '量子涨落斩', type: '剑诀', icon: '🌀', description: '在真空中引发量子涨落，真空零点能释放，毁灭性伤害', damage: 75, mpCost: 30, healAmount: 0, target: 'enemy', level: 1, maxLevel: 5, unlocked: true, unlockCost: 4000, levelUpCost: 1200 },
 ]
 
 // ============================
@@ -336,6 +337,9 @@ interface GameState {
   // AI战斗系统
   battleState: BattleState
 
+  // App屏幕状态（持久化）
+  currentScreen: Screen
+
   // 角色操作
   setCharacter: (id: CharacterId) => void
 
@@ -391,6 +395,9 @@ interface GameState {
   startAIBattle: (enemy: Enemy, battleIntro: string) => void
   endAIBattle: () => void
   aiAttack: () => void
+
+  // 屏幕操作
+  setCurrentScreen: (screen: Screen) => void
 
   // 通用操作
   reset: () => void
@@ -670,12 +677,14 @@ export const useGameStore = create<GameState>()(
           enemy: null,
           battleIntro: ''
         },
+        currentScreen: 'game' as Screen,
 
         setCharacter: (id: CharacterId) => {
           const charData = CHARACTER_DB[id]
           set({
             character: { ...charData },
             playerUnit: createPlayerUnit(id),
+            currentScreen: 'game' as Screen,
           })
         },
 
@@ -740,6 +749,7 @@ export const useGameStore = create<GameState>()(
               maxMp: stats.maxMp,
             },
             villageMessage: '你回到了青石村，体力已完全恢复。',
+            currentScreen: 'game',
           })
           setTimeout(() => {
             set({ villageMessage: '' })
@@ -1196,6 +1206,10 @@ export const useGameStore = create<GameState>()(
           }
         },
 
+        setCurrentScreen: (screen: Screen) => {
+          set({ currentScreen: screen })
+        },
+
         reset: () => {
           const newDefault = {
             character: { ...CHARACTER_DB[DEFAULT_CHARACTER_ID] },
@@ -1225,6 +1239,7 @@ export const useGameStore = create<GameState>()(
               enemy: null,
               battleIntro: ''
             },
+            currentScreen: 'cover' as Screen,
           }
           set(newDefault)
         },

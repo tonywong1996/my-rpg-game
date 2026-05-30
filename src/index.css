@@ -301,14 +301,14 @@
 }
 
 :root {
-  --color-bg-primary: #0f0f1a;
-  --color-bg-secondary: #1a1a2e;
-  --color-bg-tertiary: #16213e;
-  --color-accent: #e94560;
-  --color-accent-secondary: #0f3460;
-  --color-text-primary: #eaeaea;
-  --color-text-secondary: #a0a0b0;
-  --color-gold: #ffd700;
+  --color-bg-primary: #f5efe6;
+  --color-bg-secondary: #e8e0d0;
+  --color-bg-tertiary: #d4c8b8;
+  --color-accent: #e07a5f;
+  --color-accent-secondary: #81b29a;
+  --color-text-primary: #3d405b;
+  --color-text-secondary: #6b6b7b;
+  --color-gold: #d4a04a;
 }
 
 * {
@@ -331,22 +331,17 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* 自定义滚动条 */
-.scrollbar-thin::-webkit-scrollbar {
-  width: 3px;
-}
-
 .scrollbar-thin::-webkit-scrollbar-track {
   background: transparent;
 }
 
 .scrollbar-thin::-webkit-scrollbar-thumb {
-  background: #1a1a3a;
+  background: #c4b8a8;
   border-radius: 3px;
 }
 
 .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-  background: #2a2a4a;
+  background: #a89880;
 }
 
 /* 动画类 */
@@ -537,18 +532,18 @@ body {
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #3a3a5a, #2a2a4a);
+  background: linear-gradient(180deg, #a89880, #8a7860);
   border-radius: 4px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #4a4a6a, #3a3a5a);
+  background: linear-gradient(180deg, #b8a890, #9a8870);
 }
 
 /* 分割线样式 */
 .divider-gradient {
   height: 1px;
-  background: linear-gradient(90deg, transparent, #1a1a3a, transparent);
+  background: linear-gradient(90deg, transparent, #c4b8a8, transparent);
 }
 
 /* iPhone 全屏安全区域 - 顶部 */

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useGameStore } from './store/useGameStore'
+import { useGameStore, Screen } from './store/useGameStore'
 import { useGameEngine } from './engine/useGameEngine'
 import GameCover from './components/GameCover'
 import GameMenu from './components/GameMenu'
@@ -16,10 +16,17 @@ import SmithyPanel from './components/SmithyPanel'
 import AIStoryPanel from './components/AIStoryPanel'
 import PostBattlePanel from './components/PostBattlePanel'
 
-type Screen = 'cover' | 'menu' | 'game' | 'saveSelect' | 'aiStory'
-
 function App() {
-  const [currentScreen, setCurrentScreen] = useState<Screen>('cover')
+  // 从 store 恢复持久化的屏幕状态
+  const persistedScreen = useGameStore((state) => state.currentScreen)
+  const setCurrentScreenToStore = useGameStore((state) => state.setCurrentScreen)
+  const [currentScreen, setCurrentScreenLocal] = useState<Screen>(persistedScreen || 'cover')
+  
+  // 同步本地状态到 store（持久化）
+  const setCurrentScreen = (screen: Screen) => {
+    setCurrentScreenLocal(screen)
+    setCurrentScreenToStore(screen)
+  }
   
   // 启动游戏引擎（始终运行）
   useGameEngine()
@@ -185,49 +192,49 @@ function App() {
   // 新手村模式
   if (gameMode === 'village') {
     return (
-      <div className="relative w-full h-screen bg-[#0f0f1a] overflow-hidden">
-        {/* 新手村场景 */}
-        <VillageScene />
+      <div className="relative w-full h-screen overflow-hidden" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
+      {/* 新手村场景 */}
+      <VillageScene />
 
-        {/* 顶部返回菜单按钮 */}
-        <button
-          onClick={handleBackToMenu}
-          className="absolute top-1 left-2 z-20 px-2 py-1 bg-[#0a0a1a]/60 text-[#a0a0b0] text-[10px] rounded-md
-                     border border-[#1a1a3a] hover:bg-[#1a1a2e] hover:text-[#f5f0c4] transition-all duration-200"
-        >
-          ← 菜单
-        </button>
+      {/* 顶部返回菜单按钮 */}
+      <button
+        onClick={handleBackToMenu}
+        className="absolute top-1 left-2 z-20 px-2 py-1 bg-[#e8e0d0]/80 text-[#3d405b] text-[10px] rounded-md
+                   border border-[#c4b8a8] hover:bg-[#d4c8b8] hover:text-[#3d405b] transition-all duration-200"
+      >
+        ← 菜单
+      </button>
 
-        {/* 返回村庄提示消息 */}
-        {villageMessage && (
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40 animate-fade-in-out">
-            <div className="px-6 py-3 bg-[#0a2a1a]/90 backdrop-blur-sm rounded-xl border border-[#2a4a2a]/50 shadow-lg shadow-[#2a4a2a]/10">
-              <p className="text-sm text-[#4a8a4a] font-bold text-center tracking-wider whitespace-nowrap">
-                {villageMessage}
-              </p>
-            </div>
+      {/* 返回村庄提示消息 */}
+      {villageMessage && (
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40 animate-fade-in-out">
+          <div className="px-6 py-3 bg-[#e8e0d0]/90 backdrop-blur-sm rounded-xl border border-[#c4b8a8] shadow-lg">
+            <p className="text-sm text-[#81b29a] font-bold text-center tracking-wider whitespace-nowrap">
+              {villageMessage}
+            </p>
           </div>
-        )}
+        </div>
+      )}
 
-        {/* 商店面板 */}
-        {villageLocation === 'shop' && <ShopPanel />}
+      {/* 商店面板 */}
+      {villageLocation === 'shop' && <ShopPanel />}
 
-        {/* 任务中心面板 */}
-        {villageLocation === 'quest_center' && <QuestCenterPanel />}
+      {/* 任务中心面板 */}
+      {villageLocation === 'quest_center' && <QuestCenterPanel />}
 
-        {/* 装备铺面板 */}
-        {villageLocation === 'smithy' && <SmithyPanel />}
+      {/* 装备铺面板 */}
+      {villageLocation === 'smithy' && <SmithyPanel />}
 
-        {/* NPC对话面板 */}
-        {villageLocation === 'npc' && <NPCPanel />}
-      </div>
-    )
+      {/* NPC对话面板 */}
+      {villageLocation === 'npc' && <NPCPanel />}
+    </div>
+  )
   }
 
-  // 战斗模式（原有的战斗界面）
+  // 战斗模式
   if (gameMode === 'battle') {
     return (
-      <div className="flex flex-col w-full h-screen bg-[#0f0f1a] overflow-hidden">
+      <div className="flex flex-col w-full h-screen overflow-hidden" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
         {/* 上半部分 - 战斗场景 */}
         <div className="relative h-[60vh] min-h-[300px] flex-shrink-0">
           <BattleScene />
@@ -235,27 +242,27 @@ function App() {
           {/* 返回按钮 - 悬浮在左上角 */}
           <button
             onClick={handleBackToMenu}
-            className="absolute top-2 left-2 z-20 px-3 py-1.5 bg-[#0a0a1a]/80 text-[#a0a0b0] text-xs rounded-lg
-                       border border-[#1a1a3a] hover:bg-[#1a1a2e] hover:text-[#f5f0c4] transition-all duration-200"
+            className="absolute top-2 left-2 z-20 px-3 py-1.5 bg-[#3d405b]/80 text-white text-xs rounded-lg
+                       border border-[#c4b8a8] hover:bg-[#6b6b7b] hover:text-white transition-all duration-200"
           >
             ← 返回菜单
           </button>
         </div>
 
         {/* 下半部分 - 战斗日志 / 面板 */}
-        <div className="flex-1 flex flex-col min-h-0 bg-[#0f0f1a]">
+        <div className="flex-1 flex flex-col min-h-0 bg-[#f5efe6]">
           {/* 日志区域或面板内容 */}
           {showTabContent ? <TabPanels /> : <TextLog />}
 
           {/* 底部操作栏 - 面板切换 + 回村 */}
-          <div className="flex-shrink-0 px-3 py-2 bg-[#0a0a1a] border-t border-[#1a1a3a]">
+          <div className="flex-shrink-0 px-3 py-2 bg-[#e8e0d0] border-t border-[#c4b8a8]">
             <div className="flex items-center gap-2">
               <button
                 onClick={() => useGameStore.getState().setTab('system')}
                 className={`px-4 py-2 rounded-lg text-xs font-medium transition-all duration-200 border
                            ${showTabContent
-                             ? 'bg-[#1a1a2e] text-[#3a8ac4] border-[#3a8ac4]/30 hover:bg-[#16213e]'
-                             : 'bg-[#16213e]/50 text-[#a0a0b0]/50 border-[#1a1a3a]'
+                             ? 'bg-[#81b29a] text-white border-[#81b29a]/30 hover:bg-[#6a9a84]'
+                             : 'bg-[#d4c8b8]/50 text-[#6b6b7b]/50 border-[#c4b8a8]'
                            }`}
               >
                 面板
@@ -263,8 +270,8 @@ function App() {
               <div className="flex-1" />
               <button
                 onClick={returnToVillage}
-                className="px-3 py-2 rounded-lg text-[10px] text-[#4a8a4a] border border-[#2a4a2a]/50 
-                           bg-[#0a1a0a]/50 hover:bg-[#0a2a1a] hover:text-[#6aaa6a] transition-all duration-200"
+                className="px-3 py-2 rounded-lg text-[10px] text-[#81b29a] border border-[#81b29a]/50 
+                           bg-[#e8e0d0]/50 hover:bg-[#d4c8b8] hover:text-[#3d405b] transition-all duration-200"
               >
                 🏘 回村休整
               </button>
@@ -281,14 +288,14 @@ function App() {
   // 战后过渡界面
   if (gameMode === 'postBattle') {
     return (
-      <div className="relative w-full h-screen bg-[#0f0f1a] overflow-hidden">
+      <div className="relative w-full h-screen overflow-hidden" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
         <PostBattlePanel />
         
         {/* 返回按钮 - 悬浮在左上角 */}
         <button
           onClick={handleBackToMenu}
-          className="absolute top-2 left-2 z-20 px-3 py-1.5 bg-[#0a0a1a]/80 text-[#a0a0b0] text-xs rounded-lg
-                     border border-[#1a1a3a] hover:bg-[#1a1a2e] hover:text-[#f5f0c4] transition-all duration-200"
+          className="absolute top-2 left-2 z-20 px-3 py-1.5 bg-[#e8e0d0]/80 text-[#3d405b] text-xs rounded-lg
+                     border border-[#c4b8a8] hover:bg-[#d4c8b8] hover:text-[#3d405b] transition-all duration-200"
         >
           ← 返回菜单
         </button>

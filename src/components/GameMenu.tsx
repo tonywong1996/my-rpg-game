@@ -47,13 +47,13 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
 
   return (
     <div className="relative w-full h-screen overflow-hidden">
-      {/* 渐变背景 - 蓝紫夜幕 + 暖光点缀 */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#1a2a4a] via-[#2a3a6a] to-[#1a1a3a]" />
+      {/* 渐变背景 - 温暖的米色系 */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#f0e8d8] via-[#e8dcc8] to-[#d8c8b0]" />
 
-      {/* 三层光晕 - 暖玫瑰 + 冷蓝 + 紫罗兰，营造层次感 */}
-      <div className="absolute top-1/5 left-1/5 w-[500px] h-[500px] bg-rose-400/30 rounded-full blur-[180px]" />
-      <div className="absolute bottom-1/3 right-1/6 w-[450px] h-[450px] bg-sky-400/30 rounded-full blur-[180px]" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-violet-500/25 rounded-full blur-[200px]" />
+      {/* 三层光晕 - 温暖的琥珀 + 薄荷绿 + 玫瑰金 */}
+      <div className="absolute top-1/5 left-1/5 w-[500px] h-[500px] bg-[#e8c090]/40 rounded-full blur-[180px]" />
+      <div className="absolute bottom-1/3 right-1/6 w-[450px] h-[450px] bg-[#a8d8b0]/40 rounded-full blur-[180px]" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-[#d8b8c0]/35 rounded-full blur-[200px]" />
 
       {/* 上方柔光 */}
       <div className="absolute top-0 left-0 right-0 h-1/3 bg-gradient-to-b from-white/[0.03] to-transparent" />
@@ -63,7 +63,7 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
         {Array.from({ length: 30 }).map((_, i) => (
           <div
             key={i}
-            className="absolute w-1.5 h-1.5 bg-white/30 rounded-full"
+            className="absolute w-1.5 h-1.5 bg-[#e8c090]/50 rounded-full"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
@@ -92,7 +92,7 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
 
         {/* 角色选择区 */}
         <div>
-          <p className="text-center text-xs text-white/40 tracking-widest mb-6">
+          <p className="text-center text-xs text-[#6b6b7b] tracking-widest mb-6">
             选 择 你 的 身 份
           </p>
           <div className="flex items-center justify-center gap-8 md:gap-16">
@@ -101,11 +101,11 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
                 <div className={` 
                 relative p-1.5 rounded-3xl transition-all duration-500
                 ${selectedCharacter === 'xiaoli'
-                  ? 'bg-gradient-to-r from-pink-400 to-rose-500 shadow-lg shadow-pink-500/30'
-                  : 'bg-white/[0.12] hover:bg-white/[0.18] border border-white/20'
+                  ? 'bg-gradient-to-r from-[#e07a5f] to-[#c46050] shadow-lg shadow-[#e07a5f]/30'
+                  : 'bg-white/[0.5] hover:bg-white/[0.7] border border-[#c4b8a8]'
                 }
               `}> 
-                <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-pink-400/20 to-rose-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-[#e07a5f]/20 to-[#c46050]/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
                 <CharacterPortrait
                   characterId="xiaoli"
                   selected={selectedCharacter === 'xiaoli'}
@@ -113,7 +113,7 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
                 />
               </div>
               <p className={`text-sm tracking-wider transition-all duration-300 ${
-                selectedCharacter === 'xiaoli' ? 'text-white font-semibold' : 'text-white/40'
+                selectedCharacter === 'xiaoli' ? 'text-[#3d405b] font-semibold' : 'text-[#6b6b7b]'
               }`}>
                 小 莉
               </p>
@@ -124,11 +124,11 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
               <div className={`
                 relative p-1 rounded-3xl transition-all duration-500
                 ${selectedCharacter === 'xiaoke'
-                  ? 'bg-gradient-to-r from-blue-400 to-cyan-500 shadow-lg shadow-blue-500/30'
-                  : 'bg-white/[0.12] hover:bg-white/[0.18] border border-white/20'
+                  ? 'bg-gradient-to-r from-[#81b29a] to-[#609078] shadow-lg shadow-[#81b29a]/30'
+                  : 'bg-white/[0.5] hover:bg-white/[0.7] border border-[#c4b8a8]'
                 }
               `}>
-                <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-blue-400/20 to-cyan-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-[#81b29a]/20 to-[#609078]/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
                 <CharacterPortrait
                   characterId="xiaoke"
                   selected={selectedCharacter === 'xiaoke'}
@@ -136,7 +136,7 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
                 />
               </div>
               <p className={`text-sm tracking-wider transition-all duration-300 ${
-                selectedCharacter === 'xiaoke' ? 'text-white font-semibold' : 'text-white/40'
+                selectedCharacter === 'xiaoke' ? 'text-[#3d405b] font-semibold' : 'text-[#6b6b7b]'
               }`}>
                 小 可
               </p>
@@ -146,11 +146,11 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
           {/* 角色描述 - 固定高度，不撑开布局 */}
           <div className="mt-6 h-[90px] w-full max-w-md mx-auto relative">
             {selectedCharacter ? (
-              <p className="absolute inset-0 text-xs text-white/70 text-center leading-relaxed backdrop-blur-md bg-white/[0.06] rounded-2xl p-4 animate-fadeIn overflow-y-auto border border-white/10">
+              <p className="absolute inset-0 text-xs text-[#5a5060] text-center leading-relaxed backdrop-blur-md bg-white/50 rounded-2xl p-4 animate-fadeIn overflow-y-auto border border-[#c4b8a8]">
                 {getCharacterDescription(selectedCharacter)}
               </p>
             ) : (
-              <p className="absolute inset-0 text-xs text-white/30 text-center leading-relaxed p-4">
+              <p className="absolute inset-0 text-xs text-[#a09080] text-center leading-relaxed p-4">
                 点击角色查看介绍
               </p>
             )}
@@ -167,8 +167,8 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
               group relative px-16 py-4 w-72 text-base font-bold tracking-[0.3em] rounded-2xl
               transition-all duration-500 overflow-hidden
               ${selectedCharacter
-                ? 'bg-gradient-to-r from-purple-600 to-cyan-500 text-white hover:from-purple-500 hover:to-cyan-400 shadow-xl shadow-purple-500/25 hover:shadow-purple-400/40 hover:scale-105 active:scale-95 border border-white/20'
-                : 'bg-white/5 text-white/20 cursor-not-allowed border border-white/10'
+                ? 'bg-gradient-to-r from-[#e07a5f] to-[#c46050] text-white hover:from-[#e88870] hover:to-[#d47060] shadow-xl shadow-[#e07a5f]/25 hover:shadow-[#e07a5f]/40 hover:scale-105 active:scale-95 border border-white/20'
+                : 'bg-white/30 text-[#a09080] cursor-not-allowed border border-[#c4b8a8]/30'
               }
             `}
           >
@@ -182,17 +182,17 @@ export default function GameMenu({ onEnterGame, onSelectSave }: GameMenuProps) {
           <button
             onClick={onSelectSave}
             className="group relative px-16 py-4 w-72 text-base font-bold tracking-[0.3em] rounded-2xl
-                       bg-white/5 text-white/60 border border-white/10
-                       hover:bg-white/10 hover:text-white/80 hover:border-purple-400/40 hover:scale-105 active:scale-95 
+                       bg-white/40 text-[#6b6b7b] border border-[#c4b8a8]/50
+                       hover:bg-white/60 hover:text-[#3d405b] hover:border-[#81b29a]/60 hover:scale-105 active:scale-95 
                        transition-all duration-300 overflow-hidden"
           >
             <span className="relative z-10">存档选择</span>
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-500/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#81b29a]/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
           </button>
         </div>
 
         {/* 底部提示 */}
-        <p className="text-xs text-white/20 tracking-widest mt-8 pb-2">
+        <p className="text-xs text-[#a09080] tracking-widest mt-8 pb-2">
           {selectedCharacter ? '✓ 选定身份，踏入世界' : '请先选择身份'}
         </p>
         </div>

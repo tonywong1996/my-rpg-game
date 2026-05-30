@@ -8,7 +8,7 @@ import coverImage from '../assets/images/cover_bedroom.jpg'
  */
 export default function GameCover() {
   return (
-    <div className="relative w-full h-full overflow-hidden bg-[#1a1a2e]">
+    <div className="relative w-full h-full overflow-hidden bg-[#f5efe6]">
       {/* 封面背景图 */}
       <div className="absolute inset-0 flex items-center justify-center">
         <img 
@@ -18,9 +18,9 @@ export default function GameCover() {
         />
       </div>
 
-      {/* 渐暗遮罩 - 让文字按钮更清晰 */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d1a] via-[#0d0d1a]/20 to-transparent" />
-      <div className="absolute inset-0 bg-gradient-to-r from-[#0d0d1a]/40 via-transparent to-[#0d0d1a]/40" />
+      {/* 渐暗遮罩 */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#f5efe6] via-[#f5efe6]/20 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#f5efe6]/40 via-transparent to-[#f5efe6]/40" />
 
       {/* 装饰性粒子层 */}
       <div className="absolute inset-0 opacity-20 pointer-events-none">

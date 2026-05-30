@@ -198,23 +198,23 @@ export default function VillageScene() {
         />
         
         {/* 半透明遮罩 */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#000]/40 via-transparent to-[#000]/60" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#000]/30 via-transparent to-[#000]/50" />
 
         {/* 顶部信息栏 */}
-        <div className="absolute top-0 left-0 right-0 z-20 px-4 pt-3 pb-2 bg-gradient-to-b from-[#0a0a1a]/90 to-transparent">
+        <div className="absolute top-0 left-0 right-0 z-20 px-4 pt-3 pb-2 bg-gradient-to-b from-[#f5efe6]/90 to-transparent">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs text-[#f5f0c4] font-bold tracking-wider">{character.name}</p>
-              <p className="text-[10px] text-[#3a8ac4]">{character.title}</p>
+              <p className="text-xs text-[#3d405b] font-bold tracking-wider">{character.name}</p>
+              <p className="text-[10px] text-[#81b29a]">{character.title}</p>
             </div>
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-1">
-                <span className="text-[10px] text-[#a0a0b0]">修为</span>
-                <span className="text-xs text-[#e94560] font-bold">{formatCultivation(cultivation)}</span>
+                <span className="text-[10px] text-[#6b6b7b]">修为</span>
+                <span className="text-xs text-[#e07a5f] font-bold">{formatCultivation(cultivation)}</span>
               </div>
               <div className="flex items-center gap-1">
-                <span className="text-[10px] text-[#a0a0b0]">金币</span>
-                <span className="text-xs text-[#ffd700] font-bold">{gold}</span>
+                <span className="text-[10px] text-[#6b6b7b]">金币</span>
+                <span className="text-xs text-[#d4a04a] font-bold">{gold}</span>
               </div>
             </div>
           </div>
@@ -222,10 +222,10 @@ export default function VillageScene() {
 
         {/* 地点名称 */}
         <div className="absolute top-[15%] left-1/2 -translate-x-1/2 z-10 text-center">
-          <h1 className="text-lg font-bold text-[#f5f0c4] tracking-[0.3em] drop-shadow-lg">
+          <h1 className="text-lg font-bold text-white tracking-[0.3em] drop-shadow-lg">
             教 室
           </h1>
-          <p className="text-[10px] text-[#a0a0b0]/60 tracking-widest mt-0.5">
+          <p className="text-[10px] text-white/70 tracking-widest mt-0.5">
             知识即是力量
           </p>
         </div>
@@ -236,56 +236,56 @@ export default function VillageScene() {
             onClick={() => handleBuildingClick('shop')}
             className="flex flex-col items-center gap-1 group"
           >
-            <div className="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-b from-[#2a1a0a] to-[#1a0a00] rounded-lg border-2 border-[#4a2a1a]/50 flex items-center justify-center group-hover:border-[#ffd700]/50 transition-all">
+            <div className="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-b from-[#e8c8a8] to-[#d4b090] rounded-lg border-2 border-[#c4a880]/50 flex items-center justify-center group-hover:border-[#d4a04a]/50 transition-all shadow-md">
               <span className="text-2xl md:text-3xl">🏪</span>
             </div>
-            <span className="text-[10px] text-[#f5f0c4] group-hover:text-[#ffd700]">商店</span>
+            <span className="text-[10px] text-white group-hover:text-[#d4a04a] drop-shadow-md">商店</span>
           </button>
 
           <button
             onClick={() => handleBuildingClick('smithy')}
             className="flex flex-col items-center gap-1 group"
           >
-            <div className="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-b from-[#2a1a00] to-[#1a0a00] rounded-lg border-2 border-[#4a3a1a]/50 flex items-center justify-center group-hover:border-[#ff8c00]/50 transition-all">
+            <div className="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-b from-[#c8a878] to-[#a88858] rounded-lg border-2 border-[#b89868]/50 flex items-center justify-center group-hover:border-[#e07a5f]/50 transition-all shadow-md">
               <span className="text-2xl md:text-3xl">⚒️</span>
             </div>
-            <span className="text-[10px] text-[#f5f0c4] group-hover:text-[#ff8c00]">装备铺</span>
+            <span className="text-[10px] text-white group-hover:text-[#e07a5f] drop-shadow-md">装备铺</span>
           </button>
 
           <button
             onClick={() => handleBuildingClick('quest_center')}
             className="flex flex-col items-center gap-1 group"
           >
-            <div className="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-b from-[#0a1a2a] to-[#000a1a] rounded-lg border-2 border-[#1a2a4a]/50 flex items-center justify-center group-hover:border-[#3a8ac4]/50 transition-all">
+            <div className="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-b from-[#a8c8b8] to-[#88b098] rounded-lg border-2 border-[#98b088]/50 flex items-center justify-center group-hover:border-[#81b29a]/50 transition-all shadow-md">
               <span className="text-2xl md:text-3xl">📜</span>
             </div>
-            <span className="text-[10px] text-[#f5f0c4] group-hover:text-[#3a8ac4]">任务</span>
+            <span className="text-[10px] text-white group-hover:text-[#81b29a] drop-shadow-md">任务</span>
           </button>
 
           <button
             onClick={() => handleBuildingClick('npc')}
             className="flex flex-col items-center gap-1 group"
           >
-            <div className="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-b from-[#1a0a1a] to-[#0a000a] rounded-lg border-2 border-[#3a1a3a]/50 flex items-center justify-center group-hover:border-[#c47ac4]/50 transition-all">
+            <div className="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-b from-[#c8b8d8] to-[#a898b8] rounded-lg border-2 border-[#b8a8c8]/50 flex items-center justify-center group-hover:border-[#9a88b8]/50 transition-all shadow-md">
               <span className="text-2xl md:text-3xl">🏘️</span>
             </div>
-            <span className="text-[10px] text-[#f5f0c4] group-hover:text-[#c47ac4]">NPC</span>
+            <span className="text-[10px] text-white group-hover:text-[#9a88b8] drop-shadow-md">NPC</span>
           </button>
 
           <button
             onClick={goToBattle}
             className="flex flex-col items-center gap-1 group"
           >
-            <div className="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-b from-[#2a0a0a] to-[#1a0000] rounded-lg border-2 border-[#4a1a1a]/50 flex items-center justify-center group-hover:border-[#e94560]/50 transition-all">
+            <div className="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-b from-[#d8a878] to-[#c08858] rounded-lg border-2 border-[#c89868]/50 flex items-center justify-center group-hover:border-[#e07a5f]/50 transition-all shadow-md">
               <span className="text-2xl md:text-3xl">⚔️</span>
             </div>
-            <span className="text-[10px] text-[#f5f0c4] group-hover:text-[#e94560]">锻炼</span>
+            <span className="text-[10px] text-white group-hover:text-[#e07a5f] drop-shadow-md">锻炼</span>
           </button>
         </div>
       </div>
 
       {/* 下半部分 - AI叙事面板 */}
-      <div className="h-[45%] min-h-[200px] flex flex-col bg-[#0a0a12] border-t border-[#2a2a3a]">
+      <div className="h-[40%] min-h-[180px] flex flex-col bg-[#ede8de] border-t border-[#c4b8a8]">
         {/* 叙事内容 */}
         <div 
           ref={storyRef}
@@ -295,34 +295,34 @@ export default function VillageScene() {
           {npcCards.length > 0 && (
             <div className="flex gap-1 mb-2 overflow-x-auto">
               {npcCards.map(npc => (
-                <div key={npc.id} className="flex-shrink-0 px-2 py-1 bg-[#1a1a2a] rounded text-[10px]">
-                  <span className="text-[#c4a86a]">{npc.name}</span>
+                <div key={npc.id} className="flex-shrink-0 px-2 py-1 bg-[#d4c8b8] rounded text-[10px]">
+                  <span className="text-[#8a7260]">{npc.name}</span>
                 </div>
               ))}
             </div>
           )}
 
           {/* 消息历史 */}
-          {history.map((msg, index) => (
-            <p key={index} className="text-sm leading-relaxed text-[#c4b896] whitespace-pre-wrap break-all">
-              <span className={`font-bold ${msg.speaker === '你' ? 'text-[#4a8a6a]' : msg.speaker === '系统' ? 'text-[#c4a86a]' : 'text-[#8a6a9a]'}`}>
+          {history.map((index, msg) => (
+            <p key={index} className="text-sm leading-relaxed text-[#5a5060] whitespace-pre-wrap break-all">
+              <span className={`font-bold ${msg.speaker === '你' ? 'text-[#81b29a]' : msg.speaker === '系统' ? 'text-[#8a7260]' : 'text-[#9a88b8]'}`}>
                 {msg.speaker}:
               </span><span className="mr-1"></span>{msg.content}
             </p>
           ))}
 
           {isLoading && (
-            <div className="text-[#6a6a8a] text-sm animate-pulse">⏳ AI思考中...</div>
+            <div className="text-[#a09080] text-sm animate-pulse">⏳ AI思考中...</div>
           )}
 
           {error && (
-            <div className="text-[#c46a6a] text-sm">❌ {error}</div>
+            <div className="text-[#c46060] text-sm">❌ {error}</div>
           )}
         </div>
 
         {/* 选项区域 */}
         {choices.length > 0 && !isLoading && (
-          <div className="px-3 py-2 bg-[#12121c] border-t border-[#2a2a3a] space-y-2">
+          <div className="px-3 py-2 bg-[#e0d8cc] border-t border-[#c4b8a8] space-y-2">
             {choices.map((choice, index) => {
               const isBattleOption = checkBattleKeyword(choice.text)
               
@@ -330,15 +330,15 @@ export default function VillageScene() {
                 <button
                   key={choice.id}
                   onClick={() => handleChoice(choice, index)}
-                  className="w-full px-3 py-2 text-left bg-[#1a1a2a] hover:bg-[#2a2a3a] 
-                             border border-[#3a3a4a] hover:border-[#c4a86a] rounded text-[12px] text-[#c4b896]
+                  className="w-full px-3 py-2 text-left bg-[#f5efe6] hover:bg-[#ede8de] 
+                             border border-[#c4b8a8] hover:border-[#81b29a] rounded text-[12px] text-[#5a5060]
                              transition-all whitespace-normal flex items-center justify-between"
                 >
                   <span>
-                    <span className="text-[#c4a86a] font-bold">{index + 1}.</span> {choice.text}
+                    <span className="text-[#8a7260] font-bold">{index + 1}.</span> {choice.text}
                   </span>
                   {isBattleOption && (
-                    <span className="ml-2 px-2 py-0.5 bg-[#e94560]/20 text-[#e94560] text-[10px] rounded font-bold">
+                    <span className="ml-2 px-2 py-0.5 bg-[#e07a5f]/20 text-[#e07a5f] text-[10px] rounded font-bold">
                       战斗
                     </span>
                   )}
@@ -350,19 +350,19 @@ export default function VillageScene() {
 
         {/* 输入区域 - 只有在没有选项时显示 */}
         {choices.length === 0 && !isLoading && (
-          <form onSubmit={handleFreeInput} className="px-3 py-2 bg-[#12121c] border-t border-[#2a2a3a] flex gap-2">
+          <form onSubmit={handleFreeInput} className="px-3 py-2 bg-[#e0d8cc] border-t border-[#c4b8a8] flex gap-2">
             <textarea
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               placeholder="说点什么..."
               disabled={isLoading}
               rows={2}
-              className="flex-1 px-3 py-2 bg-[#1a1a2a] border border-[#2a2a3a] rounded text-[12px] text-[#c4b896] placeholder-[#4a4a5a] focus:outline-none focus:border-[#c4a86a] resize-none"
+              className="flex-1 px-3 py-2 bg-[#f5efe6] border border-[#c4b8a8] rounded text-[12px] text-[#5a5060] placeholder-[#a09080] focus:outline-none focus:border-[#81b29a] resize-none"
             />
             <button
               type="submit"
               disabled={isLoading || !inputText.trim()}
-              className="px-4 py-2 bg-[#2a4a3a] hover:bg-[#3a5a4a] text-[#8aba9a] rounded text-[12px] disabled:opacity-50 self-end"
+              className="px-4 py-2 bg-[#81b29a] hover:bg-[#6a9a84] text-white rounded text-[12px] disabled:opacity-50 self-end"
             >
               发送
             </button>
