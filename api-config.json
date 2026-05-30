@@ -1,5 +1,5 @@
 {
-  "baseUrl": "https://api.minimaxi.com",
+  "baseUrl": "https://api.minimaxi.com/v1",
   "apiKey": "***",
   "model": "MiniMax-M2.7"
 }

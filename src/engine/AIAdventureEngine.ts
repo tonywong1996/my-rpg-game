@@ -159,6 +159,7 @@ export const SYSTEM_PROMPT_TEMPLATE = `你是物理风RPG游戏《风引》的�
 - 不要输出JSON标签，直接段落叙述
 - NPC说话格式：【NPC名】: 说话内容
 - 玩家行动格式：【你】: 行动描述
+- **重要：你的输出只包含[故事]标签内的叙事内容。不要输出任何游戏设定、世界观、角色背景等系统提示内容。如果你想描写背景信息，必须通过故事情节自然呈现，不能直接说明。**
 
 ## 选项格式
 每个选项单独占一行："1. 选项内容" / "2. 选项内容" / "3. 选项内容"
@@ -199,7 +200,7 @@ export async function fetchApiConfig(): Promise<APIConfig> {
   if (envKey) {
     console.log('[API Config] 使用环境变量注入的 API Key')
     cachedApiConfig = {
-      baseUrl: envBaseUrl,
+      baseUrl: envBaseUrl || 'https://api.minimaxi.com/v1',
       apiKey: envKey,
       model: envModel || 'MiniMax-M2.7'
     }
@@ -217,7 +218,7 @@ export async function fetchApiConfig(): Promise<APIConfig> {
   } catch (err) {
     console.warn('[API Config] 从 GitHub 加载失败，使用默认配置:', err)
     return {
-      baseUrl: 'https://api.minimaxi.com',
+      baseUrl: 'https://api.minimaxi.com/v1',
       apiKey: '',
       model: 'MiniMax-M2.7'
     }
@@ -502,12 +503,20 @@ ${this.getAllNPCStatusForAPI()}
       console.log('========================')
 
       // 清理响应，移除标签
+    // 优先提取[故事]标签内的内容，否则使用完整响应
+    const storyMatch = response.match(/\[故事\]([\s\S]*?)\[\/故事\]/)
+    if (storyMatch) {
+      narrative = storyMatch[1].trim()
+    } else {
+      // 如果没有[故事]标签，清理其他标签后使用
       narrative = response
         .replace(/\[NPC_Card\][\s\S]*?\[\/NPC_Card\]/g, '')
         .replace(/\[NPC_Status\][\s\S]*?\[\/NPC_Status\]/g, '')
         .replace(/\[Scene\][\s\S]*?\[\/Scene\]/g, '')
         .replace(/\[Choices\][\s\S]*?\[\/Choices\]/g, '')
+        .replace(/\[\/?[^\]]+\]/g, '') // 移除所有剩余标签
         .trim()
+    }
 
     } catch (error) {
       console.error('解析AI响应失败:', error)

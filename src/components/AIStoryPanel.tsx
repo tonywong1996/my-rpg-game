@@ -426,15 +426,14 @@ export default function AIStoryPanel({ onBack }: AIStoryPanelProps) {
               <button
                 key={choice.id}
                 onClick={() => handleChoice(choice, index)}
-                className={`w-full p-4 text-left rounded-lg transition-all duration-200 group ${
-                  choice.isCombat 
-                    ? 'bg-[#2a1a1a] hover:bg-[#3a2a2a] border border-[#8a4a4a] hover:border-[#ca6a6a]' 
-                    : 'bg-[#1a1a2a] hover:bg-[#2a2a3a] border border-[#3a3a4a] hover:border-[#c4a86a]'
+                className={`w-full p-4 text-left rounded-xl transition-all duration-200 group ${choice.isCombat 
+                    ? 'bg-[#2a1a1a] hover:bg-[#3a2a2a] border-2 border-[#8a4a4a] hover:border-[#ca6a6a]' 
+                    : 'bg-[#1a1a2a] hover:bg-[#2a2a3a] border-2 border-[#3a3a4a] hover:border-[#c4a86a]'
                 }`}
               >
-                <div className={`font-bold text-lg mb-2 block ${choice.isCombat ? 'text-[#ca6a6a]' : 'text-[#c4a86a]'}`}>
-                  {index + 1}
-                  {choice.isCombat && <span className="ml-2 text-xs">⚔️ 战斗</span>}
+                <div className={`font-bold text-xl mb-2 block ${choice.isCombat ? 'text-[#ca6a6a]' : 'text-[#c4a86a]'}`}>
+                  {index + 1}. 
+                  {choice.isCombat && <span className="ml-2 text-sm">⚔️ 战斗</span>}
                 </div>
                 <div className={`text-base leading-relaxed block ${choice.isCombat ? 'text-[#eaa]' : 'text-[#c4b896]'}`}>
                   {choice.text}
@@ -454,16 +453,15 @@ export default function AIStoryPanel({ onBack }: AIStoryPanelProps) {
             onChange={(e) => setInputText(e.target.value)}
             placeholder="输入你想说的话..."
             disabled={isLoading}
-            className="flex-1 px-4 py-2 bg-[#1a1a2a] border border-[#2a2a3a] rounded-lg
-                       text-[#c4b896] placeholder-[#4a4a5a] text-sm
+            className="flex-1 px-4 py-3 bg-[#1a1a2a] border-2 border-[#2a2a3a] hover:border-[#3a3a4a] rounded-xl
+                       text-base text-[#c4b896] placeholder-[#4a4a5a]
                        focus:outline-none focus:border-[#c4a86a] focus:ring-1 focus:ring-[#c4a86a]
                        disabled:opacity-50"
           />
           <button
             type="submit"
             disabled={isLoading || !inputText.trim()}
-            className="px-4 py-2 bg-[#2a4a3a] hover:bg-[#3a5a4a] text-[#8aba9a] 
-                       rounded-lg text-sm font-medium transition-all duration-200
+            className="px-6 py-3 bg-[#2a4a3a] hover:bg-[#3a5a4a] text-[#8aba9a] rounded-xl text-lg font-bold transition-all duration-200 shadow-md hover:shadow-lg
                        disabled:opacity-50 disabled:cursor-not-allowed"
           >
             发送

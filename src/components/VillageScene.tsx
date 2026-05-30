@@ -28,6 +28,7 @@ export default function VillageScene() {
   } = useAIAdventureEngine()
 
   const [inputText, setInputText] = useState('')
+  const [collapsed, setCollapsed] = useState<Set<number>>(new Set())
   const [history, setHistory] = useState<{speaker: string, content: string}[]>(() => {
     // 从store加载保存的故事历史
     const store = useGameStore.getState()
@@ -118,10 +119,10 @@ export default function VillageScene() {
     }
   }, [currentNarrative, isLoading, npcCards])
 
-  // 自动滚动
+  // 自动滚动到顶部（最新内容）
   useEffect(() => {
     if (storyRef.current) {
-      storyRef.current.scrollTop = storyRef.current.scrollHeight
+      storyRef.current.scrollTop = 0
     }
   }, [history])
 
@@ -302,14 +303,46 @@ export default function VillageScene() {
             </div>
           )}
 
-          {/* 消息历史 */}
-          {history.map((index, msg) => (
-            <p key={index} className="text-sm leading-relaxed text-[#5a5060] whitespace-pre-wrap break-all">
-              <span className={`font-bold ${msg.speaker === '你' ? 'text-[#81b29a]' : msg.speaker === '系统' ? 'text-[#8a7260]' : 'text-[#9a88b8]'}`}>
-                {msg.speaker}:
-              </span><span className="mr-1"></span>{msg.content}
-            </p>
-          ))}
+          {/* 消息历史 - 最新在上，旧的可折叠 */}
+          {history.map((msg, index) => {
+            const isNewest = index === history.length - 1
+            const isCollapsed = collapsed.has(index)
+            const hasChoice = !isNewest && (msg.content.includes('1.') || msg.content.includes('2.') || msg.content.includes('3.'))
+
+            return (
+              <div key={index} className="text-sm leading-relaxed text-[#5a5060]">
+                {isCollapsed ? (
+                  // 折叠状态：只显示摘要行，点击展开
+                  <div
+                    onClick={() => setCollapsed(prev => { const n = new Set(prev); n.delete(index); return n })}
+                    className="px-3 py-2 bg-[#e8e0d0] rounded-lg border border-[#c4b8a8] cursor-pointer flex items-center gap-2"
+                  >
+                    <span className="text-[#8a7260] font-bold">{msg.speaker}:</span>
+                    <span className="flex-1 truncate text-[#a09080] italic">{msg.content.slice(0, 40)}...</span>
+                    <span className="text-[10px] text-[#a09080]">展开 ▼</span>
+                  </div>
+                ) : (
+                  // 展开状态
+                  <div className={`px-3 py-2 rounded-lg ${isNewest ? 'bg-[#f5efe6] border border-[#81b29a]/30' : 'bg-[#f5efe6] border border-[#c4b8a8]'}`}>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className={`font-bold text-xs ${msg.speaker === '你' ? 'text-[#81b29a]' : 'text-[#9a88b8]'}`}>
+                        {msg.speaker}
+                      </span>
+                      {!isNewest && hasChoice && (
+                        <button
+                          onClick={() => setCollapsed(prev => { const n = new Set(prev); n.add(index); return n })}
+                          className="text-[10px] text-[#a09080] hover:text-[#81b29a] transition-colors"
+                        >
+                          折叠 ▲
+                        </button>
+                      )}
+                    </div>
+                    <p className="whitespace-pre-wrap break-all text-[#5a5060]">{msg.content}</p>
+                  </div>
+                )}
+              </div>
+            )
+          })}
 
           {isLoading && (
             <div className="text-[#a09080] text-sm animate-pulse">⏳ AI思考中...</div>
@@ -357,12 +390,12 @@ export default function VillageScene() {
               placeholder="说点什么..."
               disabled={isLoading}
               rows={2}
-              className="flex-1 px-3 py-2 bg-[#f5efe6] border border-[#c4b8a8] rounded text-[12px] text-[#5a5060] placeholder-[#a09080] focus:outline-none focus:border-[#81b29a] resize-none"
+              className="flex-1 px-4 py-3 bg-[#f5efe6] border-2 border-[#c4b8a8] hover:border-[#b4a898] rounded-xl text-base text-[#5a5060] placeholder-[#a09080] focus:outline-none focus:border-[#81b29a] resize-none"
             />
             <button
               type="submit"
               disabled={isLoading || !inputText.trim()}
-              className="px-4 py-2 bg-[#81b29a] hover:bg-[#6a9a84] text-white rounded text-[12px] disabled:opacity-50 self-end"
+              className="px-6 py-3 bg-[#81b29a] hover:bg-[#6a9a84] text-white rounded-xl text-lg font-bold disabled:opacity-50 self-end shadow-md hover:shadow-lg transition-all"
             >
               发送
             </button>
