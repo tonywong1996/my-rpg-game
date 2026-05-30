@@ -190,10 +190,10 @@ export default function VillageScene() {
     <div className="relative w-full h-full overflow-hidden flex flex-col">
       {/* 上半部分 - 地图 */}
       <div className="relative flex-1 min-h-0 overflow-hidden">
-        {/* 背景 - 地图图片 */}
+        {/* 背景 - 教室图片 */}
         <img
-          src="/assets/images/village_scene_new.png"
-          alt="青石村"
+          src="/assets/images/classroom.png"
+          alt="教室"
           className="absolute inset-0 w-full h-full object-cover"
         />
         
@@ -223,10 +223,10 @@ export default function VillageScene() {
         {/* 地点名称 */}
         <div className="absolute top-[15%] left-1/2 -translate-x-1/2 z-10 text-center">
           <h1 className="text-lg font-bold text-[#f5f0c4] tracking-[0.3em] drop-shadow-lg">
-            青 石 村
+            教 室
           </h1>
           <p className="text-[10px] text-[#a0a0b0]/60 tracking-widest mt-0.5">
-            新手修士的起航之地
+            知识即是力量
           </p>
         </div>
 
