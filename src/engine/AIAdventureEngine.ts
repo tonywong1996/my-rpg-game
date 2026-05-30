@@ -172,7 +172,18 @@ export const ADVANCE_STORY_TOOL_SCHEMA = {
 
 export const SYSTEM_PROMPT_TEMPLATE = `你是游戏《知识即是力量》的叙事引擎。玩家扮演小莉——16岁银发少女，能用物理学知识操控风。
 
-你的唯一职责：调用 advance_story 函数，提供 narrative 和 choices。
+你的唯一职责：直接输出 JSON，包含 narrative 和 choices。
+
+【输出格式】
+\`\`\`json
+{
+  "narrative": "【上半区】叙事，80~150字",
+  "choices": ["你做了XX", "你选择YY", "你尝试ZZ"],
+  "next_scene": "same 或场景ID",
+  "npc_status_updates": [{"npc_id": "...", "affection": 5, "mood": "happy"}]
+}
+\`\`\`
+不要输出任何 JSON 以外的文字。
 
 【世界观与角色】
 - 小莉：温柔、好奇、学霸。银白色低马尾，琥珀色眼眸。
@@ -430,8 +441,6 @@ ${this.getAllNPCStatusForAPI()}
         body: JSON.stringify({
           model: this.apiConfig.model,
           messages: messages,
-          tools: [ADVANCE_STORY_TOOL_SCHEMA],
-          tool_choice: { type: 'function', function: { name: 'advance_story' } },
           temperature: 0.8,
           max_tokens: 2000
         })
@@ -445,13 +454,14 @@ ${this.getAllNPCStatusForAPI()}
       const aiMessage = data.choices[0]?.message
 
       // 保存对话历史
+      const content = aiMessage?.content || ''
       this.storyHistory.push(
         { role: 'user', content: userInput, timestamp: Date.now() },
-        { role: 'assistant', content: JSON.stringify(aiMessage), timestamp: Date.now() }
+        { role: 'assistant', content: content, timestamp: Date.now() }
       )
 
-      // 解析工具调用
-      return this.parseToolCall(aiMessage)
+      // 解析 JSON 文本响应
+      return this.parseTextResponse(content)
     } catch (error) {
       console.error('AI调用错误:', error)
       throw error
@@ -515,7 +525,152 @@ ${this.getAllNPCStatusForAPI()}
     }
   }
 
-  // 解析效果字符串
+  // ============================
+  // 流式 SSE 调用（方案A核心）
+  // ============================
+
+  /**
+   * 流式调用 AI，每收到一个文本块就通过 onChunk 回调 yield 出去。
+   * - onChunk: 收到新的文本片段时调用，参数是纯文本字符串
+   * - onComplete: 流结束后调用，参数是完整原始文本，用于解析 final JSON
+   * - onError: 出错时调用
+   */
+  async callAISSE(
+    userInput: string,
+    onChunk: (text: string) => void,
+    onComplete: (fullText: string) => void,
+    onError: (err: Error) => void
+  ): Promise<void> {
+    const messages = [
+      { role: 'system' as const, content: this.buildSystemPrompt() },
+      ...this.storyHistory.slice(-10),
+      { role: 'user' as const, content: userInput }
+    ]
+
+    try {
+      const response = await fetch(`${this.apiConfig.baseUrl}/chat/completions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${this.apiConfig.apiKey}`
+        },
+        body: JSON.stringify({
+          model: this.apiConfig.model,
+          messages: messages,
+          stream: true,
+          temperature: 0.8,
+          max_tokens: 2000
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error(`API调用失败: ${response.status}`)
+      }
+
+      if (!response.body) {
+        throw new Error('该 API 不支持流式响应（无响应体）')
+      }
+
+      const reader = response.body.getReader()
+      const decoder = new TextDecoder('utf-8')
+      let buffer = ''
+      let fullText = ''
+
+      // 保存对话历史
+      this.storyHistory.push(
+        { role: 'user', content: userInput, timestamp: Date.now() }
+      )
+
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+
+        buffer += decoder.decode(value, { stream: true })
+
+        // 解析 SSE 行：data: {"id":...,"choices":[{"delta":{"content":"文字"}}]}
+        const lines = buffer.split('\n')
+        buffer = lines.pop() || '' // 不完整的行留到下次
+
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue
+          const data = line.slice(6).trim()
+          if (data === '[DONE]') continue
+
+          try {
+            const parsed = JSON.parse(data)
+            const content = parsed.choices?.[0]?.delta?.content
+            if (content) {
+              fullText += content
+              onChunk(content)
+            }
+          } catch {
+            // 忽略解析失败的块
+          }
+        }
+      }
+
+      // 保存 assistant 响应到历史
+      this.storyHistory.push(
+        { role: 'assistant', content: fullText, timestamp: Date.now() }
+      )
+
+      onComplete(fullText)
+    } catch (error) {
+      console.error('SSE 流式调用错误:', error)
+      onError(error instanceof Error ? error : new Error(String(error)))
+    }
+  }
+
+  // 解析纯文本 JSON 响应（方案A核心）
+  parseTextResponse(fullText: string): {
+    narrative: string
+    choices: Choice[]
+    nextScene: string
+    npcUpdates: Record<string, Partial<NPCStatus>>
+  } {
+    try {
+      const args = JSON.parse(fullText)
+
+      // 解析 NPC 状态更新
+      const npcUpdates: Record<string, Partial<NPCStatus>> = {}
+      ;(args.npc_status_updates || []).forEach((update: any) => {
+        const currentStatus = this.npcStatuses.get(update.npc_id)
+        if (currentStatus) {
+          if (update.affection !== undefined) {
+            currentStatus.affection = Math.max(-100, Math.min(100, currentStatus.affection + update.affection))
+          }
+          if (update.mood) currentStatus.mood = update.mood
+          if (update.current_scene) currentStatus.current_scene = update.current_scene
+          npcUpdates[update.npc_id] = update
+        }
+      })
+
+      const choices: Choice[] = (args.choices || []).map((text: string, i: number) => ({
+        id: `choice_${i + 1}`,
+        text,
+        effects: {},
+        next_scene: args.next_scene || 'same'
+      }))
+
+      return {
+        narrative: args.narrative || '',
+        choices,
+        nextScene: args.next_scene || 'same',
+        npcUpdates
+      }
+    } catch (error) {
+      console.error('解析 JSON 响应失败:', error, '原始文本:', fullText.slice(0, 200))
+      return {
+        narrative: '【解析失败】AI响应格式异常',
+        choices: [],
+        nextScene: 'same',
+        npcUpdates: {}
+      }
+    }
+  }
+
+  // ============================
+  // 处理玩家输入
   private parseEffects(effectStr: string): Record<string, number | string> {
     const effects: Record<string, number | string> = {}
     const parts = effectStr.split(',')
@@ -719,6 +874,8 @@ export function useAIAdventureEngine(apiConfig?: Partial<APIConfig>) {
   const [choices, setChoices] = useState<Choice[]>([])
   const [npcCards, setNpcCards] = useState<NPCCharacter[]>([])
   const [playerStats, setPlayerStats] = useState<PlayerStats>(engine.getPlayerStats())
+  // 流式：渐进式叙事文字（用户看到实时打字效果）
+  const [streamingText, setStreamingText] = useState<string>('')
 
   // 初始化游戏
   const initialize = useCallback(async () => {
@@ -755,6 +912,67 @@ export function useAIAdventureEngine(apiConfig?: Partial<APIConfig>) {
     }
   }, [engine])
 
+  // ============================
+  // 流式处理玩家输入（方案A核心）
+  // ============================
+  const submitInputStreaming = useCallback(async (
+    input: string,
+    conversationHistory?: {role: 'user' | 'assistant', content: string}[]
+  ) => {
+    setIsLoading(true)
+    setError(null)
+    setStreamingText('')
+    setChoices([])
+
+    // 从 GitHub 获取 API 配置（如果第一次调用失败则重试）
+    const config = await fetchApiConfig()
+    engine.setApiConfig(config)
+
+    // 同步外部历史到引擎内部
+    if (conversationHistory && conversationHistory.length > 0) {
+      engine['storyHistory'] = conversationHistory.map(msg => ({
+        role: msg.role as 'system' | 'user' | 'assistant',
+        content: msg.content,
+        timestamp: Date.now()
+      }))
+    }
+
+    // 累积 buffer，用于在流结束后做 JSON.parse
+    let rawBuffer = ''
+
+    await engine.callAISSE(
+      input,
+      // onChunk: 每收到一个字/片段就更新 streamingText
+      (chunk: string) => {
+        rawBuffer += chunk
+        setStreamingText(rawBuffer)
+      },
+      // onComplete: 流结束后，解析完整 JSON
+      (fullText: string) => {
+        try {
+          const parsed = engine.parseTextResponse(fullText)
+          setCurrentNarrative(parsed.narrative)
+          setChoices(parsed.choices)
+          setPlayerStats(engine.getPlayerStats())
+          // 如果 next_scene 不是 'same'，更新场景
+          if (parsed.nextScene && parsed.nextScene !== 'same') {
+            engine.setCurrentScene(parsed.nextScene)
+          }
+        } catch (err) {
+          setError('解析AI响应失败')
+          setCurrentNarrative('【解析失败】AI响应格式异常')
+        }
+      },
+      // onError
+      (err: Error) => {
+        setError(err.message)
+        setStreamingText('')
+      }
+    )
+
+    setIsLoading(false)
+  }, [engine])
+
   // 设置NPC数据
   const setNPCs = useCallback((cards: NPCCharacter[]) => {
     engine.setNPCCards(cards)
@@ -777,8 +995,10 @@ export function useAIAdventureEngine(apiConfig?: Partial<APIConfig>) {
     choices,
     npcCards,
     playerStats,
+    streamingText,
     initialize,
     submitInput,
+    submitInputStreaming,
     setNPCs,
     reset
   }

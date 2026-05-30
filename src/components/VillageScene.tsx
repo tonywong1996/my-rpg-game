@@ -60,13 +60,14 @@ export default function VillageScene() {
   // AI引擎
   const {
     initialize,
-    submitInput,
+    submitInputStreaming,
     currentNarrative,
     choices,
     npcCards,
     playerStats,
     isLoading,
     error,
+    streamingText,
   } = useAIAdventureEngine()
 
   const [inputText, setInputText] = useState('')
@@ -92,17 +93,22 @@ export default function VillageScene() {
     }
   }, [initialize, npcCards])
 
-  // 监听narrative变化，并保存到store
+  // 监听narrative变化和streamingText，并保存到store
   useEffect(() => {
-    if (currentNarrative && !isLoading) {
+    if (streamingText) {
+      // 流式进行中：实时显示渐进文字
+      setNarrativeText(streamingText)
+      useGameStore.setState({ aiStoryNarrative: streamingText })
+    } else if (currentNarrative && !isLoading) {
+      // 流式结束：使用最终解析结果
       setNarrativeText(currentNarrative)
       useGameStore.setState({ aiStoryNarrative: currentNarrative })
     }
-  }, [currentNarrative, isLoading])
+  }, [streamingText, currentNarrative, isLoading])
 
   // 处理选择
   const handleChoice = async (choice: Choice, index: number) => {
-    await submitInput(String(index + 1))
+    await submitInputStreaming(String(index + 1))
   }
 
   // 处理自由输入
@@ -111,7 +117,7 @@ export default function VillageScene() {
     if (!inputText.trim() || isLoading) return
 
     setInputText('')
-    await submitInput(inputText.trim())
+    await submitInputStreaming(inputText.trim())
   }
 
   // 建筑点击处理
