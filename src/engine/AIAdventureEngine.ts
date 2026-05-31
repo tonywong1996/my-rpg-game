@@ -962,7 +962,13 @@ export function useAIAdventureEngine(apiConfig?: Partial<APIConfig>) {
           .replace(/```json\s*/gi, '')
           .replace(/```\s*/gi, '')
           .replace(/<\/?result>/gi, '')
-        setStreamingText(cleanedForStream)
+        // 尝试从 JSON 中提取 narrative 字段显示在流式预览中
+        try {
+          const parsed = JSON.parse(cleanedForStream.trim())
+          setStreamingText(parsed.narrative || cleanedForStream)
+        } catch {
+          setStreamingText(cleanedForStream)
+        }
       },
       // onComplete: 流结束后，解析完整 JSON
       (fullText: string) => {
