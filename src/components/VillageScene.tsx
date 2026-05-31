@@ -262,9 +262,9 @@ export default function VillageScene() {
 
         {/* 右侧 6 - 选项区：有选项时显示选项，无选项时显示自由输入 */}
         <div className="flex-[6] flex flex-col bg-[#f5efe6]">
-          {/* 选择按钮（气泡卡片）或输入框 */}
+          {/* 选择按钮（气泡卡片）—— 有选项时显示在上方 */}
           {(restoredChoices.length > 0 || choices.length > 0) && !isLoading && (
-            <div className="flex-1 overflow-y-auto px-4 py-3 space-y-2 flex flex-col">
+            <div className="overflow-y-auto px-4 py-3 space-y-2 flex flex-col max-h-[50%]">
               <div className="flex flex-col gap-2">
                 {(restoredChoices.length > 0 ? restoredChoices : choices).map((choice, index) => (
                     <div
@@ -284,29 +284,28 @@ export default function VillageScene() {
             </div>
           )}
 
-          {choices.length === 0 && !isLoading && (
-            <form onSubmit={handleFreeInput} className="flex-1 flex items-center p-3 border-t border-[#c4b8a8]">
-              <div className="flex gap-2 w-full">
-                <textarea
-                  value={inputText}
-                  onChange={(e) => setInputText(e.target.value)}
-                  placeholder="说点什么..."
-                  disabled={isLoading}
-                  rows={2}
-                  className="flex-[8] px-3 py-2 bg-[#ebe4d8] border border-[#c4b8a8] hover:border-[#c4a86a] rounded-lg
-                             text-sm text-[#3d405b] placeholder-[#8a8078]
-                             focus:outline-none focus:border-[#c4a86a] resize-none"
-                />
-                <button
-                  type="submit"
-                  disabled={isLoading || !inputText.trim()}
-                  className="flex-[4] px-2 bg-[#81b29a] hover:bg-[#6a9a84] text-white rounded-lg text-sm font-bold disabled:opacity-50 shadow-md hover:shadow-lg transition-all flex items-center justify-center"
-                >
-                  发
-                </button>
-              </div>
-            </form>
-          )}
+          {/* 输入框——始终显示 */}
+          <form onSubmit={handleFreeInput} className="flex items-center p-3 border-t border-[#c4b8a8] bg-[#ebe4d8] flex-shrink-0">
+            <div className="flex gap-2 w-full">
+              <textarea
+                value={inputText}
+                onChange={(e) => setInputText(e.target.value)}
+                placeholder="说点什么..."
+                disabled={isLoading}
+                rows={2}
+                className="flex-[8] px-3 py-2 bg-white border border-[#c4b8a8] hover:border-[#c4a86a] rounded-lg
+                           text-sm text-[#3d405b] placeholder-[#8a8078]
+                           focus:outline-none focus:border-[#c4a86a] resize-none"
+              />
+              <button
+                type="submit"
+                disabled={isLoading || !inputText.trim()}
+                className="flex-[4] px-2 bg-[#81b29a] hover:bg-[#6a9a84] text-white rounded-lg text-sm font-bold disabled:opacity-50 shadow-md hover:shadow-lg transition-all flex items-center justify-center"
+              >
+                发
+              </button>
+            </div>
+          </form>
 
           {isLoading && (
             <div className="flex-1 flex items-center justify-center text-[#8a8078] text-sm animate-pulse">⏳ AI思考中...</div>
