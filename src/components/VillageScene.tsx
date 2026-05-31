@@ -204,6 +204,7 @@ export default function VillageScene() {
           <div className="flex-[2] flex flex-col items-center justify-center gap-2 p-2 border-l border-[#c4b8a8]/30">
             <p className="text-[10px] text-white/60 font-bold tracking-wider mb-1">功能</p>
 
+            {/* 商店已隐藏
             <button
               onClick={() => handleBuildingClick('shop')}
               className="w-10 h-10 md:w-11 md:h-11 bg-gradient-to-b from-[#e8c8a8] to-[#d4b090] rounded-lg border border-[#c4a880]/50 flex items-center justify-center group hover:border-[#d4a04a]/50 transition-all shadow-md"
@@ -211,6 +212,7 @@ export default function VillageScene() {
               <span className="text-xl md:text-2xl">🏪</span>
             </button>
             <span className="text-[10px] text-white/70">商店</span>
+*/}
 
             <button
               onClick={() => handleBuildingClick('smithy')}
