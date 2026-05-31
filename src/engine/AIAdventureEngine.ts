@@ -632,10 +632,12 @@ ${this.getAllNPCStatusForAPI()}
     npcUpdates: Record<string, Partial<NPCStatus>>
   } {
     try {
-      // 剥离思考标签，MiniMax 模型输出包含 <think> 和 </think> 标签
-      // 用正则整体移除 think 块（包括内容和开闭标签）
+      // 剥离思考标签和 markdown 代码块
+      // MiniMax 输出格式: <think>...</think>\n\n```json\n{...}\n```
       const cleanedText = fullText
         .replace(/<think[^>]*>[\s\S]*?<\/?think[^>]*>/gi, '')
+        .replace(/```json\s*/gi, '')
+        .replace(/```\s*/gi, '')
         .replace(/<\/?result>/gi, '')
         .trim()
       const args = JSON.parse(cleanedText)
@@ -954,9 +956,11 @@ export function useAIAdventureEngine(apiConfig?: Partial<APIConfig>) {
       // onChunk: 每收到一个字/片段就更新 streamingText（过滤think标签）
       (chunk: string) => {
         rawBuffer += chunk
-// onChunk: 每收到一个字/片段就更新 streamingText（整体移除think块）
+// onChunk: 整体移除think块+markdown代码块
         const cleanedForStream = rawBuffer
           .replace(/<think[^>]*>[\s\S]*?<\/?think[^>]*>/gi, '')
+          .replace(/```json\s*/gi, '')
+          .replace(/```\s*/gi, '')
           .replace(/<\/?result>/gi, '')
         setStreamingText(cleanedForStream)
       },

@@ -410,7 +410,7 @@ export default function AIStoryPanel({ onBack }: AIStoryPanelProps) {
                   : 'mr-8 bg-[#2a1a2a] border-l-2 border-[#8a6a9a]'
               }`}
             >
-              <p className="text-base leading-loose whitespace-pre-wrap">
+              <p className="text-base leading-loose whitespace-pre-wrap pl-2">
                 {msg.content}
               </p>
             </div>
