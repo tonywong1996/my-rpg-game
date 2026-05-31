@@ -14,7 +14,7 @@ function renderNarrative(text: string): React.ReactNode[] {
     // 按 \n 分割行
     const lines = para.split(/\n/)
     return (
-      <p key={pi} className={`text-xs text-[#3d405b] leading-relaxed ${pi > 0 ? 'mt-2' : ''}`}>
+      <p key={pi} className={`text-sm text-[#3d405b] leading-relaxed ${pi > 0 ? 'mt-2' : ''}`}>
         {lines.map((line, li) => {
           // 解析 **粗体** 和 __粗体__
           const parts: React.ReactNode[] = []
@@ -213,7 +213,7 @@ export default function VillageScene() {
             </button>
             <span className="text-[10px] text-white/70">商店</span>
 */}
-
+            {/* 装备铺已隐藏
             <button
               onClick={() => handleBuildingClick('smithy')}
               className="w-10 h-10 md:w-11 md:h-11 bg-gradient-to-b from-[#c8a878] to-[#a88858] rounded-lg border border-[#b89868]/50 flex items-center justify-center group hover:border-[#e07a5f]/50 transition-all shadow-md"
@@ -221,7 +221,8 @@ export default function VillageScene() {
               <span className="text-xl md:text-2xl">⚒️</span>
             </button>
             <span className="text-[10px] text-white/70">装备铺</span>
-
+*/}
+            {/* 任务已隐藏
             <button
               onClick={() => handleBuildingClick('quest_center')}
               className="w-10 h-10 md:w-11 md:h-11 bg-gradient-to-b from-[#a8c8b8] to-[#88b098] rounded-lg border border-[#98b088]/50 flex items-center justify-center group hover:border-[#81b29a]/50 transition-all shadow-md"
@@ -229,7 +230,8 @@ export default function VillageScene() {
               <span className="text-xl md:text-2xl">📜</span>
             </button>
             <span className="text-[10px] text-white/70">任务</span>
-
+*/}
+            {/* NPC已隐藏
             <button
               onClick={() => handleBuildingClick('npc')}
               className="w-10 h-10 md:w-11 md:h-11 bg-gradient-to-b from-[#c8b8d8] to-[#a898b8] rounded-lg border border-[#b8a8c8]/50 flex items-center justify-center group hover:border-[#9a88b8]/50 transition-all shadow-md"
@@ -237,7 +239,8 @@ export default function VillageScene() {
               <span className="text-xl md:text-2xl">🏘️</span>
             </button>
             <span className="text-[10px] text-white/70">NPC</span>
-
+*/}
+            {/* 锻炼已隐藏
             <button
               onClick={goToBattle}
               className="w-10 h-10 md:w-11 md:h-11 bg-gradient-to-b from-[#d8a878] to-[#c08858] rounded-lg border border-[#c89868]/50 flex items-center justify-center group hover:border-[#e07a5f]/50 transition-all shadow-md"
@@ -245,6 +248,7 @@ export default function VillageScene() {
               <span className="text-xl md:text-2xl">⚔️</span>
             </button>
             <span className="text-[10px] text-white/70">锻炼</span>
+*/}
           </div>
         </div>
       </div>
