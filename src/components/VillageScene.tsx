@@ -153,11 +153,11 @@ export default function VillageScene() {
           className="absolute inset-0 w-full h-full object-cover"
         />
 
-        {/* 8:2 覆盖层 */}
+        {/* 全宽覆盖层 */}
         <div className="absolute inset-0 flex flex-row">
 
-          {/* 左侧 8 - 信息栏 + 地点 + 叙事 */}
-          <div className="flex-[8] relative flex flex-col">
+          {/* 左侧全宽 - 信息栏 + 地点 + 叙事 */}
+          <div className="flex-1 relative flex flex-col">
             {/* 半透明遮罩 */}
             <div className="absolute inset-0 bg-gradient-to-b from-[#000]/30 via-transparent to-[#000]/50 pointer-events-none" />
 
@@ -200,56 +200,7 @@ export default function VillageScene() {
             </div>
           </div>
 
-          {/* 右侧 2 - 建筑按钮垂直排列 */}
-          <div className="flex-[2] flex flex-col items-center justify-center gap-2 p-2 border-l border-[#c4b8a8]/30">
-            <p className="text-[10px] text-white/60 font-bold tracking-wider mb-1">功能</p>
-
-            {/* 商店已隐藏
-            <button
-              onClick={() => handleBuildingClick('shop')}
-              className="w-10 h-10 md:w-11 md:h-11 bg-gradient-to-b from-[#e8c8a8] to-[#d4b090] rounded-lg border border-[#c4a880]/50 flex items-center justify-center group hover:border-[#d4a04a]/50 transition-all shadow-md"
-            >
-              <span className="text-xl md:text-2xl">🏪</span>
-            </button>
-            <span className="text-[10px] text-white/70">商店</span>
-*/}
-            {/* 装备铺已隐藏
-            <button
-              onClick={() => handleBuildingClick('smithy')}
-              className="w-10 h-10 md:w-11 md:h-11 bg-gradient-to-b from-[#c8a878] to-[#a88858] rounded-lg border border-[#b89868]/50 flex items-center justify-center group hover:border-[#e07a5f]/50 transition-all shadow-md"
-            >
-              <span className="text-xl md:text-2xl">⚒️</span>
-            </button>
-            <span className="text-[10px] text-white/70">装备铺</span>
-*/}
-            {/* 任务已隐藏
-            <button
-              onClick={() => handleBuildingClick('quest_center')}
-              className="w-10 h-10 md:w-11 md:h-11 bg-gradient-to-b from-[#a8c8b8] to-[#88b098] rounded-lg border border-[#98b088]/50 flex items-center justify-center group hover:border-[#81b29a]/50 transition-all shadow-md"
-            >
-              <span className="text-xl md:text-2xl">📜</span>
-            </button>
-            <span className="text-[10px] text-white/70">任务</span>
-*/}
-            {/* NPC已隐藏
-            <button
-              onClick={() => handleBuildingClick('npc')}
-              className="w-10 h-10 md:w-11 md:h-11 bg-gradient-to-b from-[#c8b8d8] to-[#a898b8] rounded-lg border border-[#b8a8c8]/50 flex items-center justify-center group hover:border-[#9a88b8]/50 transition-all shadow-md"
-            >
-              <span className="text-xl md:text-2xl">🏘️</span>
-            </button>
-            <span className="text-[10px] text-white/70">NPC</span>
-*/}
-            {/* 锻炼已隐藏
-            <button
-              onClick={goToBattle}
-              className="w-10 h-10 md:w-11 md:h-11 bg-gradient-to-b from-[#d8a878] to-[#c08858] rounded-lg border border-[#c89868]/50 flex items-center justify-center group hover:border-[#e07a5f]/50 transition-all shadow-md"
-            >
-              <span className="text-xl md:text-2xl">⚔️</span>
-            </button>
-            <span className="text-[10px] text-white/70">锻炼</span>
-*/}
-          </div>
+          
         </div>
       </div>
 
