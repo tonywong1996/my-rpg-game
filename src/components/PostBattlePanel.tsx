@@ -133,6 +133,8 @@ export default function PostBattlePanel() {
       postBattleLoot: { exp: 0, gold: 0, items: [] },
       aiStoryInitialized: false,
       aiStoryHistory: [],
+      aiStoryNarrative: '',
+      aiStoryChoices: [],
       aiNPCs: [],
     })
 

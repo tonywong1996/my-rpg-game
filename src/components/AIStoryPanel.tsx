@@ -404,13 +404,13 @@ export default function AIStoryPanel({ onBack }: AIStoryPanelProps) {
             return (
             <div
               key={actualIndex}
-              className={`p-4 rounded-lg ${
+              className={`p-4 pl-6 rounded-lg ${
                 msg.role === 'user'
                   ? 'ml-8 bg-[#1a2a2a] border-l-2 border-[#4a8a6a]'
                   : 'mr-8 bg-[#2a1a2a] border-l-2 border-[#8a6a9a]'
               }`}
             >
-              <p className="text-base leading-loose whitespace-pre-wrap pl-2">
+              <p className="text-base leading-loose whitespace-pre-wrap">
                 {msg.content}
               </p>
             </div>

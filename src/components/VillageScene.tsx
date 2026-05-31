@@ -79,6 +79,23 @@ export default function VillageScene() {
     return ''
   })
 
+  // 从store恢复choices（刷新后仍能显示）
+  const [restoredChoices, setRestoredChoices] = useState<Choice[]>(() => {
+    const store = useGameStore.getState()
+    if (store.aiStoryInitialized && store.aiStoryChoices.length > 0) {
+      return store.aiStoryChoices as unknown as Choice[]
+    }
+    return []
+  })
+
+  // choices更新时保存到store
+  useEffect(() => {
+    if (choices.length > 0) {
+      useGameStore.setState({ aiStoryChoices: choices as unknown as {id: string, text: string}[] })
+      setRestoredChoices(choices)
+    }
+  }, [choices])
+
   // 初始化AI故事 - 只在首次进入且未初始化时调用
   useEffect(() => {
     const store = useGameStore.getState()
@@ -244,10 +261,10 @@ export default function VillageScene() {
         {/* 右侧 6 - 选项区：有选项时显示选项，无选项时显示自由输入 */}
         <div className="flex-[6] flex flex-col bg-[#f5efe6]">
           {/* 选择按钮（气泡卡片）或输入框 */}
-          {choices.length > 0 && !isLoading && (
+          {(restoredChoices.length > 0 || choices.length > 0) && !isLoading && (
             <div className="flex-1 overflow-y-auto px-4 py-3 space-y-2 flex flex-col">
               <div className="flex flex-col gap-2">
-                {choices.map((choice, index) => (
+                {(restoredChoices.length > 0 ? restoredChoices : choices).map((choice, index) => (
                     <div
                       key={choice.id}
                       onClick={() => handleChoice(choice, index)}
