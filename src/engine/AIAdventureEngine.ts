@@ -947,10 +947,14 @@ export function useAIAdventureEngine(apiConfig?: Partial<APIConfig>) {
 
     await engine.callAISSE(
       input,
-      // onChunk: 每收到一个字/片段就更新 streamingText
+      // onChunk: 每收到一个字/片段就更新 streamingText（过滤think标签）
       (chunk: string) => {
         rawBuffer += chunk
-        setStreamingText(rawBuffer)
+        // 过滤掉think标签再显示，保持气泡干净
+        const displayText = rawBuffer
+          .replace(/<\/?result>/gi, '')
+          .replace(/<\/?think[^>]*>/gi, '')
+        setStreamingText(displayText)
       },
       // onComplete: 流结束后，解析完整 JSON
       (fullText: string) => {
