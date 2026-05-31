@@ -264,11 +264,11 @@ export default function VillageScene() {
           />
         </div>
 
-        {/* 右侧 6 - 选项区：有选项时显示选项，无选项时显示自由输入 */}
-        <div className="flex-[6] flex flex-col bg-[#f5efe6]">
-          {/* 选择按钮（气泡卡片）—— 有选项时显示在上方 */}
+        {/* 右侧 6 - 选项区：上方可滚动选项 + 下方固定输入框 */}
+        <div className="flex-[6] flex flex-col bg-[#f5efe6] overflow-hidden">
+          {/* 选择按钮（气泡卡片）—— 有选项时显示在上方，可滚动 */}
           {(restoredChoices.length > 0 || choices.length > 0) && !isLoading && (
-            <div className="overflow-y-auto px-4 py-3 space-y-2 flex flex-col max-h-[50%]">
+            <div className="overflow-y-auto px-4 py-3 space-y-2 flex flex-col flex-1">
               <div className="flex flex-col gap-2">
                 {(restoredChoices.length > 0 ? restoredChoices : choices).map((choice, index) => (
                     <div
