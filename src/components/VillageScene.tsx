@@ -270,12 +270,12 @@ export default function VillageScene() {
                     <div
                       key={choice.id}
                       onClick={() => handleChoice(choice, index)}
-                      className="w-full px-4 py-3 rounded-2xl cursor-pointer transition-all text-sm bg-[#ebe4d8] border border-[#b8b0a0] hover:border-[#c4a86a]"
+                      className="w-full px-4 py-3 rounded-2xl cursor-pointer transition-all text-sm bg-[#ebe4d8] border border-[#b8b0a0] hover:border-[#c4a86a] break-words"
                     >
-                      <span className="font-bold text-[#3d405b]">
+                      <span className="font-bold text-[#3d405b] align-middle">
                         {index + 1}.
                       </span>
-                      <span className="ml-2 text-[#5a5060]">
+                      <span className="ml-2 text-[#5a5060] break-words">
                         {choice.text}
                       </span>
                     </div>
