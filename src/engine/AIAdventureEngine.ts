@@ -629,7 +629,12 @@ ${this.getAllNPCStatusForAPI()}
     npcUpdates: Record<string, Partial<NPCStatus>>
   } {
     try {
-      const args = JSON.parse(fullText)
+      // 剥离思考标签，MiniMax 模型输出包含 <think>  和 </think>  标签
+      const cleanedText = fullText
+        .replace(/<\/?result>/gi, '')
+        .replace(/<\/?think[^>]*>/gi, '')
+        .trim()
+      const args = JSON.parse(cleanedText)
 
       // 解析 NPC 状态更新
       const npcUpdates: Record<string, Partial<NPCStatus>> = {}
@@ -659,7 +664,7 @@ ${this.getAllNPCStatusForAPI()}
         npcUpdates
       }
     } catch (error) {
-      console.error('解析 JSON 响应失败:', error, '原始文本:', fullText.slice(0, 200))
+      console.error('解析 JSON 响应失败:', error, '原始文本:', fullText.slice(0, 500), '清理后:', cleanedText.slice(0, 200))
       return {
         narrative: '【解析失败】AI响应格式异常',
         choices: [],
