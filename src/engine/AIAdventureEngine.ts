@@ -453,15 +453,18 @@ ${this.getAllNPCStatusForAPI()}
       const data = await response.json()
       const aiMessage = data.choices[0]?.message
 
-      // 保存对话历史
       const content = aiMessage?.content || ''
+
+      // 解析 JSON 响应
+      const parsed = this.parseTextResponse(content)
+
+      // 只把 narrative（清理后的叙事文字）存入历史，不要存 raw content
       this.storyHistory.push(
         { role: 'user', content: userInput, timestamp: Date.now() },
-        { role: 'assistant', content: content, timestamp: Date.now() }
+        { role: 'assistant', content: parsed.narrative, timestamp: Date.now() }
       )
 
-      // 解析 JSON 文本响应
-      return this.parseTextResponse(content)
+      return parsed
     } catch (error) {
       console.error('AI调用错误:', error)
       throw error
@@ -629,10 +632,11 @@ ${this.getAllNPCStatusForAPI()}
     npcUpdates: Record<string, Partial<NPCStatus>>
   } {
     try {
-      // 剥离思考标签，MiniMax 模型输出包含 <think>  和 </think>  标签
+      // 剥离思考标签，MiniMax 模型输出包含 <think> 和 </think> 标签
+      // 用正则整体移除 think 块（包括内容和开闭标签）
       const cleanedText = fullText
+        .replace(/<think[^>]*>[\s\S]*?<\/?think[^>]*>/gi, '')
         .replace(/<\/?result>/gi, '')
-        .replace(/<\/?think[^>]*>/gi, '')
         .trim()
       const args = JSON.parse(cleanedText)
 
@@ -950,11 +954,11 @@ export function useAIAdventureEngine(apiConfig?: Partial<APIConfig>) {
       // onChunk: 每收到一个字/片段就更新 streamingText（过滤think标签）
       (chunk: string) => {
         rawBuffer += chunk
-        // 过滤掉think标签再显示，保持气泡干净
-        const displayText = rawBuffer
+// onChunk: 每收到一个字/片段就更新 streamingText（整体移除think块）
+        const cleanedForStream = rawBuffer
+          .replace(/<think[^>]*>[\s\S]*?<\/?think[^>]*>/gi, '')
           .replace(/<\/?result>/gi, '')
-          .replace(/<\/?think[^>]*>/gi, '')
-        setStreamingText(displayText)
+        setStreamingText(cleanedForStream)
       },
       // onComplete: 流结束后，解析完整 JSON
       (fullText: string) => {
